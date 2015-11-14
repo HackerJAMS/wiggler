@@ -4,12 +4,18 @@
   "description": "",
   "main": "server/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --reporter spec test"
   },
   "author": "",
   "license": "ISC",
-  "devDependencies": {},
+  "devDependencies": {
+    "browserify": "^12.0.1",
+    "chai": "^3.4.1",
+    "mocha": "^2.3.3",
+    "vinyl-source-stream": "^1.1.0"
+  },
   "dependencies": {
+    "angular": "^1.4.7",
     "express": "^4.13.3",
     "gulp": "^3.9.0",
     "gulp-autoprefixer": "^3.1.0",

@@ -26,6 +26,9 @@ var rename  = require('gulp-rename');
 var sass    = require('gulp-sass');
 var uglify  = require('gulp-uglify');
 
+var browserify = require('browserify')
+var source = require('vinyl-source-stream')
+
 gulp.task('scss', function(){
   return gulp.src('client/app/src/styles/scss/styles.scss')
   .pipe(sass())
@@ -33,13 +36,24 @@ gulp.task('scss', function(){
   .pipe(gulp.dest('client/app/dist/css'))
 });
 
-gulp.task('scripts', function(){
-  return gulp.src('client/app/src/scripts/*.js')
-  .pipe(jshint())
-  .pipe(concat('scripts.js'))
-  .pipe(uglify())
-  .pipe(gulp.dest('client/app/dist/js'))
-});
+// gulp.task('scripts', function(){
+//   return gulp.src('client/app/src/scripts/*.js')
+//   .pipe(jshint())
+//   .pipe(concat('scripts.js'))
+//   .pipe(uglify())
+//   .pipe(gulp.dest('client/app/dist/js'))
+// });
+
+gulp.task('browserify', function() {
+    // Grabs the app.js file
+    return browserify('client/app/src/scripts/app.js')
+        // bundles it and creates a file called main.js
+        .bundle()
+        .pipe(source('main.js'))
+        // saves it the public/js/ directory
+        .pipe(gulp.dest('client/app/dist/js'));
+})
+
 
 // start the server
 gulp.task('start', function() {
