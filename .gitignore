@@ -1,1 +1,6 @@
+.DS_Store
+
 node_modules
+
+client/app/dist
+client/app/bower_components
