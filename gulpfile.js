@@ -36,24 +36,23 @@ gulp.task('scss', function(){
   .pipe(gulp.dest('client/app/dist/css'))
 });
 
-// gulp.task('scripts', function(){
-//   return gulp.src('client/app/src/scripts/*.js')
-//   .pipe(jshint())
-//   .pipe(concat('scripts.js'))
-//   .pipe(uglify())
-//   .pipe(gulp.dest('client/app/dist/js'))
-// });
+gulp.task('scripts', function(){
+  return gulp.src('client/app/src/scripts/*.js')
+  .pipe(jshint())
+  .pipe(concat('scripts.js'))
+  .pipe(uglify())
+  .pipe(gulp.dest('client/app/dist/js'))
+});
 
 gulp.task('browserify', function() {
     // Grabs the app.js file
-    return browserify('client/app/src/scripts/app.js')
+    return browserify('client/src/scripts/app.js')
         // bundles it and creates a file called main.js
         .bundle()
         .pipe(source('main.js'))
         // saves it the public/js/ directory
-        .pipe(gulp.dest('client/app/dist/js'));
+        .pipe(gulp.dest('client/dist/js'));
 })
-
 
 // start the server
 gulp.task('start', function() {
@@ -69,4 +68,4 @@ gulp.task('app', function(){
   .pipe(open(options));
 });
 
-gulp.task('default', ['start', 'app']);
+// gulp.task('default', ['start', 'app']);
