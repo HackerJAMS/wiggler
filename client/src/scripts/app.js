@@ -1,13 +1,24 @@
-require('angular');
-require('')
-var app = angular.module('app', ['ngRoute',
-  'app.home'
-]);
+;
+(function() {
+  'use strict';
+  var app = angular.module('app', [
+    'ui.router',
+    'app.home'
+  ]);
 
-app.config(['$routeProvider', function($routeProvider) {
+  // app.controller('MainController', function($scope) {
+  //     $scope.message = 'Angular Works!'
+  // });
 
-  $routeProvider.when('/', {
-    templateUrl: 'src/scripts/components/home/home.html',
-    controller: "HomeController"
-  })
-}])
+  app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
+    $urlRouterProvider.otherwise('/');
+
+    $stateProvider
+      .state('home', {
+        url: '/',
+        templateUrl: 'src/scripts/components/home/home.html',
+        controller: "HomeController"
+      })
+  }])
+
+})();
