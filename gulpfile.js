@@ -28,12 +28,14 @@ var uglify  = require('gulp-uglify');
 
 var browserify = require('browserify')
 var source = require('vinyl-source-stream')
+var browserSync = require('browser-sync');
 
 gulp.task('scss', function(){
-  return gulp.src('client/app/src/styles/scss/styles.scss')
+  return gulp.src('client/src/styles/scss/styles.scss')
   .pipe(sass())
   .pipe(rename('styles.css'))
-  .pipe(gulp.dest('client/app/dist/css'))
+  .pipe(gulp.dest('client/dist/css'))
+   .pipe(browserSync.stream());
 });
 
 gulp.task('scripts', function(){
@@ -55,17 +57,32 @@ gulp.task('browserify', function() {
 })
 
 // start the server
-gulp.task('start', function() {
-  nodemon()
+gulp.task('nodemon', function (cb) {
+
+  var started = false;
+
+  return nodemon({
+    script: 'server/server.js'
+  }).on('start', function () {
+    // to avoid nodemon being started multiple times
+    if (!started) {
+      cb();
+      started = true;
+    }
+  });
 });
 
-// open the app in default browser
-gulp.task('app', function(){
-  var options = {
-    uri: 'http://localhost:3000'
-  };
-  gulp.src("")
-  .pipe(open(options));
+// auto-refresh page
+gulp.task('browser-sync', ['nodemon'], function() {
+  browserSync({
+    notify: true,
+    injectChanges: true,
+    files: ["client/dist/css/*.css", "client/dist/js/*.js"],
+    proxy: 'localhost:3000',
+    port: 3001
+  });
 });
 
-// gulp.task('default', ['start', 'app']);
+gulp.task('default', ['scss', 'browser-sync'], function () {
+    gulp.watch("client/src/styles/scss/**/*.scss", ['scss']);
+});
