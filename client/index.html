@@ -1,10 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="app">
 <head>
     <meta charset="UTF-8">
     <title>My App</title>
+    <link href='https://api.tiles.mapbox.com/mapbox.js/v2.2.2/mapbox.css' rel='stylesheet'/>
+    <link rel="stylesheet" type="text/css" href="src/styles/css/styles.css">
 </head>
 <body>
-    <h1>It works!</h1>
+    <!-- <h1>It works!</h1> -->
+    <div ng-view>
+    </div>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src='https://api.tiles.mapbox.com/mapbox.js/v2.2.2/mapbox.js'></script>
+    <script src="bower_components/angular-route/angular-route.min.js"></script>
+    <script src="src/scripts/app.js"></script>
+    <script src="src/scripts/shared/mapbox.js"></script>
+    <script src="src/scripts/components/home/home.js"></script>
+    
+    
 </body>
 </html>

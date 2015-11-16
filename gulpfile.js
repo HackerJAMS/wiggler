@@ -46,7 +46,7 @@ gulp.task('scss', function(){
 
 gulp.task('browserify', function() {
     // Grabs the app.js file
-    return browserify('client/app/src/scripts/app.js')
+    return browserify('client/src/scripts/app.js')
         // bundles it and creates a file called main.js
         .bundle()
         .pipe(source('main.js'))
