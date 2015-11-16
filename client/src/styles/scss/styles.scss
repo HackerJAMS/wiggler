@@ -3,11 +3,18 @@ body {
   height:800px;
   margin: 0 auto;
 }
-
 .map-container {
+  position: relative;
+  width: 90%;
+  height:550px;
+  margin: 0 auto;
+  margin-top:15px;
+}
+
+#map {
   position: absolute; 
   top:5px; 
   bottom:20px; 
-  left: 33.333%;
-  width:45%; 
+  height:75%;
+  width:75%; 
 }
