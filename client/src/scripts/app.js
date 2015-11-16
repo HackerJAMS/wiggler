@@ -1,10 +1,24 @@
+;
+(function() {
+  'use strict';
+  var app = angular.module('app', [
+    'ui.router',
+    'app.home'
+  ]);
 
-require('angular')
-var MainController = require('./controllers/mainController.js');
-var app = angular.module('app', [])
+  // app.controller('MainController', function($scope) {
+  //     $scope.message = 'Angular Works!'
+  // });
 
-// app.controller('MainController', function($scope) {
-//     $scope.message = 'Angular Works!'
-// });
+  app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
+    $urlRouterProvider.otherwise('/');
 
-app.controller('MainController', ['$scope', MainController]);
+    $stateProvider
+      .state('home', {
+        url: '/',
+        templateUrl: 'src/scripts/components/home/home.html',
+        controller: "HomeController"
+      })
+  }])
+
+})();
