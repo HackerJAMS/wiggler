@@ -4,7 +4,7 @@
   "description": "",
   "main": "server/server.js",
   "scripts": {
-    "test" : "gulp test"
+    "test": "gulp test"
   },
   "author": "",
   "license": "ISC",
@@ -18,6 +18,7 @@
   "dependencies": {
     "body-parser": "^1.14.1",
     "browser-sync": "^2.10.0",
+    "dotenv": "^1.2.0",
     "express": "^4.13.3",
     "gulp": "^3.9.0",
     "gulp-autoprefixer": "^3.1.0",

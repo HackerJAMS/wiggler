@@ -3,10 +3,14 @@
   Server Configuration File
 
 ***/
+require('dotenv').config({path: __dirname + '/../.env'});
 var express = require('express');
 var bodyParser = require('body-parser');
 var route = require('./route/route.js');
 var db = require('./db/db.js');
+var elev = require('./utility/elevationData.js');
+
+
 
 db.connect(function(err) {
   if (err) {
@@ -35,6 +39,7 @@ app.use(bodyParser.urlencoded({
 
 app.use(express.static(__dirname + '/../client/'));
  
+module.exports = app;
 
 app.post('/route', function(req, res) {
   route(req, res);
