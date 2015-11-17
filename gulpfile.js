@@ -82,11 +82,13 @@ gulp.task('browser-sync', ['nodemon'], function() {
     proxy: 'localhost:3000',
     port: 3001
   });
+});
 
 gulp.task('test', function(){
   return gulp.src('test/spec.js', {read : false})
   .pipe(mocha({reporter : 'nyan'}))
 });
+
 // open the app in default browser
 gulp.task('app', function(){
   var options = {
