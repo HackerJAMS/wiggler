@@ -19,7 +19,11 @@ Shortest Path from Dijkastra Algorithm
       if(err) {
         console.error('could not obtain the shortest path: ', err);
       }
-      console.log('result when querying the shortest path: ', result);
+      // console.log('result when querying the shortest path: ', result);
+      for (var i=0; i<result.rows.length; i++) {
+        result.rows[i].path = [[result.rows[i].x1,result.rows[i].y1],[result.rows[i].x2,result.rows[i].y2]]
+      }
+      console.log(result);
       res.send(result);
     });       
   }
