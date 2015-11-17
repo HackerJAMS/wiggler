@@ -18,9 +18,11 @@ Shortest Path from Dijkastra Algorithm
     shortestPath(start, end, function(err, result){
       if(err) {
         console.error('could not obtain the shortest path: ', err);
+        res.send(err);
+      } else {
+        console.log('result when querying the shortest path: ', result);
+        res.send(result);
       }
-      console.log('result when querying the shortest path: ', result);
-      res.send(result);
     });       
   }
 }
