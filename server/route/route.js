@@ -18,12 +18,11 @@ Shortest Path from Dijkstra Algorithm
     shortestPath(start, end, function(err, result){
       if(err) {
         console.error('could not obtain the shortest path: ', err);
+        res.send(err);
+      } else {
+        // console.log('result when querying the shortest path: ', result);
+        res.send(result);
       }
-      // console.log('result when querying the shortest path: ', result);
-      for (var i=0; i<result.rows.length; i++) {
-        result.rows[i].path = [[result.rows[i].x1,result.rows[i].y1],[result.rows[i].x2,result.rows[i].y2]]
-      }
-      res.send(result);
     });       
   }
 }

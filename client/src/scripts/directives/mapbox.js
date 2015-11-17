@@ -18,7 +18,10 @@
         link: function(scope, element, attributes) {
           // molly's public token
           L.mapbox.accessToken = 'pk.eyJ1IjoibWxsb3lkIiwiYSI6Im9nMDN3aW8ifQ.mwiVAv4E-1OeaoR25QZAvw';
-          var map = L.mapbox.map(element[0], 'mapbox.emerald');
+          var map = L.mapbox.map(element[0], 'mapbox.run-bike-hike', {
+            maxZoom: 19,
+            minZoom: 13
+          });
           scope.callback(map);
         }
       };

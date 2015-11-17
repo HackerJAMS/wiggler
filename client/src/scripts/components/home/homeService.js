@@ -29,10 +29,9 @@
       route.getPath = function(coords) {
         var route = [];
         for (var i = 0; i < coords.length; i++) {
-          i === 0 ? route.push([coords[i].path[0][1], coords[i].path[0][0]]) : true;
-          for (var j = 1; j < coords[i].path.length; j++) {
-            if (coords[i].path[j][0] !== null) {
-              route.push([coords[i].path[j][1], coords[i].path[j][0]]);
+          for (var j = 0; j < coords[i].length; j++) {
+            if (coords[i][j][0] !== null) {
+              route.push([Number(coords[i][j][0]),Number(coords[i][j][1])]);
             }
           }
         }
