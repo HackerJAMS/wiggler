@@ -25,6 +25,7 @@ var open    = require('gulp-open');
 var rename  = require('gulp-rename');
 var sass    = require('gulp-sass');
 var uglify  = require('gulp-uglify');
+var mocha = require('gulp-mocha');
 
 var browserify = require('browserify')
 var source = require('vinyl-source-stream')
@@ -46,15 +47,15 @@ gulp.task('scripts', function(){
   .pipe(gulp.dest('client/app/dist/js'))
 });
 
-gulp.task('browserify', function() {
-    // Grabs the app.js file
-    return browserify('client/src/scripts/app.js')
-        // bundles it and creates a file called main.js
-        .bundle()
-        .pipe(source('main.js'))
-        // saves it the public/js/ directory
-        .pipe(gulp.dest('client/dist/js'));
-})
+// gulp.task('browserify', function() {
+//     // Grabs the app.js file
+//     return browserify('client/src/scripts/app.js')
+//         // bundles it and creates a file called main.js
+//         .bundle()
+//         .pipe(source('main.js'))
+//         // saves it the public/js/ directory
+//         .pipe(gulp.dest('client/dist/js'));
+// })
 
 // start the server
 gulp.task('nodemon', function (cb) {
@@ -81,6 +82,21 @@ gulp.task('browser-sync', ['nodemon'], function() {
     proxy: 'localhost:3000',
     port: 3001
   });
+});
+
+gulp.task('test', function(){
+  return gulp.src('test/spec.js', {read : false})
+  .pipe(mocha({reporter : 'nyan'}))
+});
+
+// open the app in default browser
+gulp.task('app', function(){
+  var options = {
+    uri: 'http://localhost:3000'
+  };
+  gulp.src("")
+  .pipe(open(options));
+
 });
 
 gulp.task('default', ['scss', 'browser-sync'], function () {
