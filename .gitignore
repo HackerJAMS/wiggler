@@ -4,3 +4,6 @@ node_modules
 
 client/dist
 client/bower_components
+
+mapbox-elevation-ex.html
+mapbox-elev.js

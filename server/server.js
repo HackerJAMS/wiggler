@@ -36,7 +36,7 @@ app.use(bodyParser.urlencoded({
 app.use(express.static(__dirname + '/../client/'));
  
 
-app.post('/query', function(req, res) {
+app.post('/route', function(req, res) {
   route(req, res);
 });
 

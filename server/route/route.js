@@ -12,7 +12,7 @@ module.exports = function(req, res) {
   var end = 60;
 
 /**
-Shortest Path from Dijkastra Algorithm
+Shortest Path from Dijkstra Algorithm
 **/
   if( start && end ) {
     shortestPath(start, end, function(err, result){
@@ -20,7 +20,7 @@ Shortest Path from Dijkastra Algorithm
         console.error('could not obtain the shortest path: ', err);
         res.send(err);
       } else {
-        console.log('result when querying the shortest path: ', result);
+        // console.log('result when querying the shortest path: ', result);
         res.send(result);
       }
     });       
