@@ -25,9 +25,10 @@ var open    = require('gulp-open');
 var rename  = require('gulp-rename');
 var sass    = require('gulp-sass');
 var uglify  = require('gulp-uglify');
+var mocha = require('gulp-mocha');
 
-var browserify = require('browserify')
-var source = require('vinyl-source-stream')
+// var browserify = require('browserify')
+// var source = require('vinyl-source-stream')
 
 gulp.task('scss', function(){
   return gulp.src('client/app/src/styles/scss/styles.scss')
@@ -44,21 +45,24 @@ gulp.task('scripts', function(){
   .pipe(gulp.dest('client/app/dist/js'))
 });
 
-gulp.task('browserify', function() {
-    // Grabs the app.js file
-    return browserify('client/src/scripts/app.js')
-        // bundles it and creates a file called main.js
-        .bundle()
-        .pipe(source('main.js'))
-        // saves it the public/js/ directory
-        .pipe(gulp.dest('client/dist/js'));
-})
+// gulp.task('browserify', function() {
+//     // Grabs the app.js file
+//     return browserify('client/src/scripts/app.js')
+//         // bundles it and creates a file called main.js
+//         .bundle()
+//         .pipe(source('main.js'))
+//         // saves it the public/js/ directory
+//         .pipe(gulp.dest('client/dist/js'));
+// })
 
 // start the server
 gulp.task('start', function() {
   nodemon()
 });
-
+gulp.task('test', function(){
+  return gulp.src('test/spec.js', {read : false})
+  .pipe(mocha({reporter : 'nyan'}))
+});
 // open the app in default browser
 gulp.task('app', function(){
   var options = {
