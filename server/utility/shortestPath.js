@@ -47,7 +47,10 @@ module.exports = function(start, end, callback) {
       //     coordinates.push(segmentCoordArr);
       //   }
     }
-    elev(coordinates);
-    callback(err, coordinates);
+    var path_data;
+    elev(coordinates, function(elevation){
+      path_data = [coordinates, elevation.results];
+      callback(err, path_data);
+    });
   });
 };

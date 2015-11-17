@@ -16,7 +16,8 @@
         RouteService.postRouteRequest(start, end, prefs)
         .then(function successCb(res) {
           RouteService.cleanMap(polyline !== "undefined", vm.map);
-          var coords = res.data;
+          var coords = res.data[0];
+          var elevation = res.data[1];
           vm.route = RouteService.getPath(coords);
 
           // draw route on the map and fit the bounds of the map viewport to the route
