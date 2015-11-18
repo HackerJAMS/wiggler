@@ -1,26 +1,51 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700');
-
 $green: #8EE5A3;
-
 body {
+  background-color: white;
   width: 100%;
-  height:800px;
+  height: 800px;
   margin: 0 auto;
   font-family: 'Open Sans', sans-serif;
+  &.rotated {
+    perspective: 1200;
+    #map {
+      overflow: visible;
+      transform: rotateX(-60deg);
+    }
+    #map,
+    #map * {
+      -webkit-transform-style: preserve-3d;
+      transform-style: preserve-3d;
+    }
+    .marker {
+      -webkit-transform: translateZ(1px);
+      transform: translateZ(1px);
+      transform: rotateX(90deg);
+      transform-origin: top center;
+    }
+  }
 }
 
 #top-bar {
-  position:absolute;
-  top:20px;
-  bottom:40px;
-  width:100%;
+  position: absolute;
+  top: 40px;
+  bottom: 40px;
+  width: 100%;
   font-weight: 700;
   color: white;
   background-color: darken($green, 30%);
+  .map-controls {
+    float: right;
+    margin-right: 1em;
+    button {
+      height: 20px;
+      margin: 10px 2px;
+    }
+  }
 }
 
 #map {
-  position:absolute;
+  position: absolute;
   top: 40px;
   bottom: 0;
   width: 100%;
@@ -29,4 +54,27 @@ body {
 .logo {
   margin-left: 1em;
   line-height: 40px;
+}
+
+.elevmarker {
+  -moz-transform: rotateX(90deg);
+  -moz-transform-origin: 0% 0%;
+  -moz-transform-style: preserve-3d;
+  -webkit-transform: rotateX(90deg);
+  -webkit-transform-origin: 0% 0%;
+  transform-style: preserve-3d;
+  margin: 6px;
+}
+
+.markerline {
+  width:4px;
+  margin-left:-2px;
+  background:#30a07A;
+  height:0px;
+  -moz-transition:height 0.2s ease-in;
+  transition:height 0.2s ease-in;
+}
+
+.tilted .elevations {
+  display: block
 }
