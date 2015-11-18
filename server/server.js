@@ -26,10 +26,6 @@ db.connect(function(err) {
   }
 });
 
-
-
-// require('./utility/promiseExample.js');
-
 // var minElevationPath = require('./utility/minElevationPath.js');
 // minElevationPath(30, 60, function(err, result){
 //   if(err) {
@@ -41,12 +37,6 @@ db.connect(function(err) {
 //   }
 // }); 
 
-// var queryString = "SELECT gid, eleCost FROM ways";
-
-// db.query(queryString, function(err, result) {
-//   console.log('err', err);
-//   console.log('result', result);
-// });
 // var createEleCost = require('./utility/createEleCost.js');
 // createEleCost(); 
 
