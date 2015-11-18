@@ -9,7 +9,7 @@ var bodyParser = require('body-parser');
 var route = require('./route/route.js');
 var db = require('./db/db.js');
 var elev = require('./utility/elevationData.js');
-
+// var test = require('./utility/pullAllNodes');
 
 
 db.connect(function(err) {

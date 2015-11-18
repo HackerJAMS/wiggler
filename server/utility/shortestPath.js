@@ -14,7 +14,8 @@ var db = require('../db/db.js');
 var elev = require('./elevationData');
 
 module.exports = function(start, end, callback) {
-  var queryString = "SELECT seq, id1 AS node, id2 AS edge, b.source, b.target, cost, ST_AsText(ST_Transform(b.the_geom,4326)) FROM pgr_dijkstra('SELECT gid AS id, source::integer, target::integer, length::double precision AS cost FROM ways'," + start + "," + end + ", false, false) a LEFT JOIN ways b ON (a.id2 = b.gid);";
+  var queryString = "SELECT seq, id1 AS node, id2 AS edge, b.source, b.target, cost, ST_AsText(ST_Transform(b.the_geom,4326)) FROM pgr_dijkstra('SELECT gid AS id, source::integer, target::integer, length::double precision AS cost FROM ways'," +
+                     start + "," + end + ", false, false) a LEFT JOIN ways b ON (a.id2 = b.gid);";
 
   db.query(queryString, function(err, result) {
     // coordinates

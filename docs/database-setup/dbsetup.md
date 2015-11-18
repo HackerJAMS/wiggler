@@ -34,7 +34,7 @@ pg_restore --host=jams-testdb.cixgk6ztii6j.us-east-1.rds.amazonaws.com --port=54
 
 ```bash
 ##connect to the remote server instance
-ssh -i Documents/makersquare/thesis/spatial_sandbox/jams.pem ubuntu@ec2-52-32-174-182.us-west-2.compute.amazonaws.com
+ssh -i Documents/makersquare/thesis/spatial_sandbox/jams.pem ubuntu@ec2-52-33-5-195.us-west-2.compute.amazonaws.com
 
 sudo apt-get update
 sudo apt-get install postgresql postgresql-contrib
@@ -92,6 +92,12 @@ host all all 173.247.204.106/24 trust
 host all all 0.0.0.0/24 trust
 ## :wq to save your changes
 
+## download map data
+cd
+mkdir data
+cd data
+curl http://overpass-api.de/api/map?bbox=-122.5903,37.6626,-122.2713,37.8318 >> osm_sf.osm
+
 ## restart the server using pg_ctl
 ## you first need to set up some environment variables so that the image knows where to look for the pg utils
 sudo su postgres
@@ -100,8 +106,10 @@ export PGDATA=/var/lib/postgresql/9.3/main
 pg_ctl reload
 
 ## load in .osm file to the new postgres db with postgis and pgrouting enabled
-osm2pgrouting -file /home/ubuntu/osm_data/mks.osm \
--dbname mks_routing \
+osm2pgrouting -file /home/ubuntu/data/osm_sf.osm \
+-host ec2-52-33-5-195.us-west-2.compute.amazonaws.com \
+-port 5432 \
+-dbname sf_routing \
 -user postgres \
 -conf /usr/share/osm2pgrouting/mapconfig.xml \
 -clean 

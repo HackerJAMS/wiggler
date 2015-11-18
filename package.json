@@ -33,6 +33,7 @@
     "gulp-uglify": "^1.5.1",
     "pg": "^4.4.3",
     "pg-hstore": "^2.3.2",
+    "request": "^2.66.0",
     "sequelize": "^3.13.0"
   }
 }
