@@ -22,7 +22,7 @@ function getPathElev(result) {
     if(!nodeObj[result.rows[i].id]){
       nodeObj[result.rows[i].id] = {};
     } 
-    nodeObj[result.rows[i].id].coords =[Number(result.rows[i].lat),Number(result.rows[i].lon)];
+    nodeObj[result.rows[i].id].coords =[Math.round(Number(result.rows[i].lat) *100000)/100000, Math.round(Number(result.rows[i].lon)*100000)/100000];
   }
   // split into groups of 500 to comply with google's points/req limit
   var keys = Object.keys(nodeObj);
@@ -71,7 +71,7 @@ function getPathElev(result) {
   }
 }
 
-queryDbforGoogle(getPathElev);
+// queryDbforGoogle(getPathElev);
 
 // function flatten(array) {
 //   var output = [];
