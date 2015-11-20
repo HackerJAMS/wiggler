@@ -1,5 +1,11 @@
 var Sequelize = require('sequelize');
-var sequelize = new Sequelize(process.env.DB_URL_STR);
+var sequelize = new Sequelize(process.env.DB_URL_STR,{
+  pool: {
+    max: 5,
+    min: 0,
+    idle: 10000
+  }
+});
 
 var Node = {config: {
   id: {
@@ -25,5 +31,13 @@ var Node = {config: {
   timestamps: false
 }};
 
+var Elevation = {config:{
+  lat: Sequelize.FLOAT,
+  lon: Sequelize.FLOAT,
+  elevation: Sequelize.FLOAT
+}, options: {
+  timestamps:false,
+  tableName: 'elevation'
+}}
 
-module.exports = {model: Node, sequelize: sequelize};
+module.exports = {model: Node, elevation: Elevation, sequelize: sequelize};

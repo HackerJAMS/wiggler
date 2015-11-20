@@ -9,9 +9,9 @@ var bodyParser = require('body-parser');
 var route = require('./route/route.js');
 var db = require('./db/db.js');
 var db_seq = require('./db/db_sequelize');
-// var elev = require('./utility/elevationData.js');
+// var elev = require('./utility/createElevationDb.js');
 // var test = require('./utility/pullAllNodes');
-var read = require('./utility/addElevToDb');
+// var read = require('./utility/addElevToDb');
 
 
 db.connect(function(err) {
