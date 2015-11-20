@@ -82,6 +82,10 @@ app.post('/elevationquery', function(req, res){
   console.log('in the server-------->', req.body.coordinates);
 });
 
+app.post('/elevationquery', function(req, res){
+  console.log('in the server-------->', req.body.coordinates);
+});
+
 var port = 3000;
 app.listen(port);
 console.log('Server now listening on port ' + port);
