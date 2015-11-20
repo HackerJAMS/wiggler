@@ -20,15 +20,37 @@ db.connect(function(err) {
   }
 });
 
+// require('./utility/promiseExample.js');
+
+// var minElevationPath = require('./utility/minElevationPath.js');
+// minElevationPath(30, 60, function(err, result){
+//   if(err) {
+//     console.error('could not obtain the minimum elevation path: ', err);
+//     res.send(err);
+//   } else {
+//     console.log('result when querying the minimum elevation path: ', result);
+//     res.send(result);
+//   }
+// }); 
+
+// var queryString = "SELECT gid, eleCost FROM ways";
+
+// db.query(queryString, function(err, result) {
+//   console.log('err', err);
+//   console.log('result', result);
+// });
+// var createEleCost = require('./utility/createEleCost.js');
+// createEleCost(); 
 
 // var shortestPath = require('./utility/shortestPath.js');
 // shortestPath(30, 60, function(err, result){
 //   if(err) {
 //     console.error('could not obtain the shortest path: ', err);
+//     res.send(err);
+//   } else {
+//     console.log('result when querying the shortest path: ', result);
 //   }
-//   console.log('result when querying the shortest path', result);
-//   // res.send(result);
-// });  
+// }); 
 
 var app = express();
 
