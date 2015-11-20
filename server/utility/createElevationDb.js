@@ -108,7 +108,7 @@ var saveElevationData = function(result){
     })
     counterStart=counterEnd;
     counterEnd = counterStart + 500;
-    setTimeout(queryDbforGoogle(splitNodes),100);
+    // setTimeout(queryDbforGoogle(splitNodes),100);
   } else {
     var query = "INSERT INTO empty_counters (counterStart, counterEnd) VALUES ("+ counterStart+","+counterEnd+");";
     db.query(query, function (err, result){
@@ -116,7 +116,7 @@ var saveElevationData = function(result){
       console.log("records not returned from google");
       counterStart=counterEnd;
       counterEnd = counterStart + 500;
-      setTimeout(queryDbforGoogle(splitNodes),100);
+      // setTimeout(queryDbforGoogle(splitNodes),100);
     })
   }
 }

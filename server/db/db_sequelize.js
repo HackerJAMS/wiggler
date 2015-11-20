@@ -7,29 +7,41 @@ var sequelize = new Sequelize(process.env.DB_URL_STR,{
   }
 });
 
-var Node = {config: {
-  id: {
-    type: Sequelize.INTEGER,
-    primaryKey: true,
-    field: "id"
-  },
-  round_lon: {
-    type: Sequelize.FLOAT(11,8),
-    field: "round_lon"
-  },
-  round_lat: {
-    type: Sequelize.FLOAT(11,8),
-    field: "round_lat"
-  },
-  elevation: {
-    type: Sequelize.FLOAT(11,8),
-    field: "elevation"
-  }
-}, options: 
-{
-  tableName: 'round_nodes',
-  timestamps: false
-}};
+// var Node = {config: {
+//   id: {
+//     type: Sequelize.INTEGER,
+//     primaryKey: true,
+//     field: "id"
+//   },
+//   round_lon: {
+//     type: Sequelize.FLOAT(11,5),
+//     field: "round_lon"
+//   },
+//   round_lat: {
+//     type: Sequelize.FLOAT(11,5),
+//     field: "round_lat"
+//   },
+//   elevation: {
+//     type: Sequelize.FLOAT(11,8),
+//     field: "elevation"
+//   },
+//   lat: {
+//     type: Sequelize.FLOAT(11,8),
+//     field: "lat"
+//   },
+//   lon: {
+//     type: Sequelize.FLOAT(11,8),
+//     field: "lon"
+//   },
+//   counter: {
+//     type: sequelize.BIGINT,
+//     autoIncrement: true
+//   }
+// }, options: 
+// {
+//   tableName: 'round_nodes',
+//   timestamps: false
+// }};
 
 var Elevation = {config:{
   id: {
@@ -46,5 +58,5 @@ var Elevation = {config:{
   timestamps:false,
   tableName: 'elevation_test'
 }}
-
-module.exports = {model: Node, elevation: Elevation, sequelize: sequelize};
+//model: Node, 
+module.exports = {elevation: Elevation, sequelize: sequelize};
