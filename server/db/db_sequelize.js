@@ -32,12 +32,19 @@ var Node = {config: {
 }};
 
 var Elevation = {config:{
+  id: {
+    type: Sequelize.BIGINT,
+    primaryKey: true,
+    autoIncrement:true
+  },
+  round_lat: Sequelize.FLOAT,
+  round_lon: Sequelize.FLOAT,
   lat: Sequelize.FLOAT,
   lon: Sequelize.FLOAT,
   elevation: Sequelize.FLOAT
 }, options: {
   timestamps:false,
-  tableName: 'elevation'
+  tableName: 'elevation_test'
 }}
 
 module.exports = {model: Node, elevation: Elevation, sequelize: sequelize};
