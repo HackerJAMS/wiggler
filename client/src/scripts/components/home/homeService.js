@@ -31,12 +31,23 @@
         for (var i = 0; i < coords.length; i++) {
           for (var j = 0; j < coords[i].length; j++) {
             if (coords[i][j][0] !== null) {
-              route.push([Number(coords[i][j][0]),Number(coords[i][j][1])]);
+              route.push([Number(coords[i][j][1]),Number(coords[i][j][0])]);
             }
           }
         }
         return route;
       };
+      // format elevation and path data to use as turf collection
+      route.getElevationPath = function(elevation) {
+        var collection = [];
+        elevation.forEach(function(n, i){
+          var coordArr = [n.location.lng, n.location.lat];
+          var elevation = n.elevation;
+          collection.push(turf.point(coordArr));
+          collection[i].properties.elevation = elevation;
+        });
+        return collection;
+      }
 
       return route;
     }])
