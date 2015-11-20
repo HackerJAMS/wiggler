@@ -21,29 +21,31 @@
             RouteService.cleanMap(polyline !== "undefined", vm.map);
             var coords = res.data[0];
             var elevation = res.data[1];
-            vm.route = RouteService.getPath(coords);
-
-            elevation.forEach(function(n, i) {
-              var pointGrade = '';
-              if (i > 0 && i < elevation.length - 1) {
-                prevPoint = elevation[i - 1].elevation;
-                nextPoint = elevation[i + 1].elevation;
-
-                pointGrade = '(' + (100 * 0.5 * ((n.elevation - prevPoint) + (nextPoint - n.elevation)) / incrementDist).toFixed(0) + '% grade)';
-              }
-              var myIcon = L.divIcon({
-                className: 'elevations',
-                html: '<div class="elevmarker"><div class="markercircle bottomcap"></div><div class="markerline" style="height:' + n.elevation * 5 + 'px">' + '</div><div class="markercircle"></div><div class="elevfigure"><strong>' + (n.elevation * 3.28).toFixed(0) + ' ft </strong><span style="font-size:0.9em">' + pointGrade + '</span></div>'
-              });
-              L.marker([n.location.lat, n.location.lng], {
-                icon: myIcon
-              }).addTo(vm.map);
-
-            })
+            // path as array of long/lat tuple
+            var path = RouteService.getPath(coords);
+            // re-format elevation data with turf points
+            var elevationCollection = RouteService.getElevationPath(elevation);
+            // turf linestring
+            var turfLine = turf.linestring(path);
+            // turf collection with elevation data
+            var turfElevation = turf.featurecollection(elevationCollection);
 
             // draw route on the map and fit the bounds of the map viewport to the route
-            polyline = L.polyline(vm.route).addTo(vm.map);
+            polyline = L.geoJson(turfLine).addTo(vm.map);
             vm.map.fitBounds(polyline.getBounds());
+
+            // draw elevation points
+            L.geoJson(turfElevation, {
+              pointToLayer: function(feature, latlng) {
+                var myIcon = L.divIcon({
+                  className: 'markerline',
+                  html: '<div class="elevmarker"><div class="markercircle bottomcap"></div><div class="markerline" style="height:' + feature.properties.elevation * 20 + 'px">' + '</div><div class="markercircle"></div><div class="elevfigure"><strong>' + (feature.properties.elevation * 3.28).toFixed(0) + ' ft </strong><span style="font-size:0.9em"></span></div>'
+                });
+                return L.marker(latlng, {
+                  icon: myIcon
+                });
+              }
+            }).addTo(vm.map);
           }, function errorCb(res) {
             console.log("error posting route request", res.status);
           });
