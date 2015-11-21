@@ -15,6 +15,16 @@
           }
         })
       };
+      route.postElevationRequest = function(coordinates) {
+        return $http({
+          method: 'POST',
+          url: '/elevationquery',
+          data: {
+            coordinates: coordinates
+          }
+        })
+      };
+
       // this function removes any existing polylines from the map before adding a new one 
       route.cleanMap = function(polyline, map) {
         if (polyline) {
