@@ -25,7 +25,8 @@ var open    = require('gulp-open');
 var rename  = require('gulp-rename');
 var sass    = require('gulp-sass');
 var uglify  = require('gulp-uglify');
-var mocha = require('gulp-mocha');
+var mocha   = require('gulp-mocha');
+var order   = require('gulp-order');
 
 var browserify = require('browserify')
 var source = require('vinyl-source-stream')
@@ -40,11 +41,17 @@ gulp.task('scss', function(){
 });
 
 gulp.task('scripts', function(){
-  return gulp.src('client/app/src/scripts/*.js')
+  return gulp.src('client/src/scripts/**/*.js')
   .pipe(jshint())
+  .pipe(order([
+    'src/scripts/app.js',
+    'src/scripts/directives/mapbox.js',
+    'src/scripts/components/map/mapController.js',
+    'src/scripts/components/map/RouteService.js'
+  ], { base: './' }))
   .pipe(concat('scripts.js'))
   .pipe(uglify())
-  .pipe(gulp.dest('client/app/dist/js'))
+  .pipe(gulp.dest('client/dist/js'))
 });
 
 // gulp.task('browserify', function() {
@@ -74,6 +81,7 @@ gulp.task('nodemon', function (cb) {
 });
 
 // auto-refresh page
+//add 'scripts' to browser-sync to jshint/concat/uglify js files  and pipe to client/dist/scripts.js
 gulp.task('browser-sync', ['nodemon'], function() {
   browserSync({
     notify: true,
@@ -85,6 +93,7 @@ gulp.task('browser-sync', ['nodemon'], function() {
 });
 
 gulp.task('test', function(){
+  //when npm test is called, this task is triggered
   return gulp.src('test/spec.js', {read : false})
   .pipe(mocha({reporter : 'nyan'}))
 });
