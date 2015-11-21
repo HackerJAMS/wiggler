@@ -13,7 +13,6 @@ var db_seq = require('./db/db_sequelize');
 // var elev = require('./utility/createElevationDb.js');
 
 var resample = require('./resample_elevation/resample_elevation.js');
-
 // var test = require('./utility/pullAllNodes');
 // var read = require('./utility/addElevToDb');
 
@@ -37,7 +36,7 @@ db.connect(function(err) {
 //   }
 // }); 
 
-// var createEleCost = require('./utility/createEleCost.js');
+// var createEleCost = require('./utility/minElePathIntersection.js');
 // createEleCost(); 
 
 // var shortestPath = require('./utility/shortestPath.js');

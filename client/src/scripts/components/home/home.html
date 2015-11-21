@@ -1,0 +1,39 @@
+<div ng-controller="HomeController as ctrl">
+  
+  <mapbox id= "map" callback="ctrl.callback"></mapbox>
+  <button ng-click="ctrl.submitRoute()">Route</button>
+  <button ng-click="ctrl.rotateMap()">Tilt</button>
+<!--   <div style="display:inline-block">
+    <form>
+      start<input type="text" ng-model="ctrl.start">
+      end<input type="text" ng-model="ctrl.end">
+      <button ng-click="ctrl.submitRoute()">Get Route</button>
+    </form>
+  </div> -->
+
+<!-- <md-autocomplete md-selected-item="selectedItem" md-search-text="searchText" md-items="item in getMatches(searchText)" md-item-text="item.display">
+  <span md-highlight-text="searchText">{{item.display}}</span>
+</md-autocomplete> -->
+<div>
+  Start
+  <md-autocomplete md-selected-item="ctrl.selectedStart" md-search-text="ctrl.searchStart" md-items="item in ctrl.autocompleteQuery(ctrl.searchStart)" md-item-text="item.place_name" placeholder="start">
+    <span md-highlight-text="ctrl.searchStart">{{item.place_name}}</span>
+  </md-autocomplete>  
+</div>
+<div>
+  End
+  <md-autocomplete md-selected-item="ctrl.selectedEnd" md-search-text="ctrl.searchEnd" md-items="item in ctrl.autocompleteQuery(ctrl.searchEnd)" md-item-text="item.place_name" placeholder="end">
+    <span md-highlight-text="ctrl.searchEnd">{{item.place_name}}</span>
+  </md-autocomplete>  
+</div>
+<!-- <md-autocomplete md-selected-item="selectedItem" 
+                               md-search-text="searchText"
+                               md-items="item1 in ctrl.getMatches(searchText)" 
+                               md-selected-item-change="onItemChanged()"
+                               
+                               placeholder="Search" style="margin-bottom: 20px;">
+                    <span md-highlight-text="searchText">{{item1}}</span>
+ </md-autocomplete> -->
+
+
+</div>

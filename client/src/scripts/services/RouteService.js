@@ -24,6 +24,15 @@
           }
         })
       };
+      // convert user-entered addresses to coordinates through mapbox query
+      route.geocoding = function(address) {
+        var accessToken = 'pk.eyJ1IjoiMTI3NnN0ZWxsYSIsImEiOiJjaWg4ZGEwZmEwdGNkdjBraXl1czIzNnFjIn0.RXXfMNV-gtrQyrRzrP2yvQ';
+        var query = address.replace(/\s+/g, '+');
+        return $http({
+          method: 'GET',
+          url: 'https://api.mapbox.com/geocoding/v5/mapbox.places/' + query + '.json?access_token=' + accessToken
+        })
+      } 
 
       // this function removes any existing polylines from the map before adding a new one 
       route.cleanMap = function(polyline, map) {
