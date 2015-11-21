@@ -11,11 +11,11 @@
   // });
 
   app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
-    $urlRouterProvider.otherwise('/');
+    $urlRouterProvider.otherwise('/home/new');
 
     $stateProvider
       .state('main', {
-        url: '/',
+        url: '/home',
         views: {
           "main": {
             templateUrl: "src/scripts/components/main/main.html"
@@ -26,11 +26,16 @@
           },
           "header@main": {
             templateUrl: "src/scripts/components/header/header.html"
-          },
-          "route_input@main":{
-            templateUrl: "src/scripts/components/route_input/route_input.html"
           }
         }
+      })
+      .state('main.route-input',{
+        url: '/new',
+        templateUrl: "src/scripts/components/route/route_input.html"
+      })
+      .state('main.route-output', {
+        url: '/info',
+        templateUrl: "src/scripts/components/route/route_output.html"
       })
   }])
 

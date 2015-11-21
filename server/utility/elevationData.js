@@ -14,7 +14,6 @@ module.exports = function getPathElev(pathArray, callback) {
         console.log(JSON.parse(output).results.status)
       } else {
         callback(JSON.parse(output));
-        response.send(JSON.parse(output).results)
       }
     })
   }).on('error', function (err) {

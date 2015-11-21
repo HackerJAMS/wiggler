@@ -1,12 +1,15 @@
 <div>
-  <div ui-view="header" class = "header">
-  </div>
+  <div ui-view="header" flex="grow" class="header"></div>
   <div class="container">
-    <div id="right-col">
-      <div ui-view="route_input" id="sidebar-container">
+    <div layout="row">
+      <div flex="66" ui-view="map" class="map-container"></div>
+      <div id="right-col" flex="33">
+        <ul>
+          <li ui-sref="main.route-input">New Route</li>
+          <li ui-sref="main.route-output">Route Info</li>
+        </ul>
+        <div ui-view></div>
       </div>
-    </div>
-    <div ui-view="map" class="map-container">
     </div>
   </div>
 </div>
