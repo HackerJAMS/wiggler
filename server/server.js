@@ -10,6 +10,7 @@ var route = require('./route/route.js');
 var db = require('./db/db.js');
 var db_seq = require('./db/db_sequelize');
 // var elev = require('./utility/createElevationDb.js');
+var resample = require('./resample_elevation/resample_elevation.js');
 // var test = require('./utility/pullAllNodes');
 // var read = require('./utility/addElevToDb');
 
@@ -21,6 +22,8 @@ db.connect(function(err) {
     console.log('connected to postgres database');
   }
 });
+
+
 
 // require('./utility/promiseExample.js');
 
@@ -68,6 +71,9 @@ module.exports = app;
 app.post('/route', function(req, res) {
   route(req, res);
 });
+app.post('/elevationquery', function(req,res){
+  resample(req, res);
+})
 
 var port = 3000;
 app.listen(port);

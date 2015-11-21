@@ -9,8 +9,10 @@ body {
   &.rotated {
     perspective: 1200;
     #map {
-      overflow: visible;
-      transform: rotateX(-60deg);
+      overflow-y: visible;
+      overflow-x: hidden;
+      -moz-transform:rotateX(60deg);
+      -webkit-transform:rotateX(60deg);
     }
     #map,
     #map * {
@@ -25,7 +27,7 @@ body {
     }
   }
 }
-
+/*
 #top-bar {
   position: absolute;
   top: 40px;
@@ -43,12 +45,23 @@ body {
     }
   }
 }
+*/
+#right-col {
+  position: absolute;
+  left: 65%;
+  margin: 0 auto;
+  width: 30%;
+}
 
 #map {
   position: absolute;
-  top: 40px;
-  bottom: 0;
+  top:100px;
+  bottom: 20px;
+  width: 60%;
+}
+.header {
   width: 100%;
+  height: 50px;
 }
 
 .logo {
@@ -74,7 +87,18 @@ body {
   -moz-transition:height 0.2s ease-in;
   transition:height 0.2s ease-in;
 }
-
+ul {
+  list-style: none;
+  padding: 0;
+  cursor: pointer;
+  li {
+    display: inline;
+    margin-right: 20px;
+    padding: 5px;
+    list-style-position:inside;
+    border: 1px solid black;
+  }
+}
 .tilted .elevations {
   display: block
 }

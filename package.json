@@ -35,6 +35,7 @@
     "pg-hstore": "^2.3.2",
     "polyline-encoded": "0.0.7",
     "q": "^1.4.1",
-    "sequelize": "^3.13.0"
+    "sequelize": "^3.14.1",
+    "url": "^0.11.0"
   }
 }
