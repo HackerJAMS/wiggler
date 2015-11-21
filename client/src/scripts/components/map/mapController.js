@@ -36,17 +36,17 @@
             vm.map.fitBounds(polyline.getBounds());
 
             // draw elevation points
-            L.geoJson(elevationCollection, {
-              pointToLayer: function(feature, latlng) {
-                var myIcon = L.divIcon({
-                  className: 'markerline',
-                  html: '<div class="elevmarker"><div class="markercircle bottomcap"></div><div class="markerline" style="height:' + feature.properties.elevation * 20 + 'px">' + '</div><div class="markercircle"></div><div class="elevfigure"><strong>' + (feature.properties.elevation * 3.28).toFixed(0) + ' ft </strong><span style="font-size:0.9em"></span></div>'
-                });
-                return L.marker(latlng, {
-                  icon: myIcon
-                });
-              }
-            }).addTo(vm.map);
+            // L.geoJson(turfLine, {
+            //   pointToLayer: function(feature, latlng) {
+            //     var myIcon = L.divIcon({
+            //       className: 'markerline',
+            //       html: '<div class="elevmarker"><div class="markercircle bottomcap"></div><div class="markerline" style="height:' + feature.properties.elevation * 20 + 'px">' + '</div><div class="markercircle"></div><div class="elevfigure"><strong>' + (feature.properties.elevation * 3.28).toFixed(0) + ' ft </strong><span style="font-size:0.9em"></span></div>'
+            //     });
+            //     return L.marker(latlng, {
+            //       icon: myIcon
+            //     });
+            //   }
+            // }).addTo(vm.map);
 
 //##########################################################
 
