@@ -21,6 +21,7 @@
             RouteService.cleanMap(polyline !== "undefined", vm.map);
             var coords = res.data[0];
             var elevation = res.data[1];
+            console.log(elevation, coords);
             // path as array of long/lat tuple
             var path = RouteService.getPath(coords);
             // re-format elevation data with turf points
@@ -29,13 +30,13 @@
             var turfLine = turf.linestring(path);
             // turf collection with elevation data
             var turfElevation = turf.featurecollection(elevationCollection);
-            console.log('geo JSON data---->', JSON.stringify(turfLine));
+            console.log('geo JSON data---->', JSON.stringify(elevationCollection));
             // draw route on the map and fit the bounds of the map viewport to the route
-            // polyline = L.geoJson(turfLine, {color : 'red'}).addTo(vm.map);
-            // vm.map.fitBounds(polyline.getBounds());
+            polyline = L.geoJson(turfLine, {color : 'red'}).addTo(vm.map);
+            vm.map.fitBounds(polyline.getBounds());
 
             // draw elevation points
-            L.geoJson(turfElevation, {
+            L.geoJson(elevationCollection, {
               pointToLayer: function(feature, latlng) {
                 var myIcon = L.divIcon({
                   className: 'markerline',
