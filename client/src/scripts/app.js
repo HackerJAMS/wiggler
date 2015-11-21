@@ -19,9 +19,9 @@
 
   app.config(['$stateProvider', '$urlRouterProvider', "$mdThemingProvider", function($stateProvider, $urlRouterProvider, $mdThemingProvider) {
     
-    $mdThemingProvider.theme('default')
-        .primaryPalette('cyan')
-        .accentPalette('blue-grey');  
+    // $mdThemingProvider.theme('default')
+    //     .primaryPalette('cyan')
+    //     .accentPalette('blue-grey');  
   
     $urlRouterProvider.otherwise('/home/new');
 

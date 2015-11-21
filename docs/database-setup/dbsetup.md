@@ -119,5 +119,5 @@ exit
 exit
 
 #to test the connection from your local computer:
-psql --host=ec2-52-33-5-195.us-west-2.compute.amazonaws.com --port=5432 --dbname=mks_routing --username=postgres
+psql --host=ec2-52-33-5-195.us-west-2.compute.amazonaws.com --port=5432 --dbname=sf_routing --username=postgres
 ```

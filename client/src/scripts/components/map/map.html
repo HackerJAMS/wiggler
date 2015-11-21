@@ -1,5 +1,11 @@
 <div ng-controller="MapController as ctrl">
-  <mapbox id= "map" callback="ctrl.callback"></mapbox>
-  <md-button ng-click="ctrl.submitRoute()">Route</md-button>
-  <md-button ng-click="ctrl.rotateMap()">Tilt</md-button>
+  <div class="layout-column flex">
+    <div class="map-control" flex="10" style="z-index: 999">
+      <md-button ng-click="ctrl.submitRoute()">Route</md-button>
+      <md-button ng-click="ctrl.rotateMap()">Tilt</md-button>
+    </div>
+    <div id="map-rotator" flex="90">
+      <mapbox callback="ctrl.callback"></mapbox>
+    </div>
+  </div>
 </div>
