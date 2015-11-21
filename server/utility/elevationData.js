@@ -10,7 +10,12 @@ module.exports = function getPathElev(pathArray, callback) {
       output += d;
     })
     res.on('end', function(){
-      callback(JSON.parse(output));
+      if (JSON.parse(output).results.status === "OVER_QUERY_LIMIT") {
+        console.log(JSON.parse(output).results.status)
+      } else {
+        callback(JSON.parse(output));
+        response.send(JSON.parse(output).results)
+      }
     })
   }).on('error', function (err) {
     console.log('Error getting elevation data from google' + err.message);

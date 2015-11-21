@@ -7,12 +7,7 @@
     <link rel="stylesheet" type="text/css" href="dist/css/styles.css">
 </head>
 <body>
-    <!-- <h1>It works!</h1> -->
-    <div id="top-bar">
-        <span class="logo">wigglr</span>
-    </div>
-
-    <div ui-view>
+    <div ui-view="main" class="app-container">
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.js"></script>
     <script src="bower_components/angular/angular.js"></script>
@@ -22,8 +17,8 @@
     
     <script src="src/scripts/app.js"></script>
     <script src="src/scripts/directives/mapbox.js"></script>
-    <script src="src/scripts/components/home/homeController.js"></script>
-    <script src="src/scripts/components/home/homeService.js"></script>
+    <script src="src/scripts/components/map/mapController.js"></script>
+    <script src="src/scripts/components/map/RouteService.js"></script>
 
     
     

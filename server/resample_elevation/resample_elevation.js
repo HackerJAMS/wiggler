@@ -13,10 +13,6 @@ module.exports = function(req, response) {
         output += d;
       })
       res.on('end', function() {
-        // fs.writeFile("../test_" + index+".json", output, function(err){
-        //   if (err) console.log("there was an error writing to file");
-        //   console.log("successfully wrote file!");
-        // })
         if (JSON.parse(output).results.status === "OVER_QUERY_LIMIT") {
           console.log(JSON.parse(output).results.status)
         } else {

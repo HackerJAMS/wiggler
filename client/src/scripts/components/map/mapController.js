@@ -1,8 +1,8 @@
 ;
 (function() {
   'use strict';
-  angular.module('app.home', [])
-    .controller('HomeController', ['$location', 'RouteService', function($location, RouteService) {
+  angular.module('app.map', [])
+    .controller('MapController', ['$location', 'RouteService', function($location, RouteService) {
       var vm = this;
       var polyline;
 

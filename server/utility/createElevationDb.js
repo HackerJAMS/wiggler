@@ -72,10 +72,9 @@ function callGoogle(nodeGroups, rows) {
               //   if (err) console.log("there was an error writing to file");
               //   console.log("successfully wrote file!");
               // })
-              if (JSON.parse(output).results.status === "OVER_QUERY_LIMIT") {
+              if (JSON.parse(output).results.error_message === "OVER_QUERY_LIMIT") {
                 console.log(JSON.parse(output).results.status)
               } else {
-                console.log("rows back from google",JSON.parse(output).results.length);
                 if (JSON.parse(output).results.length===0){
                   console.log(JSON.parse(output));
                 } else {

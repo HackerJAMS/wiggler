@@ -3,7 +3,7 @@
   'use strict';
   var app = angular.module('app', [
     'ui.router',
-    'app.home'
+    'app.map'
   ]);
 
   // app.controller('MainController', function($scope) {
@@ -14,11 +14,26 @@
     $urlRouterProvider.otherwise('/');
 
     $stateProvider
-      .state('home', {
+      .state('main', {
         url: '/',
-        templateUrl: 'src/scripts/components/home/home.html',
-        controller: "HomeController"
+        views: {
+          "main": {
+            templateUrl: "src/scripts/components/main/main.html"
+          },
+          "map@main":{
+            templateUrl: "src/scripts/components/map/map.html",
+            controller: "MapController"
+          },
+          "header@main": {
+            templateUrl: "src/scripts/components/header/header.html"
+          },
+          "route_input@main":{
+            templateUrl: "src/scripts/components/route_input/route_input.html"
+          }
+        }
       })
   }])
 
 })();
+
+
