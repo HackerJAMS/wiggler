@@ -2,7 +2,14 @@
 (function() {
   'use strict';
   var app = angular.module('app', [
+    // ng material dependencies
+    'ngMaterial',
+    'ngAnimate',
+    'ngAria',
+    // router
     'ui.router',
+
+    //app modules
     'app.map'
   ]);
 
@@ -10,7 +17,12 @@
   //     $scope.message = 'Angular Works!'
   // });
 
-  app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
+  app.config(['$stateProvider', '$urlRouterProvider', "$mdThemingProvider", function($stateProvider, $urlRouterProvider, $mdThemingProvider) {
+    
+    $mdThemingProvider.theme('default')
+        .primaryPalette('cyan')
+        .accentPalette('blue-grey');  
+  
     $urlRouterProvider.otherwise('/home/new');
 
     $stateProvider

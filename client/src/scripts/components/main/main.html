@@ -1,13 +1,15 @@
 <div>
+  <div layout="row">
   <div ui-view="header" flex="grow" class="header"></div>
+  </div>
   <div class="container">
     <div layout="row">
       <div flex="66" ui-view="map" class="map-container"></div>
       <div id="right-col" flex="33">
-        <ul>
-          <li ui-sref="main.route-input">New Route</li>
-          <li ui-sref="main.route-output">Route Info</li>
-        </ul>
+        <md-tabs>
+          <md-tab ui-sref="main.route-input" label="New Route"></md-tab>
+          <md-tab ui-sref="main.route-output" label="Route Info"></md-tab>
+        </md-tabs>
         <div ui-view></div>
       </div>
     </div>
