@@ -6,17 +6,17 @@ before_script:
 - npm install -g bower
 - bower install
 script: npm test
-after_success: 
-deploy:
-  provider: codedeploy
-  access_key_id: YOUR AWS ACCESS KEY
-  secret_access_key: YOUR AWS SECRET KEY
-  bucket: S3 Bucket
-  key: latest/MyApp.zip
-  application: MyApp
-  deployment_group: MyDeploymentGroup
-  on:
-    branch: deploy
+#after_success: 
+#deploy:
+  #provider: codedeploy
+  #access_key_id: YOUR AWS ACCESS KEY
+  #secret_access_key: YOUR AWS SECRET KEY
+  #bucket: S3 Bucket
+  #key: latest/MyApp.zip
+  #application: MyApp
+  #deployment_group: MyDeploymentGroup
+  #on:
+    #branch: deploy
 notifications:
   slack:
     secure: Gj+uOEo03o8Mns59SnFHGjU0gCRm5Qpuz7SSFUKSBKTe4iv/JHvfjg55zqG71vgA28ZoIYYj6/CXVJ2Bob2CuZ+ck+C6EJGdbPJb7dJWbeA65dO4lbHKJeeY6Nu1jyUxVkMRI134KxR+WTW1iHYxtbgAaVGwRxYEYfABfxzP7specD0AOX60LsrnUqI4ZLMwJFlJFkgVxA1EQ+Jn0TSyrebc95r9PcJvc0q6vDVhIGEISYSMv47+O1skEgAq0vD6blDCh75tsN0MtVloWSLBNBWDvIp6H9upYJj598eABP4vCbDDMoWb/kdshBgiugeHZ7GmzHpJ9CyHMvbSD4pvAtwWMOLMNsZTlLcndkInwnjj2D3FgUzBhJSMJfO/QTbmCj5YfoUV3H9qyTkYjQM3jRgQZEgFAF4Fo2DLxoBWiH1Hsq+ctnwuYH6KSDOQ/KGmr75Vd5rq6Ab2CRAj40pSJRnwOyI7QOhR6bDWYkC4e+CUl4gK+YzkH9vxyDHGLZgHQnCHSOzbSmzcG4+7pL8SldMuoSdvq15uSz6Pm079A55aNaNnVZCixf1j3DMSoyxVPfSfu0dz+4z5My7u1YOtSal7aLoksi5PLqxDH5hHvZ1mpOzEDz/UA/54KvPvkxGLMpYN7L1Q/7c7Er8dTvialW4bG3WULGgIjMmDExbxgqo=
