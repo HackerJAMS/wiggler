@@ -1,7 +1,7 @@
 ;
 (function() {
   'use strict';
-  angular.module('app.map')
+  angular.module('app.routeService',[])
     .factory('RouteService', ['$http', function($http) {
       var route = {};
       route.postRouteRequest = function(start, end, preferences) {
