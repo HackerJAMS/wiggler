@@ -2,10 +2,17 @@
 (function() {
   'use strict';
   angular.module('app.map', [])
-    .controller('MapController', ['$location', 'RouteService', function($location, RouteService) {
+    .controller('MapController', ['$location','RouteService', function($location, RouteService) {
       var vm = this;
       var polyline;
-      vm.tilted = false;
+
+      //scope variables
+       vm.angle = 0;
+       vm.xdrag = 0;
+       vm.isDown = false;
+       vm.xpos = 0;
+
+
       vm.callback = function(map) {
         vm.map = map;
         map.setView([37.773, -122.446], 13);
@@ -109,15 +116,50 @@
             console.log("error posting route request", res.status);
           });
       };
+      var mapRot = angular.element(document.querySelector('#maprotor'));
+      var mapEl = angular.element(document.querySelector('#map'));
+      var tiltCheck= false;
+
+      vm.mouseDown = function(e){
+        if (tiltCheck){
+          vm.xpos = e.pageX;
+          vm.isDown = true;
+        }
+      }
+
+      vm.mouseMove = function(e){
+        if (tiltCheck) {
+          if (vm.isDown) {
+            vm.xdrag = (vm.xpos - e.pageX) / 4;
+            mapEl.attr('style', '-webkit-transform:rotateZ(' + (vm.angle + vm.xdrag) % 360 + 'deg)');
+            // $('.elevmarker').attr('style', '-webkit-transform:rotateX(90deg) rotateY(' + (angle + xdrag) * (-1) % 360 + 'deg)')
+          }
+        }
+      }
+
+      vm.mouseUp = function(e){
+        if (tiltCheck){
+          vm.isDown = false;
+          vm.angle = vm.angle + vm.xdrag;
+        }
+      }
 
       // rotate (tilt) map
-      vm.rotateMap = function() {
+      vm.tiltMap = function() {
         // vm.map.fitBounds(vm.map.featureLayer.setGeoJSON(turf.linestring(resampledRoute)).getBounds(), {
         //   paddingTopLeft: [150, 50],
         //   paddingBottomRight: [150, 50]
         // });
-        vm.map.dragging.disable();
-        angular.element(document.querySelector('#map')).addClass("tilted");
+        console.log(tiltCheck);
+        if (tiltCheck) {
+          tiltCheck = false;
+          mapRot.removeClass("tilted");
+          vm.map.dragging.enable(); 
+        } else {
+          tiltCheck = true;
+          vm.map.dragging.disable(); 
+          mapRot.addClass("tilted");
+        }
       }
     }])
 })();
