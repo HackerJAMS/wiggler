@@ -4,18 +4,18 @@ var polyUtil = require('polyline-encoded');
 var Sequelize = require('sequelize');
 var https = require('https')
 var start;
-var counterStart = 1;
-var counterEnd = 500;
+var counterStart = 1846500;
+var counterEnd = 1847000;
 
 var queryDbforGoogle = function() {
   start = new Date().getTime();
   console.log("start and end", counterStart, counterEnd);
-  var queryString = "select * from round_nodes where counter BETWEEN " + counterStart + "AND " +counterEnd+ " limit 500;";
+  var queryString = "select * from nodes_no_el;" //where counter BETWEEN " + counterStart + "AND " +counterEnd+ " limit 500;";
   
   db.query(queryString, function(err, result) {
     if (err) console.error(err);
     console.log("records returned by query",result.rows.length);
-    if (result.rows.length > 490){
+    if (result.rows.length > 390){
       splitNodes(result);
     } else {
       console.log("no results returned from query");
@@ -87,6 +87,9 @@ function callGoogle(nodeGroups, rows) {
             res.on('data', function (d){
               process.stdout.write(d);
             })
+            res.on('end', function (){
+              // setTimeout(queryDbforGoogle(splitNodes),300000);
+            })
           }
         }).on('error', function(err) {
           console.log('Error getting elevation data from google' + err.message);
@@ -107,7 +110,7 @@ var saveElevationData = function(result){
     })
     counterStart=counterEnd;
     counterEnd = counterStart + 500;
-    // setTimeout(queryDbforGoogle(splitNodes),100);
+    // setTimeout(queryDbforGoogle(splitNodes),5000);
   } else {
     var query = "INSERT INTO empty_counters (counterStart, counterEnd) VALUES ("+ counterStart+","+counterEnd+");";
     db.query(query, function (err, result){
@@ -115,7 +118,7 @@ var saveElevationData = function(result){
       console.log("records not returned from google");
       counterStart=counterEnd;
       counterEnd = counterStart + 500;
-      // setTimeout(queryDbforGoogle(splitNodes),100);
+      // setTimeout(queryDbforGoogle(splitNodes),5000);
     })
   }
 }
