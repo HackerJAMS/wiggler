@@ -3,6 +3,7 @@ var http = require('http');
 
 module.exports = function getPathElev(pathArray, callback) {
   var pathStr = flatten(pathArray).join("|")
+
   var elevApiUrl = "https://maps.googleapis.com/maps/api/elevation/json?locations=" + pathStr + "&key=" + process.env.DB_URL_STR
   https.get(elevApiUrl, function (res) {
     var output = "";

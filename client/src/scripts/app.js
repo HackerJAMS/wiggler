@@ -10,7 +10,9 @@
     'ui.router',
 
     //app modules
-    'app.map'
+    'app.routeService',
+    'app.map',
+    'app.routeInput'
   ]);
 
   // app.controller('MainController', function($scope) {

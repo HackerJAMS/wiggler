@@ -11,23 +11,11 @@
 var db = require('../db/db.js');
 var Q = require('q');
 module.exports = function() {
-  // db.query("ALTER TABLE ways DROP COLUMN eleCost", function(err) {
-  //   if (err) {
-  //     console.log('error in dropping a column: ', err);
-  //   } else {
-  //     console.log("successfully dropped a eleCost column!");
-  //   }
-  // });
+  // ALTER TABLE ways ADD COLUMN eleCost double precision
+  // ALTER TABLE ways DROP COLUMN eleCost
+  // CREATE INDEX nodes_lonlat_idx ON nodes(lon, lat)
 
-  // db.query("ALTER TABLE ways ADD COLUMN eleCost double precision", function(err) {
-  //   if (err) {
-  //     console.log('error in adding a column: ', err);
-  //   } else {
-  //     console.log("successfully added a eleCost column!");
-  //   }
-  // });
-
-  var queryString = "SELECT gid, length, to_cost, ST_AsText(ST_Transform(the_geom,4326)) FROM ways";
+  var queryString = "SELECT gid, length, to_cost, ST_AsText(ST_Transform(the_geom,4326)) FROM ways limit 300";
 
   db.query(queryString, function(err, result) {
     if(err) {
@@ -72,12 +60,13 @@ var getElevations = function(i, result) {
         }
         // console.log('nodes', nodes.rows[0]);
         elevation[j] = nodes.rows[0].elevation;
-        if(!elevation[j]) {
-          console.log(j + "th point on " + i + 'th segment is empty')
-        }
+        // if(!elevation[j]) {
+        //   console.log(j + "th point on " + i + 'th segment is empty')
+        // }
         count++;
         if (count === stringArr.length) {
-          defer.resolve({index: i, stringArr: stringArr, elevation: elevation});
+          defer.resolve({index: i, stringArr: stringArr, length: result.rows[i].length, elevation: elevation});
+          console.log('getElevations', i);
         }
       })
     })(j)
@@ -92,27 +81,32 @@ var getCost = function(param) {
   var count = 0;
   var elevation = param.elevation;
   var stringArr = param.stringArr;
-  for (var k = 0; k < stringArr.length - 1; k++) {
-    (function(k) {
-      var p1 = stringArr[k].split(' ');
-      var p2 = stringArr[k + 1].split(' ');
-      // db.query("SELECT ST_Distance('POINT(" + p1[0] + p1[1] + ")'::geography,'POINT(" + p2[0] + p2[1] + ")'::geography)", function(err, distance) {
+  if (stringArr.length === 2) {
+    cost += Math.abs((+elevation[0]) - (+elevation[1])) / param.length;
+    defer.resolve({index: param.index, cost: cost});
+  } else {
+    for (var k = 0; k < stringArr.length - 1; k++) {
+      (function(k) {
+        var p1 = stringArr[k].split(' ');
+        var p2 = stringArr[k + 1].split(' ');
+        // db.query("SELECT ST_Distance('POINT(" + p1[0] + p1[1] + ")'::geography,'POINT(" + p2[0] + p2[1] + ")'::geography)", function(err, distance) {
 
-      db.query("SELECT ST_Distance_Spheroid(ST_MakePoint(" + p1[0] + "," + p1[1] + "),ST_MakePoint(" + p2[0] + "," + p2[1] + "),'SPHEROID[\"WGS 84\",6378137,298.257223563]')", function(err, distance) {
-        if (err) {
-          // console.log(err);
-          defer.reject(err);
-        }
-        // the unit of distance is meter, convert it to kilometer
-        cost += Math.abs((+elevation[k]) - (+elevation[k + 1])) / (distance.rows[0].st_distance_spheroid / 1000);
-        count++;
-        // console.log(k, 'distance: ', distance.rows[0])
-        if (count === (stringArr.length - 1)) {
-          // console.log('elevation: ', elevation, 'cost: ', cost);
-          defer.resolve({index: param.index, cost: cost});
-        }
-      });
-    })(k)
+        db.query("SELECT ST_Distance_Spheroid(ST_MakePoint(" + p1[0] + "," + p1[1] + "),ST_MakePoint(" + p2[0] + "," + p2[1] + "),'SPHEROID[\"WGS 84\",6378137,298.257223563]')", function(err, distance) {
+          if (err) {
+            // console.log(err);
+            defer.reject(err);
+          }
+          // the unit of distance is meter, convert it to kilometer
+          cost += Math.abs((+elevation[k]) - (+elevation[k + 1])) / (distance.rows[0].st_distance_spheroid / 1000);
+          count++;
+          // console.log(k, 'distance: ', distance.rows[0])
+          if (count === (stringArr.length - 1)) {
+            // console.log('elevation: ', elevation, 'cost: ', cost);
+            defer.resolve({index: param.index, cost: cost});
+          }
+        });
+      })(k)
+    }
   }
   return defer.promise;
 }

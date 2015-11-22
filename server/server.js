@@ -13,7 +13,6 @@ var db_seq = require('./db/db_sequelize');
 // var elev = require('./utility/createElevationDb.js');
 
 var resample = require('./resample_elevation/resample_elevation.js');
-
 // var test = require('./utility/pullAllNodes');
 // var read = require('./utility/addElevToDb');
 
@@ -26,10 +25,6 @@ db.connect(function(err) {
   }
 });
 
-
-
-// require('./utility/promiseExample.js');
-
 // var minElevationPath = require('./utility/minElevationPath.js');
 // minElevationPath(30, 60, function(err, result){
 //   if(err) {
@@ -41,13 +36,7 @@ db.connect(function(err) {
 //   }
 // }); 
 
-// var queryString = "SELECT gid, eleCost FROM ways";
-
-// db.query(queryString, function(err, result) {
-//   console.log('err', err);
-//   console.log('result', result);
-// });
-// var createEleCost = require('./utility/createEleCost.js');
+// var createEleCost = require('./utility/minElePathIntersection.js');
 // createEleCost(); 
 
 // var shortestPath = require('./utility/shortestPath.js');
