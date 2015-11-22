@@ -2,9 +2,16 @@
 (function() {
   'use strict';
   angular.module('app.map', [])
-    .controller('MapController', ['$location', 'RouteService', function($location, RouteService) {
+    .controller('MapController', ['$location','RouteService', function($location, RouteService) {
       var vm = this;
       var polyline;
+
+      //scope variables
+       vm.angle = 0;
+       vm.xdrag = 0;
+       vm.isDown = false;
+       vm.xpos = 0;
+
 
       vm.callback = function(map) {
         vm.map = map;
@@ -32,7 +39,9 @@
             var turfElevation = turf.featurecollection(elevationCollection);
             console.log('geo JSON data---->', JSON.stringify(elevationCollection));
             // draw route on the map and fit the bounds of the map viewport to the route
-            polyline = L.geoJson(turfLine, {color : 'red'}).addTo(vm.map);
+            polyline = L.geoJson(turfLine, {
+              color: 'red'
+            }).addTo(vm.map);
             vm.map.fitBounds(polyline.getBounds());
 
             // draw elevation points
@@ -48,70 +57,109 @@
             //   }
             // }).addTo(vm.map);
 
-//##########################################################
+            //##########################################################
 
-    // var resample = function(line, interval, unit) {
-    //   var features = [];
-    //   var interval = interval;
-    //   features.push(line);
-    //   //with hard coded interval values, 42 is the amount we can fit in the current path--fix this
-    //   for (var i = 0; i < 35; i++) {
-    //     var point = turf.along(line, interval, unit);
-    //     // console.log(point.geometry.coordinates);
-    //     var pointCoords = point.geometry.coordinates;
-    //     // console.log("----------------------------->>>>>>",pointCoords);
-    //     features.push(point);
-    //     interval = interval + 0.01;
-    //   }
-    //   return features;
-    // }
+            var resample = function(line, interval, unit) {
+              var features = [];
+              var interval = interval;
+              features.push(line);
+              //with hard coded interval values, 42 is the amount we can fit in the current path--fix this
+              for (var i = 0; i < 35; i++) {
+                var point = turf.along(line, interval, unit);
+                console.log(point.geometry.coordinates);
+                var pointCoords = point.geometry.coordinates;
+                // console.log("----------------------------->>>>>>",pointCoords);
+                features.push(point);
+                interval = interval + 0.01;
+              }
+              return features;
+            }
 
-    // // var myFeatures = resample(myLine, 0.01, 'miles');
-    // //send the coordinates of new points to google elevation api
-    // var coordsToSend = myFeatures.slice();
-    // coordsToSend.shift();
+            var myFeatures = resample(myLine, 0.01, 'miles');
+            //send the coordinates of new points to google elevation api
+            var coordsToSend = myFeatures.slice();
+            coordsToSend.shift();
 
-    // var sampledPointCoordinates = coordsToSend.map(function(n, i) {
-    //   return n.geometry.coordinates;
-    // });
-    // //send to googleapi:
-    // // RouteService.postRouteRequest(sampledPointCoordinates)
-    // //   .then(function successCb(res){
-    // //     console.log(res)
-    // //   }, function errorCb(res){
-    // //     console.log('error in elevation request', res.status);
-    // // });
+            var sampledPointCoordinates = coordsToSend.map(function(n, i) {
+              return n.geometry.coordinates;
+            });
+            //send to googleapi:
+            // RouteService.postRouteRequest(sampledPointCoordinates)
+            //   .then(function successCb(res){
+            //     console.log(res)
+            //   }, function errorCb(res){
+            //     console.log('error in elevation request', res.status);
+            // });
 
-    // var resampledRoute = {
-    //   "type": "FeatureCollection",
-    //   "features": myFeatures
-    // };
+            var resampledRoute = {
+              "type": "FeatureCollection",
+              "features": myFeatures
+            };
 
-    // L.geoJson(resampledRoute).addTo(vm.map);
+            L.geoJson(resampledRoute).addTo(vm.map);
 
-    //renders the resampledRoute after the elevation data is returned from googleapi:
-
-    // L.geoJson(turfElevation, {
-    //   pointToLayer: function(feature, latlng) {
-    //     var myIcon = L.divIcon({
-    //       className: 'markerline',
-    //       html: '<div class="elevmarker"><div class="markercircle bottomcap"></div><div class="markerline" style="height:' + feature.properties.elevation * 20 + 'px">' + '</div><div class="markercircle"></div><div class="elevfigure"><strong>' + (feature.properties.elevation * 3.28).toFixed(0) + ' ft </strong><span style="font-size:0.9em"></span></div>'
-    //     });
-    //     // return L.circleMarker(latlng, {radius: feature.properties.elevation*10});
-    //     return L.marker(latlng, {
-    //       icon: myIcon
-    //     });
-    //   }
-    // }).addTo(vm.map);
+            // renders the resampledRoute after the elevation data is returned from googleapi:
+            L.geoJson(turfElevation, {
+              pointToLayer: function(feature, latlng) {
+                var myIcon = L.divIcon({
+                  className: 'markerline',
+                  html: '<div class="elevmarker"><div class="markercircle bottomcap"></div><div class="markerline" style="height:' + feature.properties.elevation * 20 + 'px">' + '</div><div class="markercircle"></div><div class="elevfigure"><strong>' + (feature.properties.elevation * 3.28).toFixed(0) + ' ft </strong><span style="font-size:0.9em"></span></div>'
+                });
+                // return L.circleMarker(latlng, {radius: feature.properties.elevation*10});
+                return L.marker(latlng, {
+                  icon: myIcon
+                });
+              }
+            }).addTo(vm.map);
 
           }, function errorCb(res) {
             console.log("error posting route request", res.status);
           });
       };
+      var mapRot = angular.element(document.querySelector('#maprotor'));
+      var mapEl = angular.element(document.querySelector('#map'));
+      var tiltCheck= false;
+
+      vm.mouseDown = function(e){
+        if (tiltCheck){
+          vm.xpos = e.pageX;
+          vm.isDown = true;
+        }
+      }
+
+      vm.mouseMove = function(e){
+        if (tiltCheck) {
+          if (vm.isDown) {
+            vm.xdrag = (vm.xpos - e.pageX) / 4;
+            mapEl.attr('style', '-webkit-transform:rotateZ(' + (vm.angle + vm.xdrag) % 360 + 'deg)');
+            // $('.elevmarker').attr('style', '-webkit-transform:rotateX(90deg) rotateY(' + (angle + xdrag) * (-1) % 360 + 'deg)')
+          }
+        }
+      }
+
+      vm.mouseUp = function(e){
+        if (tiltCheck){
+          vm.isDown = false;
+          vm.angle = vm.angle + vm.xdrag;
+        }
+      }
 
       // rotate (tilt) map
-      vm.rotateMap = function() {
-        $('body').toggleClass('rotated');
+      vm.tiltMap = function() {
+        // vm.map.fitBounds(vm.map.featureLayer.setGeoJSON(turf.linestring(resampledRoute)).getBounds(), {
+        //   paddingTopLeft: [150, 50],
+        //   paddingBottomRight: [150, 50]
+        // });
+        console.log(tiltCheck);
+        if (tiltCheck) {
+          tiltCheck = false;
+          mapRot.removeClass("tilted");
+          vm.map.dragging.enable(); 
+        } else {
+          tiltCheck = true;
+          vm.map.dragging.disable(); 
+          mapRot.addClass("tilted");
+        }
       }
     }])
 })();

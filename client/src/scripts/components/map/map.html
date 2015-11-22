@@ -1,5 +1,13 @@
 <div ng-controller="MapController as ctrl">
-  <mapbox id= "map" callback="ctrl.callback"></mapbox>
-  <md-button ng-click="ctrl.submitRoute()">Route</md-button>
-  <md-button ng-click="ctrl.rotateMap()">Tilt</md-button>
+  <div class="layout-column">
+    <div class="map-control" flecx="10" style="z-index: 999">
+      <md-button ng-click="ctrl.submitRoute()">Route</md-button>
+      <md-button ng-click="ctrl.tiltMap()">View in 3D</md-button>
+    </div>
+    <div id="maprotor" flex = "90" ng-mousedown="ctrl.mouseDown($event)" ng-mousemove="ctrl.mouseMove($event)" ng-mouseup="ctrl.mouseUp($event)">
+      <mapbox callback="ctrl.callback"></mapbox>
+    </div>
+  </div>
 </div>
+
+<!-- <ng-mousedown="ctrl.mouseDown($event)" ng-mousemove="ctrl.rotateMap($event)" ng-mouseup="ctrl.mouseUp($event)"> -->

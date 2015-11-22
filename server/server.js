@@ -9,9 +9,7 @@ var bodyParser = require('body-parser');
 var route = require('./route/route.js');
 var db = require('./db/db.js');
 var db_seq = require('./db/db_sequelize');
-
 // var elev = require('./utility/createElevationDb.js');
-
 var resample = require('./resample_elevation/resample_elevation.js');
 // var test = require('./utility/pullAllNodes');
 // var read = require('./utility/addElevToDb');
@@ -63,21 +61,13 @@ module.exports = app;
 app.post('/route', function(req, res) {
   route(req, res);
 });
+
 app.post('/elevationquery', function(req,res){
+  console.log('in the server-------->', req.body.coordinates);
   resample(req, res);
 })
 
-app.post('/elevationquery', function(req, res){
-  console.log('in the server-------->', req.body.coordinates);
-});
 
-app.post('/elevationquery', function(req, res){
-  console.log('in the server-------->', req.body.coordinates);
-});
-
-app.post('/elevationquery', function(req, res){
-  console.log('in the server-------->', req.body.coordinates);
-});
 
 var port = 3000;
 app.listen(port);
