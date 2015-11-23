@@ -10,7 +10,7 @@ var counterEnd = 1847000;
 var queryDbforGoogle = function() {
   start = new Date().getTime();
   console.log("start and end", counterStart, counterEnd);
-  var queryString = "select * from nodes_no_el;" //where counter BETWEEN " + counterStart + "AND " +counterEnd+ " limit 500;";
+  var queryString = "select * from nodes_no_el where elevation is null;" //where counter BETWEEN " + counterStart + "AND " +counterEnd+ " limit 500;";
   
   db.query(queryString, function(err, result) {
     if (err) console.error(err);
@@ -27,7 +27,7 @@ var queryDbforGoogle = function() {
 function splitNodes(result) {
   var nodeObj = {};
   // google api will only accept 512 nodes per request
-  var pointsPerReq = 500;
+  var pointsPerReq = 200;
   // populate obj with nodes
   for (var i = 0; i < result.rows.length; i++) {
     if (!nodeObj[result.rows[i].id]) {
@@ -51,7 +51,7 @@ function splitNodes(result) {
 
 function callGoogle(nodeGroups, rows) {
   for (var i = 0; i < Object.keys(nodeGroups).length; i++) { //Object.keys(nodeGroups).length
-    (function(index) {
+    setTimeout((function(index) {
       // setTimeout(function() {
         // encode coordinates array using google's polyline encoding algorithm
         pathStr = polyUtil.encode(nodeGroups[index]); //nodeGroups[index].join('|');
@@ -61,6 +61,7 @@ function callGoogle(nodeGroups, rows) {
           path: '/maps/api/elevation/json?locations=enc:' + pathStr,
           auth: process.env.ELEVATION_API_KEY
         };
+
         https.get(options, function(res) {
           if (res.statusCode === 200) {
             var output = "";
@@ -95,7 +96,7 @@ function callGoogle(nodeGroups, rows) {
           console.log('Error getting elevation data from google' + err.message);
         })
       // }, 0)
-    })(i);
+    })(i),3000);
   }
 }
 var Elevation = seq.sequelize.define('Elevation', seq.elevation.config, seq.elevation.options);
