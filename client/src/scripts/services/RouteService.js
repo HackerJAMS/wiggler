@@ -4,6 +4,9 @@
   angular.module('app.routeService',[])
     .factory('RouteService', ['$http', function($http) {
       var route = {};
+      
+      route.map;
+
       route.postRouteRequest = function(start, end, preferences) {
         return $http({
           method: 'POST',
