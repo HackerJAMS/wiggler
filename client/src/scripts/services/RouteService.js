@@ -33,7 +33,7 @@
         var query = address.replace(/\s+/g, '+');
         return $http({
           method: 'GET',
-          url: 'https://api.mapbox.com/geocoding/v5/mapbox.places/' + query + '.json?access_token=' + accessToken
+          url: 'https://api.mapbox.com/geocoding/v5/mapbox.places/' + query + '.json?proximity=-122.446,37.773&access_token=' + accessToken         
         })
       } 
 

@@ -2,7 +2,7 @@
 (function() {
   'use strict';
   angular.module('app.routeInput', [])
-    .controller('RouteInputController', ['$location', 'RouteService', function($location, RouteService) {
+    .controller('RouteInputController', ['$location', '$q', 'RouteService', function($location, $q, RouteService) {
       var vm = this;
       vm.map = RouteService.map;
       var polyline;
@@ -10,17 +10,17 @@
       var queryResult;
       vm.autocompleteQuery = function(searchText) {
         console.log('address:', searchText);
-        var received = false;
+        var defer = $q.defer();
         RouteService.geocoding(searchText)
           .then(function successCb(res) {
             console.log('res', res.data.features);
             queryResult = res.data.features;
-            received = true;
+            defer.resolve(queryResult);
           }, function errorCb(res) {
             console.error("failed to rectrieve coordinates from mapbox...", res);
           });
         
-        return queryResult;
+        return defer.promise;
       };
 
      vm.submitRoute = function() {
@@ -30,10 +30,7 @@
         var end = vm.selectedEnd.center;
         var prefs = '';
         console.log("start", vm.selectedStart, "end", vm.selectedEnd);
-<<<<<<< 7d6f807eaab116b8b8aba81dbe7b7da107d26bd2
-=======
 
->>>>>>> edited route folder and RouteService
         vm.route = [];
         RouteService.postRouteRequest(start, end, prefs)
           .then(function successCb(res) {

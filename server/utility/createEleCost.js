@@ -13,15 +13,30 @@ var Q = require('q');
 module.exports = function() {
   // ALTER TABLE ways ADD COLUMN eleCost double precision
   // ALTER TABLE ways DROP COLUMN eleCost
-  // CREATE INDEX nodes_lonlat_idx ON nodes(lon, lat)
+  // CREATE INDEX lonlat_idx ON nodes_with_elevation(lon, lat)
 
-  var queryString = "SELECT gid, length, to_cost, ST_AsText(ST_Transform(the_geom,4326)) FROM ways limit 300";
+  // create an auto-increasing column count in table ways
+  // CREATE SEQUENCE seq;
+  // ALTER TABLE ways ADD COLUMN count integer UNIQUE;
+  // ALTER TABLE ways ALTER COLUMN count SET DEFAULT NEXTVAL('seq');
+  // UPDATE ways SET count = NEXTVAL('seq');
+
+  var start = new Date().getTime();
+  subSetQuery(33001, 34000);
+}
+
+var subSetQuery = function(countStart, countEnd) {
+
+  var queryString = "SELECT gid, length, ST_AsText(ST_Transform(the_geom,4326)) FROM ways WHERE count >=" + countStart + " AND count <=" + countEnd;
+  // var queryString = "SELECT gid, length, ST_AsText(ST_Transform(the_geom,4326)) FROM ways WHERE gid = 58713";
 
   db.query(queryString, function(err, result) {
     if(err) {
       console.log("err when query table ways...", err);
     }
     console.log('successfully fetched data!');
+    console.log('result', result);
+    var counter = 0;
     for (var i = 0; i < result.rows.length; i++) {
 
       getElevations(i, result)
@@ -29,10 +44,24 @@ module.exports = function() {
       .then(function(param) {
         var currentGid = result.rows[param.index].gid;
         db.query("UPDATE ways SET eleCost = " + param.cost + " where gid =" + currentGid, function(err, result) {
+          counter++;
           if (err) {
-            console.log("error when update eleCost column...", err);
+            console.log("i", param.index, "error when update eleCost column...", err);
           } else {
-            console.log("i", param.index, "successfully updated cost!");
+            // if (param.index % 100 === 0) {
+              console.log("i", param.index, "successfully updated cost!");
+            // }
+            if (counter === (countEnd - countStart + 1)) {
+              console.log("updating cost is done for count between " + countStart + " and " + countEnd);
+              if (countEnd < 42469) {
+                countStart = countStart + 1000;
+                countEnd = countEnd + 1000;
+                subSetQuery(countStart, countEnd);
+              } else {
+                var end = new Date().getTime();
+                console.log("Execution time: " + (end - start) / 1000 + 's');          
+              }
+            }
           }
         })
         // console.log('gid: ', result.rows[param.index].gid);
@@ -51,11 +80,13 @@ var getElevations = function(i, result) {
   var stringArr = string.slice(11, string.length - 1).split(',');
   var elevation = [];
   var count = 0;
+  // console.log('getElevations start i', i, "gid", result.rows[i].gid);
   for (var j = 0; j < stringArr.length; j++) {
     (function(j){
       var pi = stringArr[j].split(' ');
-      db.query("SELECT * from nodes where lon=" + pi[0] + " and lat=" + pi[1], function(err, nodes) {
+      db.query("SELECT * from nodes_with_elevation where lon=" + pi[0] + " and lat=" + pi[1], function(err, nodes) {
         if (err) {
+          console.log('error during getElevations',err);
           defer.reject(err);
         }
         // console.log('nodes', nodes.rows[0]);
@@ -66,7 +97,7 @@ var getElevations = function(i, result) {
         count++;
         if (count === stringArr.length) {
           defer.resolve({index: i, stringArr: stringArr, length: result.rows[i].length, elevation: elevation});
-          console.log('getElevations', i);
+          console.log('getElevations end i', i, "gid", result.rows[i].gid);
         }
       })
     })(j)
@@ -81,6 +112,7 @@ var getCost = function(param) {
   var count = 0;
   var elevation = param.elevation;
   var stringArr = param.stringArr;
+  // console.log('getCosts start i', param.index);
   if (stringArr.length === 2) {
     cost += Math.abs((+elevation[0]) - (+elevation[1])) / param.length;
     defer.resolve({index: param.index, cost: cost});
@@ -93,16 +125,19 @@ var getCost = function(param) {
 
         db.query("SELECT ST_Distance_Spheroid(ST_MakePoint(" + p1[0] + "," + p1[1] + "),ST_MakePoint(" + p2[0] + "," + p2[1] + "),'SPHEROID[\"WGS 84\",6378137,298.257223563]')", function(err, distance) {
           if (err) {
-            // console.log(err);
+            console.log('error during getCost',err);
             defer.reject(err);
           }
           // the unit of distance is meter, convert it to kilometer
-          cost += Math.abs((+elevation[k]) - (+elevation[k + 1])) / (distance.rows[0].st_distance_spheroid / 1000);
+          if (distance.rows[0].st_distance_spheroid !== 0) {
+            cost += Math.abs((+elevation[k]) - (+elevation[k + 1])) / (distance.rows[0].st_distance_spheroid / 1000);
+          }
           count++;
-          // console.log(k, 'distance: ', distance.rows[0])
+          console.log(k, 'distance: ', distance.rows[0])
           if (count === (stringArr.length - 1)) {
-            // console.log('elevation: ', elevation, 'cost: ', cost);
+            console.log('elevation: ', elevation, 'cost: ', cost);
             defer.resolve({index: param.index, cost: cost});
+            console.log('getCosts end i', param.index);
           }
         });
       })(k)

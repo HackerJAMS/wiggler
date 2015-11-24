@@ -31,7 +31,10 @@ db.connect(function(err) {
 //   }
 // }); 
 
-// var createEleCost = require('./utility/minElePathIntersection.js');
+// var draft = require('./utility/draft.js');
+// draft();
+
+// var createEleCost = require('./utility/createEleCost.js');
 // createEleCost(); 
 
 // var shortestPath = require('./utility/shortestPath.js');
