@@ -32,7 +32,7 @@
         var start = vm.selectedStart.center;
         var end = vm.selectedEnd.center;
         var prefs = '';
-        console.log("start", vm.selectedStart, "end", selectedEnd);
+        console.log("start", vm.selectedStart, "end", vm.selectedEnd);
         vm.route = [];
         RouteService.postRouteRequest(start, end, prefs)
           .then(function successCb(res) {

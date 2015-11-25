@@ -6,7 +6,19 @@
 ***/
 var shortestPath = require('../utility/shortestPath.js');
 var minElevationPath = require('../utility/minElevationPath.js');
+var closestNode = require('../utility/closestNode.js');
 module.exports = function(req, res) {
+  if (req.body.start && req.body.end) {
+    closestNode(req.body.start, function (closestNode){
+      // the id of the closest node to the start point of the request is closestNode[id]
+      // distance from the route request point in meters is closestNode[distance]
+    })
+
+    closestNode(req.body.end, function (closestNode) {
+      // this works to get the closest end node as well. 
+    })
+  }
+
   // var start = req.body.start;
   // var end = req.body.end;
   var start = 30;
