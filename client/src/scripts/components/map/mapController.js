@@ -45,17 +45,17 @@
             vm.map.fitBounds(polyline.getBounds());
 
             // draw elevation points
-            L.geoJson(turfLine, {
-              pointToLayer: function(feature, latlng) {
-                var myIcon = L.divIcon({
-                  className: 'markerline',
-                  html: '<div class="elevmarker"><div class="markercircle bottomcap"></div><div class="markerline" style="height:' + feature.properties.elevation/2 + 'px">' + '</div><div class="markercircle"></div><div class="elevfigure"><strong>' + (feature.properties.elevation * 3.28).toFixed(0) + ' ft </strong><span style="font-size:0.9em"></span></div>'
-                });
-                return L.marker(latlng, {
-                  icon: myIcon
-                });
-              }
-            }).addTo(vm.map);
+            // L.geoJson(turfLine, {
+            //   pointToLayer: function(feature, latlng) {
+            //     var myIcon = L.divIcon({
+            //       className: 'markerline',
+            //       html: '<div class="elevmarker"><div class="markercircle bottomcap"></div><div class="markerline" style="height:' + feature.properties.elevation/2 + 'px">' + '</div><div class="markercircle"></div><div class="elevfigure"><strong>' + (feature.properties.elevation * 3.28).toFixed(0) + ' ft </strong><span style="font-size:0.9em"></span></div>'
+            //     });
+            //     return L.marker(latlng, {
+            //       icon: myIcon
+            //     });
+            //   }
+            // }).addTo(vm.map);
 
             //##########################################################
 
@@ -80,11 +80,13 @@
             var coordsToSend = myFeatures.slice();
             coordsToSend.shift();
 
+            console.log(myFeatures);
+
             var sampledPointCoordinates = coordsToSend.map(function(n, i) {
               return n.geometry.coordinates;
             });
             //send to googleapi:
-            RouteService.postRouteRequest(sampledPointCoordinates)
+            RouteService.postElevationRequest(sampledPointCoordinates)
               .then(function successCb(res){
                 console.log(res)
               }, function errorCb(res){
@@ -104,7 +106,7 @@
               pointToLayer: function(feature, latlng) {
                 var myIcon = L.divIcon({
                   className: 'markerline',
-                  html: '<div class="elevmarker"><div class="markercircle bottomcap"></div><div class="markerline" style="height:' + feature.properties.elevation *5 + 'px">' + '</div><div class="markercircle"></div><div class="elevfigure"><strong>' + (feature.properties.elevation * 3.28).toFixed(0) + ' ft </strong><span style="font-size:0.9em"></span></div>'
+                  html: '<div class="elevmarker"><div class="markercircle bottomcap"></div><div class="markerline" style="height:' + feature.properties.elevation *5 + 'px">' + '</div><div class="markercircle"></div><div class="elevfigure"><span style="font-size:0.9em"></span></div>'
                 });
                 // return L.circleMarker(latlng, {radius: feature.properties.elevation*10});
                 return L.marker(latlng, {
