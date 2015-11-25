@@ -9,7 +9,7 @@
 ***/
 module.exports = function(result) {    
   var coordinates = [];
-
+  
   for (var i = 0; i < result.rows.length - 1; i++) {
     var string = result.rows[i].st_astext;
     var stringArr = string.slice(11, string.length - 1).split(',');

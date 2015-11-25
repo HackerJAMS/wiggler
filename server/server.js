@@ -9,6 +9,8 @@ var bodyParser = require('body-parser');
 var route = require('./route/route.js');
 var db = require('./db/db.js');
 var db_seq = require('./db/db_sequelize');
+// var elev_db = require('./db/createElevationDb');
+
 var resample = require('./resample_elevation/resample_elevation.js');
 
 
@@ -31,7 +33,10 @@ db.connect(function(err) {
 //   }
 // }); 
 
-// var createEleCost = require('./utility/minElePathIntersection.js');
+// var draft = require('./utility/draft.js');
+// draft();
+
+// var createEleCost = require('./utility/createEleCost.js');
 // createEleCost(); 
 
 // var shortestPath = require('./utility/shortestPath.js');
@@ -60,7 +65,7 @@ app.post('/route', function(req, res) {
 });
 
 app.post('/elevationquery', function(req,res){
-  console.log('in the server-------->', req.body.coordinates);
+  // console.log('in the server-------->', req.body.coordinates);
   resample(req, res);
 })
 

@@ -8,16 +8,16 @@ var shortestPath = require('../utility/shortestPath.js');
 var minElevationPath = require('../utility/minElevationPath.js');
 var closestNode = require('../utility/closestNode.js');
 module.exports = function(req, res) {
-  if (req.body.start && req.body.end) {
-    closestNode(req.body.start, function (closestNode){
-      // the id of the closest node to the start point of the request is closestNode[id]
-      // distance from the route request point in meters is closestNode[distance]
-    })
+  // if (req.body.start && req.body.end) {
+  //   closestNode(req.body.start, function (closestNode){
+  //     // the id of the closest node to the start point of the request is closestNode[id]
+  //     // distance from the route request point in meters is closestNode[distance]
+  //   })
 
-    closestNode(req.body.end, function (closestNode) {
-      // this works to get the closest end node as well. 
-    })
-  }
+  //   closestNode(req.body.end, function (closestNode) {
+  //     // this works to get the closest end node as well. 
+  //   })
+  // }
 
   // var start = req.body.start;
   // var end = req.body.end;
@@ -48,7 +48,7 @@ module.exports = function(req, res) {
         console.error('could not obtain the minimum elevation path: ', err);
         res.send(err);
       } else {
-        console.log('result when querying the minimum elevation path: ', result);
+        // console.log('result when querying the minimum elevation path: ', result);
         res.send(result);
       }
     });     

@@ -14,8 +14,9 @@
 
 
       vm.callback = function(map) {
+        RouteService.map = map;
         vm.map = map;
-        map.setView([37.773, -122.446], 13);
+        map.setView([37.774, -122.496], 12);
       };
 
       vm.submitRoute = function(start, end, prefs) {
@@ -28,7 +29,6 @@
             RouteService.cleanMap(polyline !== "undefined", vm.map);
             var coords = res.data[0];
             var elevation = res.data[1];
-            console.log(elevation, coords);
             // path as array of long/lat tuple
             var path = RouteService.getPath(coords);
             // re-format elevation data with turf points
@@ -37,7 +37,7 @@
             var turfLine = turf.linestring(path);
             // turf collection with elevation data
             var turfElevation = turf.featurecollection(elevationCollection);
-            console.log('geo JSON data---->', JSON.stringify(elevationCollection));
+            // console.log('geo JSON data---->', JSON.stringify(elevationCollection));
             // draw route on the map and fit the bounds of the map viewport to the route
             polyline = L.geoJson(turfLine, {
               color: 'red'
@@ -68,14 +68,14 @@
                 var point = turf.along(line, interval, unit);
                 console.log(point.geometry.coordinates);
                 var pointCoords = point.geometry.coordinates;
-                console.log("----------------------------->>>>>>",pointCoords);
+                // console.log("----------------------------->>>>>>",pointCoords);
                 features.push(point);
                 interval = interval + 0.01;
               }
               return features;
             }
 
-            var myFeatures = resample(myLine, 0.01, 'miles');
+            var myFeatures = resample(turfLine, 0.01, 'miles');
             //send the coordinates of new points to google elevation api
             var coordsToSend = myFeatures.slice();
             coordsToSend.shift();
@@ -96,6 +96,7 @@
               "features": myFeatures
             };
 
+            console.log("resampled route", resampledRoute);
             L.geoJson(resampledRoute).addTo(vm.map);
 
             // renders the resampledRoute after the elevation data is returned from googleapi:
@@ -116,6 +117,8 @@
             console.log("error posting route request", res.status);
           });
       };
+
+      // functions for 3d map rotation
       var mapRot = angular.element(document.querySelector('#maprotor'));
       var mapEl = angular.element(document.querySelector('#map'));
       var tiltCheck= false;
