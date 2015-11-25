@@ -1,10 +1,33 @@
 var https = require('https');
-var http = require('http');
+var polyUtil = require('polyline-encoded');
+
 
 module.exports = function getPathElev(pathArray, callback) {
-  var pathStr = flatten(pathArray).join("|")
-  var elevApiUrl = "https://maps.googleapis.com/maps/api/elevation/json?locations=" + pathStr + "&key=" + process.env.ELEVATION_API_KEY
-  https.get(elevApiUrl, function (res) {
+  var numsArray = flatten(pathArray).map(function (d) {
+    var arr = [];
+    d.forEach(function (e){
+      arr.push(Number(e));
+    })
+    return arr;
+  })
+  // this is a temporary fix -- I don't actually think we need to be getting the elevation from the original path
+  // and the resampled path generally doesn't have that many nodes. but we will need to figure out a solution to this
+  // with the google maps api
+  // this just ignores all nodes above 512 (the google limit)
+  if (numsArray.length > 512) {
+    numsArray = numsArray.slice(0, 511);
+  }
+
+
+  var pathStr = polyUtil.encode(numsArray);
+  var options = {
+    host: 'maps.googleapis.com',
+    path: '/maps/api/elevation/json?locations=enc:' + pathStr,
+    auth: process.env.ELEVATION_API_KEY
+  };
+  // console.log(flatten(pathArray));
+  // console.log(options.path);
+  https.get(options, function (res) {
     var output = "";
     res.on('data', function (d){
       output += d;

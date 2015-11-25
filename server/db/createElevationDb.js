@@ -10,12 +10,12 @@ var counterEnd = 1847000;
 var queryDbforGoogle = function() {
   start = new Date().getTime();
   console.log("start and end", counterStart, counterEnd);
-  var queryString = "select * from nodes_no_el where elevation is null;" //where counter BETWEEN " + counterStart + "AND " +counterEnd+ " limit 500;";
+  var queryString = "select * from nodes_with_elevation limit 5;" //where counter BETWEEN " + counterStart + "AND " +counterEnd+ " limit 500;";
   
   db.query(queryString, function(err, result) {
     if (err) console.error(err);
     console.log("records returned by query",result.rows.length);
-    if (result.rows.length > 390){
+    if (result.rows.length > 0){
       splitNodes(result);
     } else {
       console.log("no results returned from query");
@@ -55,7 +55,7 @@ function callGoogle(nodeGroups, rows) {
       // setTimeout(function() {
         // encode coordinates array using google's polyline encoding algorithm
         pathStr = polyUtil.encode(nodeGroups[index]); //nodeGroups[index].join('|');
-        // console.log('maps.googleapis.com/maps/api/elevation/json?locations=enc:' + pathStr);
+        console.log('maps.googleapis.com/maps/api/elevation/json?locations=enc:' + pathStr);
         var options = {
           host: 'maps.googleapis.com',
           path: '/maps/api/elevation/json?locations=enc:' + pathStr,
@@ -103,25 +103,25 @@ var Elevation = seq.sequelize.define('Elevation', seq.elevation.config, seq.elev
 
 var saveElevationData = function(result){
   console.log("saved result length", result.length);
-  if (result.length > 0) {
-    Elevation.sync().then(function(){
-      Elevation.bulkCreate(result).then(function (){
-        console.log("success creating records");
-      });
-    })
-    counterStart=counterEnd;
-    counterEnd = counterStart + 500;
-    // setTimeout(queryDbforGoogle(splitNodes),5000);
-  } else {
-    var query = "INSERT INTO empty_counters (counterStart, counterEnd) VALUES ("+ counterStart+","+counterEnd+");";
-    db.query(query, function (err, result){
-      if (err) console.log(err);
-      console.log("records not returned from google");
-      counterStart=counterEnd;
-      counterEnd = counterStart + 500;
-      // setTimeout(queryDbforGoogle(splitNodes),5000);
-    })
-  }
+  // if (result.length > 0) {
+  //   Elevation.sync().then(function(){
+  //     Elevation.bulkCreate(result).then(function (){
+  //       console.log("success creating records");
+  //     });
+  //   })
+  //   counterStart=counterEnd;
+  //   counterEnd = counterStart + 500;
+  //   // setTimeout(queryDbforGoogle(splitNodes),5000);
+  // } else {
+  //   var query = "INSERT INTO empty_counters (counterStart, counterEnd) VALUES ("+ counterStart+","+counterEnd+");";
+  //   db.query(query, function (err, result){
+  //     if (err) console.log(err);
+  //     console.log("records not returned from google");
+  //     counterStart=counterEnd;
+  //     counterEnd = counterStart + 500;
+  //     // setTimeout(queryDbforGoogle(splitNodes),5000);
+  //   })
+  // }
 }
 function roundCoords (num) {
   return Math.round(num * 100000) / 100000

@@ -23,7 +23,7 @@
             tileSize: 5120,
             scrollWheelZoom: false,
             maxZoom: 19,
-            minZoom: 13
+            minZoom: 10
           });
           var getPxBounds = map.getPixelBounds;
           map.getPixelBounds = function() {

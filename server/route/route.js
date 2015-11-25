@@ -48,7 +48,7 @@ module.exports = function(req, res) {
         console.error('could not obtain the minimum elevation path: ', err);
         res.send(err);
       } else {
-        console.log('result when querying the minimum elevation path: ', result);
+        // console.log('result when querying the minimum elevation path: ', result);
         res.send(result);
       }
     });     
