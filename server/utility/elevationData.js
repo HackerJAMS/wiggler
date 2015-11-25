@@ -1,11 +1,17 @@
 var https = require('https');
-var http = require('http');
+var polyUtil = require('polyline-encoded');
+
 
 module.exports = function getPathElev(pathArray, callback) {
-  var pathStr = flatten(pathArray).join("|")
 
-  var elevApiUrl = "https://maps.googleapis.com/maps/api/elevation/json?locations=" + pathStr + "&key=" + process.env.DB_URL_STR
-  https.get(elevApiUrl, function (res) {
+  var pathStr = polyUtil.encode(flatten(pathArray));
+  var options = {
+    host: 'maps.googleapis.com',
+    path: '/maps/api/elevation/json?locations=enc:' + pathStr,
+    auth: process.env.ELEVATION_API_KEY
+  };
+
+  https.get(options, function (res) {
     var output = "";
     res.on('data', function (d){
       output += d;
