@@ -14,6 +14,7 @@
 
 
       vm.callback = function(map) {
+        RouteService.map = map;
         vm.map = map;
         map.setView([37.773, -122.446], 13);
       };
@@ -25,6 +26,8 @@
         vm.route = [];
         RouteService.postRouteRequest(start, end, prefs)
           .then(function successCb(res) {
+            console.log('result', res);
+
             RouteService.cleanMap(polyline !== "undefined", vm.map);
             var coords = res.data[0];
             var elevation = res.data[1];
