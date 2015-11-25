@@ -16,7 +16,7 @@ module.exports = function(req, response) {
         if (JSON.parse(output).results.status === "OVER_QUERY_LIMIT") {
           console.log(JSON.parse(output).results.status)
         } else {
-          console.log("rows back from google", JSON.parse(output).results.length);
+          // console.log("rows back from google", JSON.parse(output).results.length);
           response.send(JSON.parse(output).results)
         }
       });

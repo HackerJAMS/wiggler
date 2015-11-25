@@ -16,7 +16,7 @@
       vm.callback = function(map) {
         RouteService.map = map;
         vm.map = map;
-        map.setView([37.774, -122.496], 12);
+        map.setView([37.774, -122.496], 13);
       };
 
       vm.submitRoute = function(start, end, prefs) {
@@ -49,7 +49,7 @@
               pointToLayer: function(feature, latlng) {
                 var myIcon = L.divIcon({
                   className: 'markerline',
-                  html: '<div class="elevmarker"><div class="markercircle bottomcap"></div><div class="markerline" style="height:' + feature.properties.elevation * 20 + 'px">' + '</div><div class="markercircle"></div><div class="elevfigure"><strong>' + (feature.properties.elevation * 3.28).toFixed(0) + ' ft </strong><span style="font-size:0.9em"></span></div>'
+                  html: '<div class="elevmarker"><div class="markercircle bottomcap"></div><div class="markerline" style="height:' + feature.properties.elevation/2 + 'px">' + '</div><div class="markercircle"></div><div class="elevfigure"><strong>' + (feature.properties.elevation * 3.28).toFixed(0) + ' ft </strong><span style="font-size:0.9em"></span></div>'
                 });
                 return L.marker(latlng, {
                   icon: myIcon
