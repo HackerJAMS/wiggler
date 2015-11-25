@@ -1,11 +1,19 @@
+var polyUtil = require('polyline-encoded');
+var https = require('https');
 module.exports = function(req, response) {
-  pathStr = polyUtil.encode(req.body); //nodeGroups[index].join('|');
+
+  var coordinates = req.body.coordinates.map(function (point){
+    return [point[1], point[0]];
+  })
+  pathStr = polyUtil.encode(coordinates); //nodeGroups[index].join('|');
 
   var options = {
     host: 'maps.googleapis.com',
     path: '/maps/api/elevation/json?locations=enc:' + pathStr,
     auth: process.env.ELEVATION_API_KEY
   };
+
+
   https.get(options, function(res) {
     if (res.statusCode === 200) {
       var output = "";
@@ -16,7 +24,7 @@ module.exports = function(req, response) {
         if (JSON.parse(output).results.status === "OVER_QUERY_LIMIT") {
           console.log(JSON.parse(output).results.status)
         } else {
-          // console.log("rows back from google", JSON.parse(output).results.length);
+          console.log("rows back from google", JSON.parse(output).results.length);
           response.send(JSON.parse(output).results)
         }
       });

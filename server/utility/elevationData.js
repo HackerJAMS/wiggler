@@ -15,7 +15,7 @@ module.exports = function getPathElev(pathArray, callback) {
   // with the google maps api
   // this just ignores all nodes above 512 (the google limit)
   if (numsArray.length > 512) {
-    numsArray = numsArray.slice(0, 511);
+    numsArray = numsArray.slice(0,511);
   }
 
 
