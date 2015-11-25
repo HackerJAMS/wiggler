@@ -48,7 +48,7 @@
             var turfLine = turf.linestring(path);
             // turf collection with elevation data
             var turfElevation = turf.featurecollection(elevationCollection);
-            console.log('geo JSON data---->', JSON.stringify(elevationCollection));
+            // console.log('geo JSON data---->', JSON.stringify(elevationCollection));
             // draw route on the map and fit the bounds of the map viewport to the route
             polyline = L.geoJson(turfLine, {color : 'red'}).addTo(vm.map);
             vm.map.fitBounds(polyline.getBounds());
