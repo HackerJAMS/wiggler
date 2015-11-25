@@ -10,7 +10,10 @@ module.exports = function getPathElev(pathArray, callback) {
     })
     return arr;
   })
-  
+  // this is a temporary fix -- I don't actually think we need to be getting the elevation from the original path
+  // and the resampled path generally doesn't have that many nodes. but we will need to figure out a solution to this
+  // with the google maps api
+  // this just ignores all nodes above 512 (the google limit)
   if (numsArray.length > 512) {
     numsArray = numsArray.slice(0, 511);
   }
