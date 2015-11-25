@@ -45,17 +45,17 @@
             vm.map.fitBounds(polyline.getBounds());
 
             // draw elevation points
-            // L.geoJson(turfLine, {
-            //   pointToLayer: function(feature, latlng) {
-            //     var myIcon = L.divIcon({
-            //       className: 'markerline',
-            //       html: '<div class="elevmarker"><div class="markercircle bottomcap"></div><div class="markerline" style="height:' + feature.properties.elevation * 20 + 'px">' + '</div><div class="markercircle"></div><div class="elevfigure"><strong>' + (feature.properties.elevation * 3.28).toFixed(0) + ' ft </strong><span style="font-size:0.9em"></span></div>'
-            //     });
-            //     return L.marker(latlng, {
-            //       icon: myIcon
-            //     });
-            //   }
-            // }).addTo(vm.map);
+            L.geoJson(turfLine, {
+              pointToLayer: function(feature, latlng) {
+                var myIcon = L.divIcon({
+                  className: 'markerline',
+                  html: '<div class="elevmarker"><div class="markercircle bottomcap"></div><div class="markerline" style="height:' + feature.properties.elevation * 20 + 'px">' + '</div><div class="markercircle"></div><div class="elevfigure"><strong>' + (feature.properties.elevation * 3.28).toFixed(0) + ' ft </strong><span style="font-size:0.9em"></span></div>'
+                });
+                return L.marker(latlng, {
+                  icon: myIcon
+                });
+              }
+            }).addTo(vm.map);
 
             //##########################################################
 
@@ -68,7 +68,7 @@
                 var point = turf.along(line, interval, unit);
                 console.log(point.geometry.coordinates);
                 var pointCoords = point.geometry.coordinates;
-                // console.log("----------------------------->>>>>>",pointCoords);
+                console.log("----------------------------->>>>>>",pointCoords);
                 features.push(point);
                 interval = interval + 0.01;
               }
@@ -84,12 +84,12 @@
               return n.geometry.coordinates;
             });
             //send to googleapi:
-            // RouteService.postRouteRequest(sampledPointCoordinates)
-            //   .then(function successCb(res){
-            //     console.log(res)
-            //   }, function errorCb(res){
-            //     console.log('error in elevation request', res.status);
-            // });
+            RouteService.postRouteRequest(sampledPointCoordinates)
+              .then(function successCb(res){
+                console.log(res)
+              }, function errorCb(res){
+                console.log('error in elevation request', res.status);
+            });
 
             var resampledRoute = {
               "type": "FeatureCollection",
@@ -150,7 +150,6 @@
         //   paddingTopLeft: [150, 50],
         //   paddingBottomRight: [150, 50]
         // });
-        console.log(tiltCheck);
         if (tiltCheck) {
           tiltCheck = false;
           mapRot.removeClass("tilted");
