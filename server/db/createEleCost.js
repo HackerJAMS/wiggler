@@ -8,7 +8,7 @@
 
 ***/
 
-var db = require('../db/db.js');
+var db = require('./db.js');
 var Q = require('q');
 module.exports = function() {
   // ALTER TABLE ways ADD COLUMN eleCost double precision
