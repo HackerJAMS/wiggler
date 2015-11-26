@@ -33,10 +33,8 @@ db.connect(function(err) {
 //   }
 // }); 
 
-// var draft = require('./utility/draft.js');
-// draft();
 
-// var createEleCost = require('./utility/createEleCost.js');
+// var createEleCost = require('./db/createEleCost.js');
 // createEleCost(); 
 
 // var shortestPath = require('./utility/shortestPath.js');
