@@ -131,3 +131,16 @@ md-content,
 .tilted .elevations {
   display: block
 }
+
+.map-control {
+  z-index: 999;
+}
+
+.map-control button {
+  margin-top: 12px;
+}
+
+/* move button out of the way of zoom-in/out control */
+.map-control button:first-of-type {
+  margin-left: 60px;
+}

@@ -1,6 +1,6 @@
 <div ng-controller="MapController as ctrl">
   <div class="layout-column">
-    <div class="map-control" flex="10" style="z-index: 999">
+    <div class="map-control" flex="10">
       <div id="maprotor" flex="90" ng-mousedown="ctrl.mouseDown($event)" ng-mousemove="ctrl.mouseMove($event)" ng-mouseup="ctrl.mouseUp($event)">
         <mapbox callback="ctrl.callback"></mapbox>
       </div>
