@@ -72,20 +72,25 @@ md-content,
   overflow: visible;
   background: none;
 }
+
 #maprotor.tilted {
-  -moz-transform:rotateX(60deg);
-  -webkit-transform:rotateX(60deg)
+  -moz-transform: rotateX(60deg);
+  -webkit-transform: rotateX(60deg)
 }
+
 .leaflet-container {
   background: none;
 }
 
+
 /* set up our 3D space */
+
 #map,
 #map * {
   -webkit-transform-style: preserve-3d;
   transform-style: preserve-3d;
 }
+
 #map,
 #maprotor,
 .leaflet-map-pane,
@@ -99,18 +104,22 @@ md-content,
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 }
+
 .leaflet-overlay-pane {
   -moz-transform: translateZ(1px);
   -webkit-transform: translateZ(1px);
   pointer-events: none;
 }
+
 .leaflet-popup-pane {
   -moz-transform: translateZ(10px);
   -webkit-transform: translateZ(10px);
 }
+
 .tilted #map {
   cursor: col-resize;
 }
+
 .elevmarker {
   -moz-transform: rotateX(90deg);
   -moz-transform-origin: 0% 0%;
@@ -120,6 +129,7 @@ md-content,
   transform-style: preserve-3d;
   margin: 6px;
 }
+
 .markerline {
   width: 4px;
   margin-left: -2px;
@@ -128,6 +138,24 @@ md-content,
   -moz-transition: height 0.2s ease-in;
   transition: height 0.2s ease-in;
 }
+
 .tilted .elevations {
   display: block
+}
+
+.map-control {
+  z-index: 999;
+}
+
+.map-control button {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid;
+  margin-top: 12px;
+}
+
+
+/* move button out of the way of zoom-in/out control */
+
+.map-control button:first-of-type {
+  margin-left: 60px;
 }
