@@ -6,13 +6,6 @@
       var vm = this;
       var polyline;
 
-      //scope variables
-       vm.angle = 0;
-       vm.xdrag = 0;
-       vm.isDown = false;
-       vm.xpos = 0;
-
-
       vm.callback = function(map) {
         RouteService.map = map;
         vm.map = map;
@@ -45,17 +38,17 @@
             vm.map.fitBounds(polyline.getBounds());
 
             // draw elevation points
-            // L.geoJson(turfLine, {
-            //   pointToLayer: function(feature, latlng) {
-            //     var myIcon = L.divIcon({
-            //       className: 'markerline',
-            //       html: '<div class="elevmarker"><div class="markercircle bottomcap"></div><div class="markerline" style="height:' + feature.properties.elevation/2 + 'px">' + '</div><div class="markercircle"></div><div class="elevfigure"><strong>' + (feature.properties.elevation * 3.28).toFixed(0) + ' ft </strong><span style="font-size:0.9em"></span></div>'
-            //     });
-            //     return L.marker(latlng, {
-            //       icon: myIcon
-            //     });
-            //   }
-            // }).addTo(vm.map);
+            L.geoJson(turfLine, {
+              pointToLayer: function(feature, latlng) {
+                var myIcon = L.divIcon({
+                  className: 'markerline',
+                  html: '<div class="elevmarker"><div class="markercircle bottomcap"></div><div class="markerline" style="height:' + feature.properties.elevation/2 + 'px">' + '</div><div class="markercircle"></div><div class="elevfigure"><strong>' + (feature.properties.elevation * 3.28).toFixed(0) + ' ft </strong><span style="font-size:0.9em"></span></div>'
+                });
+                return L.marker(latlng, {
+                  icon: myIcon
+                });
+              }
+            }).addTo(vm.map);
 
             //##########################################################
 
@@ -80,7 +73,6 @@
             var coordsToSend = myFeatures.slice();
             coordsToSend.shift();
 
-            console.log(myFeatures);
 
             var sampledPointCoordinates = coordsToSend.map(function(n, i) {
               return n.geometry.coordinates;
@@ -93,15 +85,15 @@
                 console.log('error in elevation request', res.status);
             });
 
-            var resampledRoute = {
+            vm.resampledRoute = {
               "type": "FeatureCollection",
               "features": myFeatures
             };
 
-            console.log("resampled route", resampledRoute);
-            L.geoJson(resampledRoute).addTo(vm.map);
+            // console.log("resampled route", resampledRoute);
+            L.geoJson(vm.resampledRoute).addTo(vm.map);
 
-            // renders the resampledRoute after the elevation data is returned from googleapi:
+            // renders the vm.resampledRoute after the elevation data is returned from googleapi:
             L.geoJson(turfElevation, {
               pointToLayer: function(feature, latlng) {
                 var myIcon = L.divIcon({
@@ -121,8 +113,17 @@
       };
 
       // functions for 3d map rotation
+
+      //scope variables
+      vm.angle = 0;
+      vm.xdrag = 0;
+      vm.isDown = false;
+      vm.xpos = 0;
+
       var mapRot = angular.element(document.querySelector('#maprotor'));
       var mapEl = angular.element(document.querySelector('#map'));
+      
+
       var tiltCheck= false;
 
       vm.mouseDown = function(e){
@@ -135,9 +136,12 @@
       vm.mouseMove = function(e){
         if (tiltCheck) {
           if (vm.isDown) {
+            var elevMarker = angular.element(document.querySelectorAll('.elevmarker'));
+            // console.log(elevMarker);
+
             vm.xdrag = (vm.xpos - e.pageX) / 4;
             mapEl.attr('style', '-webkit-transform:rotateZ(' + (vm.angle + vm.xdrag) % 360 + 'deg)');
-            // $('.elevmarker').attr('style', '-webkit-transform:rotateX(90deg) rotateY(' + (angle + xdrag) * (-1) % 360 + 'deg)')
+            elevMarker.attr('style', '-webkit-transform:rotateX(90deg) rotateY(' + (vm.angle + vm.xdrag) * (-1) % 360 + 'deg)');
           }
         }
       }
@@ -151,7 +155,7 @@
 
       // rotate (tilt) map
       vm.tiltMap = function() {
-        // vm.map.fitBounds(vm.map.featureLayer.setGeoJSON(turf.linestring(resampledRoute)).getBounds(), {
+        // vm.map.fitBounds(vm.map.featureLayer.setGeoJSON(turf.linestring(vm.resampledRoute)).getBounds(), {
         //   paddingTopLeft: [150, 50],
         //   paddingBottomRight: [150, 50]
         // });

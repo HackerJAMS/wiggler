@@ -6,26 +6,6 @@ body {
   height: 800px;
   margin: 0 auto;
   font-family: 'Open Sans', sans-serif;
-  /* &.rotated {
-    perspective: 1200;
-    #map {
-      overflow-y: visible;
-      overflow-x: hidden;
-      -moz-transform:rotateX(60deg);
-      -webkit-transform:rotateX(60deg);
-    }
-    #map,
-    #map * {
-      -webkit-transform-style: preserve-3d;
-      transform-style: preserve-3d;
-    }
-    .marker {
-      -webkit-transform: translateZ(1px);
-      transform: translateZ(1px);
-      transform: rotateX(90deg);
-      transform-origin: top center;
-    }
-  }*/
 }
 
 .tilted .leaflet-tile-container img {
