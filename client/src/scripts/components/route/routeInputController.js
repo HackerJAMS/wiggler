@@ -23,8 +23,9 @@
 
       vm.submitRoute = function(start, end, prefs) {
 
-        var start = vm.selectedStart.center;
-        var end = vm.selectedEnd.center;
+        // add default start/end points for testing (215 church to 500 divisadero)
+        var start = vm.selectedStart ? vm.selectedStart.center : [-122.428561, 37.767191];
+        var end = vm.selectedEnd ? vm.selectedEnd.center : [-122.437364, 37.774222];
         var prefs = '';
 
         console.log("start", vm.selectedStart, "end", vm.selectedEnd);

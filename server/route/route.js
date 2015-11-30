@@ -13,10 +13,6 @@ module.exports = function(req, res) {
   var end;
   var elevation = true;
 
-  // default start/end points for testing (611 mission to 598 market)
-  req.body.start = req.body.start || [ -122.399836, 37.7875 ];
-  req.body.end = req.body.end || [ -122.401752, 37.789027 ];
-
   if (req.body.start && req.body.end) {
     getStartEndNodes(req.body.start, req.body.end)
     .then(function(param){

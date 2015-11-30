@@ -12,50 +12,6 @@
         map.setView([37.774, -122.496], 13);
       };
 
-      vm.submitRoute = function(start, end, prefs) {
-        RouteService.postRouteRequest(start, end, prefs)
-          .then(function successCb(res) {
-
-            RouteService.cleanMap(polyline !== "undefined", vm.map);
-
-            var coords = res.data[0];
-            var elevation = res.data[1];
-
-            // path as array of long/lat tuple
-            var path = RouteService.getPath(coords);
-            // re-format elevation data with turf points
-            var elevationCollection = RouteService.getElevationPath(elevation);
-            // turf linestring
-            var turfLine = turf.linestring(path);
-            // resample turfline for 3d point display
-            var resampledPath = RouteService.getResampledPath(turfLine, elevationCollection);
-
-            // draw route on the map and fit the bounds of the map viewport to the route
-            polyline = L.geoJson(turfLine, {
-              color: 'red'
-            }).addTo(vm.map);
-            vm.map.fitBounds(polyline.getBounds());
-
-            // renders the resampledRoute after the elevation data is returned from googleapi:
-            L.geoJson(resampledPath, {
-              pointToLayer: function(feature, latlng) {
-                var roundedElev = feature.properties.elevation.toFixed(2);
-                var cssHeight = roundedElev * 4;
-                var myIcon = L.divIcon({
-                  className: 'markerline',
-                  html: '<div class="elevmarker"><div class="markercircle bottomcap"></div><div class="markerline" style="height:' + cssHeight + 'px">' + '</div><div class="markercircle"></div><div class="elevfigure">' + roundedElev + ' ft.</div></div>'
-                });
-                return L.marker(latlng, {
-                  icon: myIcon
-                });
-              }
-            }).addTo(vm.map);
-
-          }, function errorCb(res) {
-            console.log("error posting route request", res.status);
-          });
-      };
-
       // functions for 3d map rotation
 
       //scope variables
