@@ -139,6 +139,16 @@ md-content,
   transition: height 0.2s ease-in;
 }
 
+.elevfigure {
+  display: none;
+  font-size: 1.4em;
+  transform: rotateX(180deg);
+}
+
+.elevmarker:hover .elevfigure {
+  display: block;
+}
+
 .tilted .elevations {
   display: block
 }

@@ -46,9 +46,11 @@
             // renders the resampledRoute after the elevation data is returned from googleapi:
             L.geoJson(resampledPath, {
               pointToLayer: function(feature, latlng) {
+                var roundedElev = feature.properties.elevation.toFixed(2);
+                var cssHeight = roundedElev * 4;
                 var myIcon = L.divIcon({
                   className: 'markerline',
-                  html: '<div class="elevmarker"><div class="markercircle bottomcap"></div><div class="markerline" style="height:' + feature.properties.elevation *5 + 'px">' + '</div><div class="markercircle"></div><div class="elevfigure"><span style="font-size:0.9em"></span></div>'
+                  html: '<div class="elevmarker"><div class="markercircle bottomcap"></div><div class="markerline" style="height:' + cssHeight + 'px">' + '</div><div class="markercircle"></div><div class="elevfigure">' + roundedElev + ' ft.</div></div>'
                 });
                 return L.marker(latlng, {
                   icon: myIcon
