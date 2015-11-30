@@ -40,12 +40,12 @@
             // re-format elevation data with turf points
             var elevationCollection = RouteService.getElevationPath(elevation);
             // turf linestring
-            var turfLine = turf.linestring(path);
+            RouteService.turfLine = turf.linestring(path);
             // resample turfline for 3d point display
-            var resampledPath = RouteService.getResampledPath(turfLine, elevationCollection);
+            var resampledPath = RouteService.getResampledPath(RouteService.turfLine, elevationCollection);
 
             // draw route on the map and fit the bounds of the map viewport to the route
-            polyline = L.geoJson(turfLine, {
+            polyline = L.geoJson(RouteService.turfLine, {
               color: 'red'
             }).addTo(vm.map);
             vm.map.fitBounds(polyline.getBounds());
@@ -54,9 +54,9 @@
             L.geoJson(resampledPath, {
               pointToLayer: function(feature, latlng) {
                 var roundedElev = feature.properties.elevation.toFixed(2);
-                var cssHeight = roundedElev * 4;
+                var cssHeight = roundedElev;
                 var myIcon = L.divIcon({
-                  className: 'markerline',
+                  className: 'elevations',
                   html: '<div class="elevmarker"><div class="markercircle bottomcap"></div><div class="markerline" style="height:' + cssHeight + 'px">' + '</div><div class="markercircle"></div><div class="elevfigure">' + roundedElev + ' ft.</div></div>'
                 });
                 return L.marker(latlng, {

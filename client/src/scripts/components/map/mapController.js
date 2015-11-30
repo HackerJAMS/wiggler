@@ -17,8 +17,6 @@
       };
 
       // functions for 3d map rotation
-
-      //scope variables
       vm.angle = 0;
       vm.xdrag = 0;
       vm.isDown = false;
@@ -57,7 +55,7 @@
 
       // rotate (tilt) map
       vm.tiltMap = function() {
-        vm.map.fitBounds(vm.map.featureLayer.setGeoJSON(vm.turfLine).getBounds()
+        vm.map.fitBounds(vm.map.featureLayer.setGeoJSON(RouteService.turfLine).getBounds()
         //   , {
         //   paddingTopLeft: [150, 50],
         //   paddingBottomRight: [150, 50]
@@ -76,8 +74,7 @@
 
         vm.tiltCheck = false;
         mapRot.removeClass("tilted");
-        vm.map
-          .dragging.enable();
+        vm.map.dragging.enable();
         vm.angle = 0;
       };
     }])

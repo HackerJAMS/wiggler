@@ -115,6 +115,15 @@ md-content,
   margin: 6px;
 }
 
+.tilted .elevations {
+  display: block
+}
+
+.elevations {
+  opacity: 0.5;
+  display: none;
+}
+
 .markerline {
   width: 4px;
   margin-left: -2px;
