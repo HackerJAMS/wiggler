@@ -31,12 +31,10 @@
         console.log("start", vm.selectedStart, "end", vm.selectedEnd);
         RouteService.postRouteRequest(start, end, prefs)
           .then(function successCb(res) {
-
             RouteService.cleanMap(polyline !== "undefined", vm.map);
 
             var coords = res.data[0];
             var elevation = res.data[1];
-
             // path as array of long/lat tuple
             var path = RouteService.getPath(coords);
             // re-format elevation data with turf points

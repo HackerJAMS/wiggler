@@ -22,6 +22,7 @@
           var map = L.mapbox.map(element[0], 'mapbox.run-bike-hike', {
             tileSize: 5120,
             scrollWheelZoom: false,
+            zoomControl: false,
             maxZoom: 19,
             minZoom: 10
           });
