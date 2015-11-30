@@ -59,6 +59,26 @@
         }
         return route;
       };
+      // resample route with more points for 3d elevation display
+      route.getResampledPath = function(line, elevationCollection) {
+        var collection = [];
+        var distance = 0;
+        var resamplePoints = 100;
+        var turfDistance = turf.lineDistance(line, 'miles');
+        var interval = turfDistance / resamplePoints;
+
+        for (var i = 0; i < resamplePoints; i++) {
+          var point = turf.along(line, distance, 'miles');
+          // use elevation data from nearest point in elevationCollection
+          var nearest = turf.nearest(point, elevationCollection);
+          // push resampled point and elevation into collection
+          collection.push(point);
+          collection[i].properties.elevation = nearest.properties.elevation;
+          // update distance
+          distance = distance + interval;
+        }
+        return turf.featurecollection(collection);
+      }
       // format elevation and path data to use as turf collection
       route.getElevationPath = function(elevation) {
         var collection = [];
@@ -68,7 +88,7 @@
           collection.push(turf.point(coordArr));
           collection[i].properties.elevation = elevation;
         });
-        return collection;
+        return turf.featurecollection(collection);
       }
 
       return route;
