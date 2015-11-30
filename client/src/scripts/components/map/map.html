@@ -1,7 +1,6 @@
 <div ng-controller="MapController as ctrl">
   <div class="layout-column">
     <div class="map-control" flex="10">
-      <md-button ng-click="ctrl.submitRoute()">Test Route</md-button>
       <md-button ng-if="!ctrl.tiltCheck" ng-click="ctrl.tiltMap()">View in 3D</md-button>
       <md-button ng-if="ctrl.tiltCheck" ng-click="ctrl.restoreMap()">Edit Route</md-button>
     </div>

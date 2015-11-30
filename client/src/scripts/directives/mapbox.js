@@ -21,8 +21,7 @@
           L.mapbox.accessToken = 'pk.eyJ1IjoibWxsb3lkIiwiYSI6Im9nMDN3aW8ifQ.mwiVAv4E-1OeaoR25QZAvw';
           var map = L.mapbox.map(element[0], 'mapbox.run-bike-hike', {
             tileSize: 5120,
-            scrollWheelZoom: false,
-            zoomControl: false,
+            // zoomControl: false,
             maxZoom: 19,
             minZoom: 10
           });

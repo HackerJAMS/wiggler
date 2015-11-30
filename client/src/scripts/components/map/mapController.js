@@ -10,41 +10,13 @@
         RouteService.map = map;
         vm.map = map;
         map.setView([37.774, -122.496], 13);
-        new L.Control.Zoom({
-          position: 'topright'
-        }).addTo(map);
+        // new L.Control.Zoom({
+        //   position: 'topleft'
+        // }).addTo(map);
         map.scrollWheelZoom.disable();
       };
 
-      vm.submitRoute = function(start, end, prefs) {
-        RouteService.postRouteRequest(start, end, prefs)
-          .then(function successCb(res) {
-            RouteService.cleanMap(polyline !== "undefined", vm.map);
-            var coords = res.data[0];
-            var elevation = res.data[1];
-            // path as array of long/lat tuple
-            var path = RouteService.getPath(coords);
-            // re-format elevation data with turf points
-            var elevationCollection = RouteService.getElevationPath(elevation);
-            // turf linestring
-            vm.turfLine = turf.linestring(path);
-            // resample turfline for 3d point display
-            vm.resampledPath = RouteService.getResampledPath(vm.turfLine, elevationCollection);
-
-            // draw route on the map and fit the bounds of the map viewport to the route
-            polyline = L.geoJson(vm.turfLine, {
-              color: 'red'
-            }).addTo(vm.map);
-            vm.map.fitBounds(polyline.getBounds());
-
-          }, function errorCb(res) {
-            console.log("error posting route request", res.status);
-          });
-      };
-
       // functions for 3d map rotation
-
-      //scope variables
       vm.angle = 0;
       vm.xdrag = 0;
       vm.isDown = false;
@@ -83,7 +55,7 @@
 
       // rotate (tilt) map
       vm.tiltMap = function() {
-        vm.map.fitBounds(vm.map.featureLayer.setGeoJSON(vm.turfLine).getBounds()
+        vm.map.fitBounds(vm.map.featureLayer.setGeoJSON(RouteService.turfLine).getBounds()
         //   , {
         //   paddingTopLeft: [150, 50],
         //   paddingBottomRight: [150, 50]
@@ -93,23 +65,6 @@
         vm.tiltCheck = true;
         vm.map.dragging.disable(); 
         mapRot.addClass("tilted");
-
-        // renders the resampledRoute after the elevation data is returned from googleapi:
-        L.geoJson(vm.resampledPath, {
-          pointToLayer: function(feature, latlng) {
-            var roundedElev = feature.properties.elevation.toFixed(2);
-            var cssHeight = roundedElev * 4;
-            var myIcon = L.divIcon({
-              className: 'elevations',
-              html: '<div class="elevmarker"><div class="markercircle bottomcap"></div><div class="markerline" style="height:'
-                   + cssHeight + 'px">' + '</div><div class="markercircle"></div><div class="elevfigure">' + 
-                   roundedElev + ' ft.</div></div>'
-            });
-            return L.marker(latlng, {
-              icon: myIcon
-            });
-          }
-        }).addTo(vm.map);
       };
 
       vm.restoreMap = function (){
@@ -120,8 +75,7 @@
 
         vm.tiltCheck = false;
         mapRot.removeClass("tilted");
-        vm.map
-          .dragging.enable();
+        vm.map.dragging.enable();
         vm.angle = 0;
       };
     }])
