@@ -9,11 +9,9 @@
 
       var queryResult;
       vm.autocompleteQuery = function(searchText) {
-        console.log('address:', searchText);
         var defer = $q.defer();
         RouteService.geocoding(searchText)
           .then(function successCb(res) {
-            console.log('res', res.data.features);
             queryResult = res.data.features;
             defer.resolve(queryResult);
           }, function errorCb(res) {
@@ -32,6 +30,7 @@
         console.log("start", vm.selectedStart, "end", vm.selectedEnd);
         RouteService.postRouteRequest(start, end, prefs)
           .then(function successCb(res) {
+
             RouteService.cleanMap(polyline !== "undefined", vm.map);
 
             var coords = res.data[0];
@@ -66,7 +65,7 @@
                 });
               }
             }).addTo(vm.map);
-
+            
           }, function errorCb(res) {
             console.log("error posting route request", res.status);
           });
