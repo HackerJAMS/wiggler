@@ -139,10 +139,33 @@ md-content,
   transition: height 0.2s ease-in;
 }
 
+.markercircle {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  margin: -2px;
+  background: #60d0aA;
+  -moz-transform: rotateX(90deg);
+  -moz-transform-style: preserve-3d;
+  // -webkit-transform: rotateX(90deg);
+  -webkit-transform-style: preserve-3d;
+}
+
+.bottomcap {
+  background: #30a07A;
+}
+
 .elevfigure {
+  background: purple;
+  border-radius: 3px;
+  color: white;
   display: none;
-  font-size: 1.4em;
+  margin-top: 10px;
+  padding: 0px 4px;
+  text-align: center;
   transform: rotateX(180deg);
+  width: 100px;
+  -webkit-transform: rotateX(180deg) translateX(-50%);
 }
 
 .elevmarker:hover .elevfigure {
