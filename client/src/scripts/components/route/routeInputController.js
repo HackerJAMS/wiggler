@@ -50,6 +50,7 @@
             var flip_coords = path.map(function (ll){
               return [ll[1],ll[0]];
             })
+            console.log(resampledPath);
 
             RouteService.drawRoute(flip_coords);
             // draw route on the map and fit the bounds of the map viewport to the route

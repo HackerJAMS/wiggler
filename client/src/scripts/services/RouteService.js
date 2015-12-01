@@ -10,7 +10,7 @@
       route.initMap = function(map) {
         map.setView([37.774, -122.446], 13);
         map.scrollWheelZoom.disable();
-        route.map = map;
+        route.map = map.invalidateSize();
       };
 
       route.postRouteRequest = function(start, end, preferences) {

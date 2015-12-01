@@ -3,7 +3,7 @@
   'use strict';
 
   angular.module('app')
-    .directive('mapbox', ['RouteService', function(RouteService) {
+    .directive('mapbox', ['RouteService', '$timeout',function(RouteService, $timeout) {
       return {
         // restrict this directive to an html element ('E':element, 'A': attribute, 'C': component)
         restrict: 'E',
@@ -34,6 +34,11 @@
             bounds.max.y = bounds.max.y + 1000;
             return bounds;
           };
+          // this fixes the map glitch that causes the map to be loaded initially with
+          // the wrong container size, causing the map to be incorrectly centered
+          $timeout(function () {
+            map.invalidateSize(true);
+          });
           RouteService.initMap(map);
         }
       };
