@@ -49,6 +49,8 @@
               color: 'red'
             }).addTo(vm.map);
             vm.map.fitBounds(polyline.getBounds());
+            console.log("polyline bounds",polyline.getBounds());
+            console.log("vm map", vm.map);
 
             // renders the resampledRoute after the elevation data is returned from googleapi:
             L.geoJson(resampledPath, {

@@ -23,7 +23,7 @@
             tileSize: 5120,
             // zoomControl: false,
             maxZoom: 19,
-            minZoom: 10
+            minZoom: 11
           });
           var getPxBounds = map.getPixelBounds;
           map.getPixelBounds = function() {

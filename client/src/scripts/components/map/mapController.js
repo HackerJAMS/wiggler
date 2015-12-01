@@ -9,9 +9,6 @@
       vm.callback = function(map) {
         RouteService.map = map;
         map.setView([37.774, -122.496], 13);
-        new L.Control.Zoom({
-          position: 'topright'
-        }).addTo(map);
         map.scrollWheelZoom.disable();
         vm.map = map;
       };
@@ -61,6 +58,8 @@
         //   paddingBottomRight: [150, 50]
         // }
         );
+
+        console.log("tilted map bounds", vm.map.featureLayer.setGeoJSON(RouteService.turfLine).getBounds());
         vm.tiltCheck = true;
         vm.map.dragging.disable(); 
         mapRot.addClass("tilted");
