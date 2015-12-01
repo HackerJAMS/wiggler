@@ -19,6 +19,13 @@
   "dependencies": {
     "angular": "~1.4.7",
     "angular-ui-router": "~0.2.15",
-    "angular-material": "~0.11.4"
+    "angular-material": "~0.11.4",
+    "spin.js": "~2.3.2",
+    "angular-spinner": "~0.8.0",
+    "angular-loading-spinner": "~0.0.3"
+  },
+  "resolutions": {
+    "angular-spinner": "~0.8.0",
+    "spin.js": "~2.x"
   }
 }

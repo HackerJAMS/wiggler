@@ -46,15 +46,15 @@
             // turf linestring
             RouteService.turfLine = turf.linestring(path);
             // resample turfline for 3d point display
-            var resampledPath = RouteService.getResampledPath(RouteService.turfLine, elevationCollection);
-            var flip_coords = path.map(function (ll){
-              return [ll[1],ll[0]];
-            })
-            console.log(resampledPath);
 
-            RouteService.drawRoute(flip_coords);
+            var resampledPath = RouteService.getResampledPath(RouteService.turfLine, elevationCollection);
+
             // draw route on the map and fit the bounds of the map viewport to the route
-            setInterval(console.log("map bounds, polyline bounds", RouteService.map.getBounds()), 5000);
+            polyline = L.geoJson(RouteService.turfLine, {
+              color: 'red',
+              className: 'path_2d'
+            }).addTo(RouteService.map);
+            RouteService.map.fitBounds(polyline.getBounds());
 
             // renders the resampledRoute after the elevation data is returned from googleapi:
             L.geoJson(resampledPath, {

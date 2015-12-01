@@ -1,10 +1,12 @@
-<div ng-controller="MapController as ctrl" class="map-container">
-  <div class="map-controls">
-    <md-button ng-if="!ctrl.tiltCheck" ng-click="ctrl.tiltMap()">View in 3D</md-button>
-    <md-button ng-if="ctrl.tiltCheck" ng-click="ctrl.restoreMap()">Edit Route</md-button>
-  </div>
-  <div id="maprotor" ng-mousedown="ctrl.mouseDown($event)" ng-mousemove="ctrl.mouseMove($event)" ng-mouseup="ctrl.mouseUp($event)">
-    <mapbox callback="ctrl.callback"></mapbox>
+<div ng-controller="MapController as ctrl">
+  <div class="layout-column flex">
+    <div class="map-control" flex="10">
+      <md-button ng-if="!ctrl.tiltCheck" ng-click="ctrl.tiltMap()">View in 3D</md-button>
+      <md-button ng-if="ctrl.tiltCheck" ng-click="ctrl.restoreMap()">Edit Route</md-button>
+    </div>
+    <div id="maprotor" flex="90" ng-mousedown="ctrl.mouseDown($event)" ng-mousemove="ctrl.mouseMove($event)" ng-mouseup="ctrl.mouseUp($event)">
+      <mapbox callback="ctrl.callback"></mapbox>
+      <span us-spinner="{radius:30, width:8, length: 16, lines: 15, color: 'blue', scale: 1.75, opacity: 0.25, rotate: 0, direction: 1, speed: 1, trail: 60}"></span>
+    </div>
   </div>
 </div>
-<!-- <ng-mousedown="ctrl.mouseDown($event)" ng-mousemove="ctrl.rotateMap($event)" ng-mouseup="ctrl.mouseUp($event)"> -->

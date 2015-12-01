@@ -2,7 +2,7 @@
 (function() {
   'use strict';
   angular.module('app.map', [])
-    .controller('MapController', ['$location','RouteService', function($location, RouteService) {
+    .controller('MapController', ['$location','RouteService', 'usSpinnerService', function($location, RouteService, usSpinnerService) {
       var vm = this;
       var polyline;
 
@@ -17,6 +17,7 @@
 
       vm.tiltCheck= false;
       var elevMarker;
+
       vm.mouseDown = function(e){
         if (vm.tiltCheck){
           vm.xpos = e.pageX;
