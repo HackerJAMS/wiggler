@@ -14,7 +14,7 @@
           callback: "="
         },
         
-        template: '<div id="map">',
+        template: '<div id="map"/>',
         // link function allows the directive to manipulate the DOM
         link: function(scope, element, attributes) {
           // molly's public token

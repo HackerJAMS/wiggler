@@ -18,7 +18,7 @@ module.exports = function(req, res) {
     .then(function(param){
       start = param.startNode;
       end = param.endNode;
-      console.log("start "+start+"end "+end);
+
       if( start && end && !elevation) {
         /**
         Shortest Path from Dijkstra Algorithm
@@ -44,8 +44,8 @@ module.exports = function(req, res) {
             res.send(err);
           } else {
             // console.log('result when querying the minimum elevation path: ', result[0]);
-            result[0][0].unshift([req.body.start[1], req.body.start[0]]);
-            result[0][result[0].length-1].push([req.body.end[1], req.body.end[0]]);
+            // result[0][0].unshift([req.body.start[1], req.body.start[0]]);
+            // result[0][result[0].length-1].push([req.body.end[1], req.body.end[0]]);
             res.send(result);
           }
         });     
@@ -66,7 +66,6 @@ var getStartEndNodes = function(startCoord, endCoord) {
     closestNode(endCoord, function (closestEndNode) {
       // this works to get the closest end node as well.
       endNode = closestEndNode.id; 
-      console.log("start and end nodes here: " + startNode, endNode);
       defer.resolve({startNode: startNode, endNode: endNode});
     })
   })

@@ -27,6 +27,9 @@ md-content,
   height: 100%;
 }
 
+#main-content md-tabs md-tab-item {
+  color: black;
+}
 .map-container {
   margin: 0;
   padding: 0;
