@@ -2,7 +2,7 @@
 (function() {
   'use strict';
   angular.module('app.map', [])
-    .controller('MapController', ['$location','RouteService', 'usSpinnerService', function($location, RouteService, usSpinnerService) {
+    .controller('MapController', ['$location', 'RouteService', 'usSpinnerService', function($location, RouteService, usSpinnerService) {
       var vm = this;
       var polyline;
 
@@ -15,17 +15,17 @@
       var mapRot = angular.element(document.querySelector('#maprotor'));
       var mapEl = angular.element(document.querySelector('#map'));
 
-      vm.tiltCheck= false;
+      vm.tiltCheck = false;
       var elevMarker;
 
-      vm.mouseDown = function(e){
-        if (vm.tiltCheck){
+      vm.mouseDown = function(e) {
+        if (vm.tiltCheck) {
           vm.xpos = e.pageX;
           vm.isDown = true;
         }
       }
 
-      vm.mouseMove = function(e){
+      vm.mouseMove = function(e) {
         if (vm.tiltCheck) {
           if (vm.isDown) {
             elevMarker = angular.element(document.querySelectorAll('.elevmarker'));
@@ -37,8 +37,8 @@
         }
       }
 
-      vm.mouseUp = function(e){
-        if (vm.tiltCheck){
+      vm.mouseUp = function(e) {
+        if (vm.tiltCheck) {
           vm.isDown = false;
           vm.angle = vm.angle + vm.xdrag;
         }
@@ -46,21 +46,21 @@
 
       // rotate (tilt) map
       vm.tiltMap = function() {
-        RouteService.map.fitBounds(RouteService.map.featureLayer.setGeoJSON(RouteService.turfLine).getBounds()
-        //   , {
-        //   paddingTopLeft: [150, 50],
-        //   paddingBottomRight: [150, 50]
-        // }
-        );
+        if (RouteService.turfLine) {
+          RouteService.map.fitBounds(RouteService.map.featureLayer.setGeoJSON(RouteService.turfLine).getBounds(), {
+            paddingTopLeft: [150, 50],
+            paddingBottomRight: [150, 50]
+          });
+        }
 
         vm.tiltCheck = true;
-        RouteService.map.dragging.disable(); 
+        RouteService.map.dragging.disable();
         mapRot.addClass("tilted");
       };
 
-      vm.restoreMap = function (){
+      vm.restoreMap = function() {
         elevMarker = angular.element(document.querySelectorAll('.elevmarker'));
-        
+
         mapEl.attr('style', 'transition:all 0.25s');
         elevMarker.attr('style', '');
 

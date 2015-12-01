@@ -8,9 +8,12 @@
       route.map;
       route.turfLine;
       route.initMap = function(map) {
+        new L.Control.Zoom({
+          position: 'topleft'
+        }).addTo(map);
         map.setView([37.774, -122.446], 13);
         map.scrollWheelZoom.disable();
-        route.map = map.invalidateSize();
+        route.map = map;
       };
 
       route.postRouteRequest = function(start, end, preferences) {
