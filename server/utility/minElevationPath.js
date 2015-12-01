@@ -29,7 +29,7 @@ module.exports = function(start, end, callback) {
     */ 
     elev(coordinates, function(elevation){
       path_data = [coordinates, elevation.results];
-      console.log('elevations', elevation.results);
+      // console.log('elevations', elevation.results);
       callback(err, path_data);
     });
   });
