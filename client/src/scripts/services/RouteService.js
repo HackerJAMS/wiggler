@@ -8,7 +8,7 @@
       route.map;
       route.turfLine;
       route.initMap = function(map) {
-        map.setView([37.774, -122.496], 13);
+        map.setView([37.774, -122.446], 13);
         map.scrollWheelZoom.disable();
         route.map = map;
       };
