@@ -42,6 +42,7 @@
             // turf linestring
             RouteService.turfLine = turf.linestring(path);
             // resample turfline for 3d point display
+
             var resampledPath = RouteService.getResampledPath(RouteService.turfLine, elevationCollection);
 
             // draw route on the map and fit the bounds of the map viewport to the route
