@@ -8,6 +8,21 @@ body {
   font-family: 'Open Sans', sans-serif;
 }
 
+div.line {
+    width: 30px;
+    display: inline-block;
+    border-bottom-style: solid;
+    border-bottom-width: 3px;
+    margin: 4px 0px;
+}
+.red {
+  border-bottom: red
+}
+.blue {
+  border-bottom: blue
+}
+
+
 .tilted .leaflet-tile-container img {
   pointer-events: none;
 }
