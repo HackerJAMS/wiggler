@@ -5,8 +5,9 @@
     .controller('RouteInputController', ['$location', '$q', 'RouteService', function($location, $q, RouteService) {
       var vm = this;
       var polyline;
-      
+      var currentPosition;
       var queryResult;
+      
       vm.autocompleteQuery = function(searchText) {
         var defer = $q.defer();
         RouteService.geocoding(searchText)
@@ -27,6 +28,51 @@
         vm.selectedEnd = start;
       };
 
+      vm.getLocation = function(){
+        if(!navigator.geolocation){
+          console.log('Geolocation is not available');
+        } else {
+          navigator.geolocation.getCurrentPosition(function successCb(position){
+            //draw marker on map
+            var userLat = position.coords.latitude;
+            var userLng = position.coords.longitude;
+            var userCoords = [userLng, userLat];
+            currentPosition = userCoords;
+            console.log(currentPosition);
+
+            var geojsonMarkerOptions = {
+              radius: 8,
+              fillColor: "#ff7800",
+              color: "#000",
+              weight: 1,
+              opacity: 1,
+              fillOpacity: 0.8
+            };
+
+            var userLocation = {
+              "type" : "Feature", 
+              "properties" : {
+                "name" : "mylocation"
+              },
+              "geometry" : {
+                "type" : "Point",
+                "coordinates" : userCoords
+              }
+            }
+      
+            L.geoJson(userLocation, {
+                pointToLayer: function (feature, latlng) {
+                    return L.circleMarker(latlng, geojsonMarkerOptions);
+                }
+            }).addTo(vm.map);
+       
+            
+          }, function errorCb(err){
+            console.warn('geolocation error');
+          });
+        }
+      };
+
       vm.submitRoute = function(start, end, prefs) {
         // add default start/end points for testing (215 church to 500 divisadero)
         var start = vm.selectedStart ? vm.selectedStart.center : [-122.428561, 37.767191];
@@ -34,6 +80,10 @@
         var prefs = '';
 
         // console.log("start", start, "end", end);
+        if(currentPosition){
+          start = currentPosition;
+        }
+
         RouteService.postRouteRequest(start, end, prefs)
           .then(function successCb(res) {
             RouteService.cleanMap(polyline !== "undefined", RouteService.map);
@@ -70,6 +120,9 @@
                 });
               }
             }).addTo(RouteService.map);
+
+            //clear out currentPosition
+            currentPosition = null;
             
           }, function errorCb(res) {
             console.log("error posting route request", res.status);
