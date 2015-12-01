@@ -6,13 +6,6 @@
       var vm = this;
       var polyline;
 
-      vm.callback = function(map) {
-        RouteService.map = map;
-        map.setView([37.774, -122.496], 13);
-        map.scrollWheelZoom.disable();
-        vm.map = map;
-      };
-
       // functions for 3d map rotation
       vm.angle = 0;
       vm.xdrag = 0;
@@ -52,16 +45,15 @@
 
       // rotate (tilt) map
       vm.tiltMap = function() {
-        vm.map.fitBounds(vm.map.featureLayer.setGeoJSON(RouteService.turfLine).getBounds()
+        RouteService.map.fitBounds(RouteService.map.featureLayer.setGeoJSON(RouteService.turfLine).getBounds()
         //   , {
         //   paddingTopLeft: [150, 50],
         //   paddingBottomRight: [150, 50]
         // }
         );
 
-        console.log("tilted map bounds", vm.map.featureLayer.setGeoJSON(RouteService.turfLine).getBounds());
         vm.tiltCheck = true;
-        vm.map.dragging.disable(); 
+        RouteService.map.dragging.disable(); 
         mapRot.addClass("tilted");
       };
 
@@ -73,7 +65,7 @@
 
         vm.tiltCheck = false;
         mapRot.removeClass("tilted");
-        vm.map.dragging.enable();
+        RouteService.map.dragging.enable();
         vm.angle = 0;
       };
     }])

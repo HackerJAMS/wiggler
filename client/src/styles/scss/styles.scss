@@ -3,13 +3,22 @@ $green: #8EE5A3;
 body {
   background-color: white;
   width: 100%;
-  height: 800px;
+  height: 100%;
   margin: 0 auto;
   font-family: 'Open Sans', sans-serif;
 }
 
 .tilted .leaflet-tile-container img {
   pointer-events: none;
+}
+
+
+path.leaflet-clickable {
+  display: none;
+}
+
+path.leaflet-clickable.path_2d {
+  display: block;
 }
 
 .tilted path.leaflet-clickable,
@@ -30,7 +39,7 @@ md-content,
 .map-container {
   margin: 0;
   padding: 0;
-  position: relative;
+  height: 600px;
   -moz-perspective: 1200px;
   -moz-transform: translate3d(0, 0, 0);
   -webkit-perspective: 1200;
@@ -46,7 +55,6 @@ md-content,
   bottom: 0;
   width: 100%;
   height: 100%;
-  overflow: visible;
 }
 
 #map {
@@ -170,11 +178,9 @@ md-content,
   display: block
 }
 
-.map-control {
-  z-index: 999;
-}
 
-.map-control button {
+.map-controls button {
+  z-index: 999;
   background: rgba(255, 255, 255, 0.8);
   border: 1px solid;
   margin-top: 12px;
@@ -183,6 +189,6 @@ md-content,
 
 /* move button out of the way of zoom-in/out control */
 
-.map-control button:first-of-type {
+.map-controls button:first-of-type {
   margin-left: 60px;
 }

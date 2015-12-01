@@ -3,8 +3,7 @@
   'use strict';
 
   angular.module('app')
-    .directive('mapbox', [function() {
-      var _mapboxMap;
+    .directive('mapbox', ['RouteService', function(RouteService) {
       return {
         // restrict this directive to an html element ('E':element, 'A': attribute, 'C': component)
         restrict: 'E',
@@ -28,14 +27,14 @@
           var getPxBounds = map.getPixelBounds;
           map.getPixelBounds = function() {
             var bounds = getPxBounds.call(this);
-            // ... extend the bounds
+            // ... extend the bounds for 3d viewing purposes
             bounds.min.x = bounds.min.x - 1000;
             bounds.min.y = bounds.min.y - 1000;
             bounds.max.x = bounds.max.x + 1000;
             bounds.max.y = bounds.max.y + 1000;
             return bounds;
           };
-          scope.callback(map);
+          RouteService.initMap(map);
         }
       };
     }]);
