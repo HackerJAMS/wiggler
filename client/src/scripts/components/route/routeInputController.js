@@ -70,7 +70,6 @@
           .then(function successCb(res) {
             RouteService.cleanMap(polyline !== "undefined", RouteService.map);
             var color = '';
-            console.log(res.data);
             for (var path in res.data) {
               if (path === 'shortestPath') {
                 color = 'red';
@@ -128,5 +127,3 @@
             }).addTo(RouteService.map);
             
       };
-    }])
-})();
