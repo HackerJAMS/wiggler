@@ -8,7 +8,7 @@
 
       vm.callback = function(map) {
         RouteService.map = map;
-        map.setView([37.774, -122.496], 13);
+        map.setView([37.773, -122.446], 13);
         map.scrollWheelZoom.disable();
         vm.map = map;
       };
