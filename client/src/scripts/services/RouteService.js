@@ -7,6 +7,14 @@
       
       route.map;
       route.turfLine;
+      route.initMap = function(map) {
+        new L.Control.Zoom({
+          position: 'topleft'
+        }).addTo(map);
+        map.setView([37.774, -122.446], 13);
+        map.scrollWheelZoom.disable();
+        route.map = map;
+      };
 
       route.postRouteRequest = function(start, end, preferences) {
         return $http({
@@ -92,7 +100,17 @@
         return turf.featurecollection(collection);
       }
 
+      route.drawRoute = function(path) {
+        var polyline = L.polyline(path, {color:"red", className: "path_2d"}).addTo(route.map);
+        // console.log("polyline bounds", polyline.getBounds());
+        route.map.fitBounds(polyline.getBounds());
+        // console.log("map bounds after fit", route.map.getBounds())
+
+      }
+
       return route;
     }])
+
+
 
 })();
