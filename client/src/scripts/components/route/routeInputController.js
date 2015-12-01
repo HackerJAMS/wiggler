@@ -20,6 +20,13 @@
         return defer.promise;
       };
 
+      vm.flipStartEnd = function() {
+        var start = vm.selectedStart;
+        var end = vm.selectedEnd;
+        vm.selectedStart = end;
+        vm.selectedEnd = start;
+      };
+
       vm.submitRoute = function(start, end, prefs) {
         // add default start/end points for testing (215 church to 500 divisadero)
         var start = vm.selectedStart ? vm.selectedStart.center : [-122.428561, 37.767191];
