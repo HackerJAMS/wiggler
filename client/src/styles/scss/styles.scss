@@ -12,6 +12,11 @@ body {
   pointer-events: none;
 }
 
+.tilted path.leaflet-clickable,
+.tilted .leaflet-control-container {
+  display: none;
+}
+
 .app-container {
   width: 100%;
   height: 100%;
@@ -108,6 +113,15 @@ md-content,
   -webkit-transform-origin: 0% 0%;
   transform-style: preserve-3d;
   margin: 6px;
+}
+
+.tilted .elevations {
+  display: block
+}
+
+.elevations {
+  opacity: 0.5;
+  display: none;
 }
 
 .markerline {

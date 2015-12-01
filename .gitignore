@@ -9,3 +9,5 @@ client/bower_components
 mapbox-elevation-ex.html
 mapbox-elev.js
 db_dump.sql
+
+*.orig

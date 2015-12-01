@@ -21,43 +21,51 @@
         return defer.promise;
       };
 
+      vm.flipStartEnd = function() {
+        var start = vm.selectedStart;
+        var end = vm.selectedEnd;
+        vm.selectedStart = end;
+        vm.selectedEnd = start;
+      };
+
       vm.submitRoute = function(start, end, prefs) {
 
-        var start = vm.selectedStart.center;
-        var end = vm.selectedEnd.center;
+        // add default start/end points for testing (215 church to 500 divisadero)
+        var start = vm.selectedStart ? vm.selectedStart.center : [-122.428561, 37.767191];
+        var end = vm.selectedEnd ? vm.selectedEnd.center : [-122.437364, 37.774222];
         var prefs = '';
 
         console.log("start", vm.selectedStart, "end", vm.selectedEnd);
         RouteService.postRouteRequest(start, end, prefs)
           .then(function successCb(res) {
-
             RouteService.cleanMap(polyline !== "undefined", vm.map);
 
             var coords = res.data[0];
             var elevation = res.data[1];
-
             // path as array of long/lat tuple
             var path = RouteService.getPath(coords);
             // re-format elevation data with turf points
             var elevationCollection = RouteService.getElevationPath(elevation);
             // turf linestring
-            var turfLine = turf.linestring(path);
+            RouteService.turfLine = turf.linestring(path);
             // resample turfline for 3d point display
-            var resampledPath = RouteService.getResampledPath(turfLine, elevationCollection);
+            var resampledPath = RouteService.getResampledPath(RouteService.turfLine, elevationCollection);
 
             // draw route on the map and fit the bounds of the map viewport to the route
-            polyline = L.geoJson(turfLine, {
+            polyline = L.geoJson(RouteService.turfLine, {
               color: 'red'
             }).addTo(vm.map);
             vm.map.fitBounds(polyline.getBounds());
+            console.log("polyline bounds",polyline.getBounds());
+            console.log("vm map", vm.map);
 
             // renders the resampledRoute after the elevation data is returned from googleapi:
             L.geoJson(resampledPath, {
               pointToLayer: function(feature, latlng) {
                 var roundedElev = feature.properties.elevation.toFixed(2);
-                var cssHeight = roundedElev * 4;
+                var cssHeight = roundedElev;
                 var myIcon = L.divIcon({
-                  className: 'markerline',
+                  className: 'elevations',
                   html: '<div class="elevmarker"><div class="markercircle bottomcap"></div><div class="markerline" style="height:' + cssHeight + 'px">' + '</div><div class="markercircle"></div><div class="elevfigure">' + roundedElev + ' ft.</div></div>'
                 });
                 return L.marker(latlng, {
