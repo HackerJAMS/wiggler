@@ -6,6 +6,7 @@
       var route = {};
       
       route.map;
+      route.turfLine;
 
       route.postRouteRequest = function(start, end, preferences) {
         return $http({
