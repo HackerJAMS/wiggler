@@ -9,17 +9,30 @@ var shortestPath = require('../utility/shortestPath.js');
 var minElevationPath = require('../utility/minElevationPath.js');
 var closestNode = require('../utility/closestNode.js');
 module.exports = function(req, res) {
-  var start;
-  var end;
-  var elevation = true;
+  var results = {};
 
   if (req.body.start && req.body.end) {
     getStartEndNodes(req.body.start, req.body.end)
     .then(function(param){
-      start = param.startNode;
-      end = param.endNode;
+      var start = param.startNode;
+      var end = param.endNode;
+      
+      var shortestPathChecked = req.body.preferences.shortestPathChecked;
+      var minElevPathChecked = req.body.preferences.minElevPathChecked;
 
-      if( start && end && !elevation) {
+      console.log("shortestPathChecked",shortestPathChecked);
+      console.log("minElevPathChecked", minElevPathChecked); 
+
+      var totalSelections = 0;
+      if (shortestPathChecked) {
+        totalSelections++;
+      }
+      if (minElevPathChecked) {
+        totalSelections++;
+      }
+
+      var counter = 0;
+      if( start && end && shortestPathChecked) {
         /**
         Shortest Path from Dijkstra Algorithm
         **/
@@ -29,11 +42,16 @@ module.exports = function(req, res) {
             console.error('could not obtain the shortest path: ', err);
             res.send(err);
           } else {
-            console.log('result when querying the shortest path: ', result);
-            res.send(result);
+            results.shortestPath = result;
+            counter++;
+            if (counter === totalSelections) {
+              res.send(results);
+            }
           }
         });       
-      } else if (start && end && elevation) {
+      } 
+
+      if (start && end && minElevPathChecked) {
         /**
         Minimum Elevation Path from Dijkstra Algorithm
         **/
@@ -46,7 +64,11 @@ module.exports = function(req, res) {
             // console.log('result when querying the minimum elevation path: ', result[0]);
             // result[0][0].unshift([req.body.start[1], req.body.start[0]]);
             // result[0][result[0].length-1].push([req.body.end[1], req.body.end[0]]);
-            res.send(result);
+            results.minElevationPath = result;
+            counter++;
+            if (counter === totalSelections) {
+              res.send(results);
+            }            
           }
         });     
       }
