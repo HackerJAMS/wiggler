@@ -30,7 +30,6 @@
       };
 
       vm.getLocation = function(){
-
         console.log('in location');
         if(!navigator.geolocation){
           alert('Geolocation is not available on this browser!');
@@ -45,7 +44,7 @@
             RouteService.getLocationAddress(currentPosition)
               .then(function successCb(res){
                 var userCurrentLocation = res.data.features[0].place_name;
-                vm.selectedStart = userCurrentLocation;
+                vm.selectedStart = res.data.features[0]
               }, function errorCb(err){
                 console.log('error!!')
               });
@@ -86,6 +85,7 @@
       vm.submitRoute = function(start, end, prefs) {
 
         // add default start/end points for testing (215 church to 500 divisadero)
+
         var start = vm.selectedStart ? vm.selectedStart.center : [-122.428561, 37.767191];
         var end = vm.selectedEnd ? vm.selectedEnd.center : [-122.437364, 37.774222];
         var prefs = {};
@@ -133,11 +133,13 @@
 
             // draw route on the map and fit the bounds of the map viewport to the route
             polyline = L.geoJson(RouteService.turfLine, {
-              color: 'red'
+              color: 'red',
+              className:'route-path'
             }).addTo(RouteService.map);
             RouteService.map.fitBounds(polyline.getBounds());
             // this allows the line and map to load before drawing the path
-            var path = angular.element(document.querySelector('path'));
+            var path = angular.element(document.querySelectorAll('path.route-path'));
+            console.log(path);
             setTimeout(function() {
               path.css('stroke-dashoffset', 0)
             }, 10);
