@@ -6,9 +6,7 @@
       var vm = this;
       var polyline;
       var queryResult;
-      var currentPosition;
-    
-    
+
       vm.autocompleteQuery = function(searchText) {
         var defer = $q.defer();
         RouteService.geocoding(searchText)
@@ -30,29 +28,28 @@
       };
 
       vm.getLocation = function(){
-        //retrieves coordinates from local storage 
-        if(localStorage['userCoords']){
-          currentPosition = JSON.parse(localStorage['userCoords']);
-          vm.selectedStart = 'Current Position';
-        } else {
-          
-          if(!navigator.geolocation){
-            alert('Geolocation is not available on this browser!');
-          } else {
-            navigator.geolocation.getCurrentPosition(function successCb(position){
-              var userLat = position.coords.latitude;
-              var userLng = position.coords.longitude;
-              var userCoords = [userLng, userLat];
-              currentPosition = userCoords;
-              //saves user location coordinates in local storage
-              localStorage['userCoords'] = JSON.stringify(userCoords);
-              vm.selectedStart = 'Current Position';
-             
-            }, function errorCb(err){
-              console.warn('geolocation error');
-            });
-          }
+        
+        var currentPosition;
+        // get user location coordinates via HTML5 geolocator
+        if(!localStorage['userCoords']){
+          navigator.geolocation.getCurrentPosition(function successCb(position) {
+            var userLat = position.coords.latitude;
+            var userLng = position.coords.longitude;
+            var userCoords = [userLng, userLat];
+            currentPosition = userCoords;
+            //saves user location coordinates in local storage
+            localStorage['userCoords'] = JSON.stringify(userCoords);
+
+          }, function errorCb(err) {
+            console.warn('geolocation error');
+          });
         }
+        //retrieves coordinates from local storage 
+        currentPosition = JSON.parse(localStorage['userCoords']);
+
+        vm.selectedStart = {};
+        vm.selectedStart.center = currentPosition;
+        vm.selectedStart.place_name = 'Current Position';
       };
 
       vm.submitRoute = function(start, end, prefs) {
@@ -68,10 +65,6 @@
         //console.log("shortestPathChecked", prefs.shortestPathChecked);
         //console.log("minElevPathChecked", prefs.minElevPathChecked);       
         // console.log("start", start, "end", end);
-        if(currentPosition){
-          start = currentPosition;
-          
-        }
 
         RouteService.postRouteRequest(start, end, prefs)
           .then(function successCb(res) {
@@ -133,9 +126,7 @@
                 });
               }
             }).addTo(RouteService.map);
-
-        //clear out currentPosition
-        currentPosition = null;              
+            
       };
     }])
 })();
