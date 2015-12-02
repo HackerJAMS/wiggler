@@ -27,6 +27,7 @@
           }
         })
       };
+      
       route.postElevationRequest = function(coordinates) {
         return $http({
           method: 'POST',

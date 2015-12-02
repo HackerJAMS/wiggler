@@ -103,6 +103,7 @@
           .then(function successCb(res) {
             RouteService.cleanMap(polyline !== "undefined", RouteService.map);
             var color = '';
+            console.log(res.data);
             for (var path in res.data) {
               if (path === 'shortestPath') {
                 color = 'red';
@@ -112,6 +113,7 @@
               console.log(path, color);
               var coords = res.data[path][0];
               var elevation = res.data[path][1];
+              console.log("coords, elevation, color", coords, elevation, color)
               plotRoute(coords, elevation, color);
             }
           
@@ -139,7 +141,6 @@
             RouteService.map.fitBounds(polyline.getBounds());
             // this allows the line and map to load before drawing the path
             var path = angular.element(document.querySelectorAll('path.route-path'));
-            console.log(path);
             setTimeout(function() {
               path.css('stroke-dashoffset', 0)
             }, 10);
