@@ -55,6 +55,9 @@
             }
           })
         }
+      var elevationIcons = angular.element(document.querySelectorAll('.elevations'));
+      elevationIcons.remove();
+
       };
       // process the coordinates in the path sent from the server routing algorithm
       route.getPath = function(coords) {
