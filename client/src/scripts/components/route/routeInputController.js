@@ -40,14 +40,6 @@
             var userLng = position.coords.longitude;
             var userCoords = [userLng, userLat];
             currentPosition = userCoords;
-            
-            RouteService.getLocationAddress(currentPosition)
-              .then(function successCb(res){
-                var userCurrentLocation = res.data.features[0].place_name;
-                vm.selectedStart = res.data.features[0]
-              }, function errorCb(err){
-                console.log('error!!')
-              });
 
             var geojsonMarkerOptions = {
               radius: 8,
@@ -67,14 +59,24 @@
                 "type" : "Point",
                 "coordinates" : userCoords
               }
-            }
+            };
+            
+            RouteService.getLocationAddress(currentPosition)
+              .then(function successCb(res){
+                var userCurrentLocation = res.data.features[0].place_name;
+                vm.selectedStart = userCurrentLocation;
+                console.log('userLocation feature', userLocation);
       
-            L.geoJson(userLocation, {
-                pointToLayer: function (feature, latlng) {
+                L.geoJson(userLocation, {
+                  pointToLayer: function (feature, latlng) {
                     return L.circleMarker(latlng, geojsonMarkerOptions);
                 }
-            }).addTo(RouteService.map);
-       
+              }).addTo(RouteService.map);
+              
+
+              }, function errorCb(err){
+                console.log('error!!')
+              });
             
           }, function errorCb(err){
             console.warn('geolocation error');
