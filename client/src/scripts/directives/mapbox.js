@@ -3,8 +3,7 @@
   'use strict';
 
   angular.module('app')
-    .directive('mapbox', [function() {
-      var _mapboxMap;
+    .directive('mapbox', ['RouteService', '$timeout',function(RouteService, $timeout) {
       return {
         // restrict this directive to an html element ('E':element, 'A': attribute, 'C': component)
         restrict: 'E',
@@ -14,28 +13,33 @@
           callback: "="
         },
         
-        template: '<div id="map">',
+        template: '<div id="map"/>',
         // link function allows the directive to manipulate the DOM
         link: function(scope, element, attributes) {
           // molly's public token
           L.mapbox.accessToken = 'pk.eyJ1IjoibWxsb3lkIiwiYSI6Im9nMDN3aW8ifQ.mwiVAv4E-1OeaoR25QZAvw';
           var map = L.mapbox.map(element[0], 'mapbox.run-bike-hike', {
             tileSize: 5120,
-            // zoomControl: false,
+            zoomControl: false,
             maxZoom: 19,
             minZoom: 11
           });
           var getPxBounds = map.getPixelBounds;
           map.getPixelBounds = function() {
             var bounds = getPxBounds.call(this);
-            // ... extend the bounds
+            // ... extend the bounds for 3d viewing purposes
             bounds.min.x = bounds.min.x - 1000;
             bounds.min.y = bounds.min.y - 1000;
             bounds.max.x = bounds.max.x + 1000;
             bounds.max.y = bounds.max.y + 1000;
             return bounds;
           };
-          scope.callback(map);
+          // this fixes the map glitch that causes the map to be loaded initially with
+          // the wrong container size, causing the map to be incorrectly centered
+          $timeout(function () {
+            map.invalidateSize(true);
+          });
+          RouteService.initMap(map);
         }
       };
     }]);

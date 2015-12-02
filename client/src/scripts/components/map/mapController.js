@@ -2,16 +2,9 @@
 (function() {
   'use strict';
   angular.module('app.map', [])
-    .controller('MapController', ['$location','RouteService', function($location, RouteService) {
+    .controller('MapController', ['$location', 'RouteService', 'usSpinnerService', function($location, RouteService, usSpinnerService) {
       var vm = this;
       var polyline;
-
-      vm.callback = function(map) {
-        RouteService.map = map;
-        map.setView([37.774, -122.496], 13);
-        map.scrollWheelZoom.disable();
-        vm.map = map;
-      };
 
       // functions for 3d map rotation
       vm.angle = 0;
@@ -22,16 +15,17 @@
       var mapRot = angular.element(document.querySelector('#maprotor'));
       var mapEl = angular.element(document.querySelector('#map'));
 
-      vm.tiltCheck= false;
+      vm.tiltCheck = false;
       var elevMarker;
-      vm.mouseDown = function(e){
-        if (vm.tiltCheck){
+
+      vm.mouseDown = function(e) {
+        if (vm.tiltCheck) {
           vm.xpos = e.pageX;
           vm.isDown = true;
         }
       }
 
-      vm.mouseMove = function(e){
+      vm.mouseMove = function(e) {
         if (vm.tiltCheck) {
           if (vm.isDown) {
             elevMarker = angular.element(document.querySelectorAll('.elevmarker'));
@@ -43,8 +37,8 @@
         }
       }
 
-      vm.mouseUp = function(e){
-        if (vm.tiltCheck){
+      vm.mouseUp = function(e) {
+        if (vm.tiltCheck) {
           vm.isDown = false;
           vm.angle = vm.angle + vm.xdrag;
         }
@@ -52,28 +46,27 @@
 
       // rotate (tilt) map
       vm.tiltMap = function() {
-        vm.map.fitBounds(vm.map.featureLayer.setGeoJSON(RouteService.turfLine).getBounds()
-        //   , {
-        //   paddingTopLeft: [150, 50],
-        //   paddingBottomRight: [150, 50]
-        // }
-        );
+        if (RouteService.turfLine) {
+          RouteService.map.fitBounds(RouteService.map.featureLayer.setGeoJSON(RouteService.turfLine).getBounds(), {
+            paddingTopLeft: [150, 50],
+            paddingBottomRight: [150, 50]
+          });
+        }
 
-        console.log("tilted map bounds", vm.map.featureLayer.setGeoJSON(RouteService.turfLine).getBounds());
         vm.tiltCheck = true;
-        vm.map.dragging.disable(); 
+        RouteService.map.dragging.disable();
         mapRot.addClass("tilted");
       };
 
-      vm.restoreMap = function (){
+      vm.restoreMap = function() {
         elevMarker = angular.element(document.querySelectorAll('.elevmarker'));
-        
+
         mapEl.attr('style', 'transition:all 0.25s');
         elevMarker.attr('style', '');
 
         vm.tiltCheck = false;
         mapRot.removeClass("tilted");
-        vm.map.dragging.enable();
+        RouteService.map.dragging.enable();
         vm.angle = 0;
       };
     }])

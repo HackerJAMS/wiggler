@@ -3,13 +3,22 @@ $green: #8EE5A3;
 body {
   background-color: white;
   width: 100%;
-  height: 800px;
+  height: 100%;
   margin: 0 auto;
   font-family: 'Open Sans', sans-serif;
 }
 
 .tilted .leaflet-tile-container img {
   pointer-events: none;
+}
+
+
+path.leaflet-clickable {
+  display: none;
+}
+
+path.leaflet-clickable.path_2d {
+  display: block;
 }
 
 .tilted path.leaflet-clickable,
@@ -164,25 +173,27 @@ md-content,
 
 .elevmarker:hover .elevfigure {
   display: block;
-}
+}v
 
 .tilted .elevations {
   display: block
 }
 
-.map-control {
+#main-content md-tabs md-tab-item {
+  color: black;
+}
+.map-controls {
   z-index: 999;
 }
 
-.map-control button {
+.map-controls button {
   background: rgba(255, 255, 255, 0.8);
   border: 1px solid;
   margin-top: 12px;
 }
 
-
 /* move button out of the way of zoom-in/out control */
 
-.map-control button:first-of-type {
+.map-controls button:first-of-type {
   margin-left: 60px;
 }
