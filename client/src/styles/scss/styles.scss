@@ -27,14 +27,15 @@ div.line {
   pointer-events: none;
 }
 
-
 path.leaflet-clickable {
-  display: none;
+  stroke-width: 4px;
+  stroke-dashoffset: 10000;
+  stroke-dasharray: 10000;
+  -moz-transition: stroke-dashoffset 3s;
+  -webkit-transition: stroke-dashoffset 3s;
+  pointer-events: none;
 }
 
-path.leaflet-clickable.path_2d {
-  display: block;
-}
 
 .tilted path.leaflet-clickable,
 .tilted .leaflet-control-container {

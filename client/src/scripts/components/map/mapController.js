@@ -2,7 +2,7 @@
 (function() {
   'use strict';
   angular.module('app.map', [])
-    .controller('MapController', ['$location', 'RouteService', 'usSpinnerService', function($location, RouteService, usSpinnerService) {
+    .controller('MapController', ['$location', 'RouteService', function($location, RouteService, usSpinnerService) {
       var vm = this;
       var polyline;
 
@@ -16,7 +16,6 @@
       var mapEl = angular.element(document.querySelector('#map'));
 
       vm.tiltCheck = false;
-      var elevMarker;
 
       vm.mouseDown = function(e) {
         if (vm.tiltCheck) {
@@ -28,7 +27,7 @@
       vm.mouseMove = function(e) {
         if (vm.tiltCheck) {
           if (vm.isDown) {
-            elevMarker = angular.element(document.querySelectorAll('.elevmarker'));
+            var elevMarker = angular.element(document.querySelectorAll('.elevmarker'));
 
             vm.xdrag = (vm.xpos - e.pageX) / 4;
             mapEl.attr('style', '-webkit-transform:rotateZ(' + (vm.angle + vm.xdrag) % 360 + 'deg)');
@@ -59,10 +58,12 @@
       };
 
       vm.restoreMap = function() {
-        elevMarker = angular.element(document.querySelectorAll('.elevmarker'));
-
+        var elevMarker = angular.element(document.querySelectorAll('.elevmarker'));
+        var path = angular.element(document.querySelector('path'));
+        
         mapEl.attr('style', 'transition:all 0.25s');
         elevMarker.attr('style', '');
+        // path.css('stroke-dashoffset', 0)
 
         vm.tiltCheck = false;
         mapRot.removeClass("tilted");
