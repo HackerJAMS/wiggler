@@ -30,7 +30,6 @@
       };
 
       vm.getLocation = function(){
-
         console.log('in location');
         if(!navigator.geolocation){
           alert('Geolocation is not available on this browser!');
@@ -45,7 +44,7 @@
             RouteService.getLocationAddress(currentPosition)
               .then(function successCb(res){
                 var userCurrentLocation = res.data.features[0].place_name;
-                vm.selectedStart = userCurrentLocation;
+                vm.selectedStart = res.data.features[0]
               }, function errorCb(err){
                 console.log('error!!')
               });
@@ -86,6 +85,7 @@
       vm.submitRoute = function(start, end, prefs) {
 
         // add default start/end points for testing (215 church to 500 divisadero)
+
         var start = vm.selectedStart ? vm.selectedStart.center : [-122.428561, 37.767191];
         var end = vm.selectedEnd ? vm.selectedEnd.center : [-122.437364, 37.774222];
         var prefs = {};
@@ -103,6 +103,7 @@
           .then(function successCb(res) {
             RouteService.cleanMap(polyline !== "undefined", RouteService.map);
             var color = '';
+            console.log(res.data);
             for (var path in res.data) {
               if (path === 'shortestPath') {
                 color = 'red';
@@ -112,6 +113,7 @@
               console.log(path, color);
               var coords = res.data[path][0];
               var elevation = res.data[path][1];
+              console.log("coords, elevation, color", coords, elevation, color)
               plotRoute(coords, elevation, color);
             }
           
@@ -121,37 +123,42 @@
       };
 
       var plotRoute = function(coords, elevation, color) {
-       // path as array of long/lat tuple
-        var path = RouteService.getPath(coords);
-        // re-format elevation data with turf points
-        var elevationCollection = RouteService.getElevationPath(elevation);
-        // turf linestring
-        RouteService.turfLine = turf.linestring(path);
-        // resample turfline for 3d point display
+       		// path as array of long/lat tuple
+        	var path = RouteService.getPath(coords);
+            // re-format elevation data with turf points
+            var elevationCollection = RouteService.getElevationPath(elevation);
+            // turf linestring
+            RouteService.turfLine = turf.linestring(path);
+            // resample turfline for 3d point display
 
-        var resampledPath = RouteService.getResampledPath(RouteService.turfLine, elevationCollection);
+            var resampledPath = RouteService.getResampledPath(RouteService.turfLine, elevationCollection);
 
-        // draw route on the map and fit the bounds of the map viewport to the route
-        polyline = L.geoJson(RouteService.turfLine, {
-          color: color,
-          className: 'path_2d'
-        }).addTo(RouteService.map);
-        RouteService.map.fitBounds(polyline.getBounds());
+            // draw route on the map and fit the bounds of the map viewport to the route
+            polyline = L.geoJson(RouteService.turfLine, {
+              color: 'red',
+              className:'route-path'
+            }).addTo(RouteService.map);
+            RouteService.map.fitBounds(polyline.getBounds());
+            // this allows the line and map to load before drawing the path
+            var path = angular.element(document.querySelectorAll('path.route-path'));
+            setTimeout(function() {
+              path.css('stroke-dashoffset', 0)
+            }, 10);
 
-        // renders the resampledRoute after the elevation data is returned from googleapi:
-        L.geoJson(resampledPath, {
-          pointToLayer: function(feature, latlng) {
-            var roundedElev = feature.properties.elevation.toFixed(2);
-            var cssHeight = roundedElev;
-            var myIcon = L.divIcon({
-              className: 'elevations',
-              html: '<div class="elevmarker"><div class="markercircle bottomcap" style="background:' + color + '"></div><div class="markerline" style="height:' + cssHeight + 'px; background:' + color + '">' + '</div><div class="markercircle" style="background:' + color + '"></div><div class="elevfigure">' + roundedElev + ' ft.</div></div>'
-            });
-            return L.marker(latlng, {
-              icon: myIcon
-            });
-          }
-        }).addTo(RouteService.map); 
+            // renders the resampledRoute after the elevation data is returned from googleapi:
+            L.geoJson(resampledPath, {
+              pointToLayer: function(feature, latlng) {
+                var roundedElev = feature.properties.elevation.toFixed(2);
+                var cssHeight = roundedElev;
+                var myIcon = L.divIcon({
+                  className: 'elevations',
+                  html: '<div class="elevmarker"><div class="markercircle bottomcap"></div><div class="markerline" style="height:' + cssHeight + 'px">' + '</div><div class="markercircle"></div><div class="elevfigure">' + roundedElev + ' ft.</div></div>'
+                });
+                return L.marker(latlng, {
+                  icon: myIcon
+                });
+              }
+            }).addTo(RouteService.map);
 
         //clear out currentPosition
         currentPosition = null;              
