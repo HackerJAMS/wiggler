@@ -12,7 +12,10 @@
     //app modules
     'app.routeService',
     'app.map',
-    'app.routeInput'
+    'app.routeInput',
+    'app.routeInfo',
+    'angularSpinner',
+    'ngLoadingSpinner'
   ]);
 
 
@@ -45,9 +48,9 @@
         url: '/new',
         templateUrl: "src/scripts/components/route/route_input.html"
       })
-      .state('main.route-output', {
+      .state('main.route-info', {
         url: '/info',
-        templateUrl: "src/scripts/components/route/route_output.html"
+        templateUrl: "src/scripts/components/route/route_info.html"
       })
   }])
 
