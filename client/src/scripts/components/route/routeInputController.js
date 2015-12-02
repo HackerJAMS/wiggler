@@ -6,9 +6,7 @@
       var vm = this;
       var polyline;
       var queryResult;
-      var currentPosition;
-    
-    
+
       vm.autocompleteQuery = function(searchText) {
         var defer = $q.defer();
         RouteService.geocoding(searchText)
@@ -30,56 +28,28 @@
       };
 
       vm.getLocation = function(){
-        console.log('in location');
-        if(!navigator.geolocation){
-          alert('Geolocation is not available on this browser!');
-        } else {
-          navigator.geolocation.getCurrentPosition(function successCb(position){
-            //draw marker on map
+        
+        var currentPosition;
+        // get user location coordinates via HTML5 geolocator
+        if(!localStorage['userCoords']){
+          navigator.geolocation.getCurrentPosition(function successCb(position) {
             var userLat = position.coords.latitude;
             var userLng = position.coords.longitude;
             var userCoords = [userLng, userLat];
             currentPosition = userCoords;
-            
-            RouteService.getLocationAddress(currentPosition)
-              .then(function successCb(res){
-                var userCurrentLocation = res.data.features[0].place_name;
-                vm.selectedStart = res.data.features[0]
-              }, function errorCb(err){
-                console.log('error!!')
-              });
+            //saves user location coordinates in local storage
+            localStorage['userCoords'] = JSON.stringify(userCoords);
 
-            var geojsonMarkerOptions = {
-              radius: 8,
-              fillColor: "#ff7800",
-              color: "#000",
-              weight: 1,
-              opacity: 1,
-              fillOpacity: 0.8
-            };
-
-            var userLocation = {
-              "type" : "Feature", 
-              "properties" : {
-                "name" : "mylocation"
-              },
-              "geometry" : {
-                "type" : "Point",
-                "coordinates" : userCoords
-              }
-            }
-      
-            L.geoJson(userLocation, {
-                pointToLayer: function (feature, latlng) {
-                    return L.circleMarker(latlng, geojsonMarkerOptions);
-                }
-            }).addTo(RouteService.map);
-       
-            
-          }, function errorCb(err){
+          }, function errorCb(err) {
             console.warn('geolocation error');
           });
         }
+        //retrieves coordinates from local storage 
+        currentPosition = JSON.parse(localStorage['userCoords']);
+
+        vm.selectedStart = {};
+        vm.selectedStart.center = currentPosition;
+        vm.selectedStart.place_name = 'Current Position';
       };
 
       vm.submitRoute = function(start, end, prefs) {
@@ -95,9 +65,6 @@
         //console.log("shortestPathChecked", prefs.shortestPathChecked);
         //console.log("minElevPathChecked", prefs.minElevPathChecked);       
         // console.log("start", start, "end", end);
-        if(currentPosition){
-          start = currentPosition;
-        }
 
         RouteService.postRouteRequest(start, end, prefs)
           .then(function successCb(res) {
@@ -159,9 +126,7 @@
                 });
               }
             }).addTo(RouteService.map);
-
-        //clear out currentPosition
-        currentPosition = null;              
+            
       };
     }])
 })();
