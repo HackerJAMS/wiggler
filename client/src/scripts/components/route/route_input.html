@@ -11,6 +11,16 @@
       <span md-highlight-text="routeCtrl.searchEnd">{{item.place_name}}</span>
     </md-autocomplete>
   </div>
+
+  <md-checkbox ng-init="routeCtrl.shortestPathChecked = true" ng-click="routeCtrl.shortestPathChecked = !routeCtrl.shortestPathChecked" ng-checked="routeCtrl.shortestPathChecked">
+    shortest path
+    <div class="line red"></div>
+  </md-checkbox>
+  <md-checkbox ng-init="routeCtrl.minElevPathChecked = true" ng-click="routeCtrl.minElevPathChecked = !routeCtrl.minElevPathChecked" ng-checked="routeCtrl.minElevPathChecked">
+    min elevation path
+    <div class="line blue"></div>    
+  </md-checkbox>  
+
   <div>
     <md-button class="md-raised md-primary" ng-click="routeCtrl.submitRoute()">Get Route</md-button>
     <md-button class="md-raised" ng-click="routeCtrl.submitRoute()">Test Route</md-button>
