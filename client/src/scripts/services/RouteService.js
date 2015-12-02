@@ -46,21 +46,6 @@
           url: 'https://api.mapbox.com/geocoding/v5/mapbox.places/' + query + '.json?proximity=-122.446,37.773&access_token=' + accessToken         
         })
       } 
-      // returns an address from a pair of coordinates
-      route.getLocationAddress = function(coordinates) {
-        var queryString = '';
-        coordinates.forEach(function(num){
-          var n = num.toFixed(5);
-          queryString += n + ',';
-        });
-        var queryString = queryString.slice(0, -1);
-        var accessToken = 'pk.eyJ1IjoiMTI3NnN0ZWxsYSIsImEiOiJjaWg4ZGEwZmEwdGNkdjBraXl1czIzNnFjIn0.RXXfMNV-gtrQyrRzrP2yvQ';
-        return $http({
-          method: 'GET',
-          url: 'https://api.mapbox.com/geocoding/v5/mapbox.places/' + queryString + '.json?proximity=-122.446,37.773&access_token=' + accessToken         
-        });
-
-      }
       // this function removes any existing polylines from the map before adding a new one 
       route.cleanMap = function(polyline, map) {
         if (polyline) {
