@@ -51,10 +51,14 @@
 
             // draw route on the map and fit the bounds of the map viewport to the route
             polyline = L.geoJson(RouteService.turfLine, {
-              color: 'red',
-              className: 'path_2d'
+              color: 'red'
             }).addTo(RouteService.map);
             RouteService.map.fitBounds(polyline.getBounds());
+            // this allows the line and map to load before drawing the path
+            var path = angular.element(document.querySelector('path'));
+            setTimeout(function() {
+              path.css('stroke-dashoffset', 0)
+            }, 10);
 
             // renders the resampledRoute after the elevation data is returned from googleapi:
             L.geoJson(resampledPath, {

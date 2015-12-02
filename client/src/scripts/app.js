@@ -12,9 +12,7 @@
     //app modules
     'app.routeService',
     'app.map',
-    'app.routeInput',
-    'angularSpinner',
-    'ngLoadingSpinner'
+    'app.routeInput'
   ]);
 
 
