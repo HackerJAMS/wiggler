@@ -5,9 +5,10 @@
     .controller('RouteInputController', ['$location', '$q', 'RouteService', function($location, $q, RouteService) {
       var vm = this;
       var polyline;
-      var currentPosition;
       var queryResult;
-      
+      var currentPosition;
+    
+    
       vm.autocompleteQuery = function(searchText) {
         var defer = $q.defer();
         RouteService.geocoding(searchText)
@@ -29,8 +30,10 @@
       };
 
       vm.getLocation = function(){
+
+        console.log('in location');
         if(!navigator.geolocation){
-          console.log('Geolocation is not available');
+          alert('Geolocation is not available on this browser!');
         } else {
           navigator.geolocation.getCurrentPosition(function successCb(position){
             //draw marker on map
@@ -38,7 +41,14 @@
             var userLng = position.coords.longitude;
             var userCoords = [userLng, userLat];
             currentPosition = userCoords;
-            console.log(currentPosition);
+            
+            RouteService.getLocationAddress(currentPosition)
+              .then(function successCb(res){
+                var userCurrentLocation = res.data.features[0].place_name;
+                vm.selectedStart = userCurrentLocation;
+              }, function errorCb(err){
+                console.log('error!!')
+              });
 
             var geojsonMarkerOptions = {
               radius: 8,
@@ -64,7 +74,7 @@
                 pointToLayer: function (feature, latlng) {
                     return L.circleMarker(latlng, geojsonMarkerOptions);
                 }
-            }).addTo(vm.map);
+            }).addTo(RouteService.map);
        
             
           }, function errorCb(err){
