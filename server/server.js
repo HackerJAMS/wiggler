@@ -10,16 +10,7 @@ var route = require('./route/route.js');
 var db = require('./db/db.js');
 var db_seq = require('./db/db_sequelize');
 
-// var elev_db = require('./db/createElevationDb');
-
 var resample = require('./resample_elevation/resample_elevation.js');
-
-//// populate the database with cost variables for the routing algorithm
-//// not needed to run the app - just needs to run on db setup
-// var calcDirCost = require('./db/calcDirectionalCost');
-// calcDirCost();
-// var createEleCost = require('./db/createEleCost.js');
-// createEleCost(); 
 
 db.connect(function(err) {
   if (err) {
@@ -39,10 +30,6 @@ db.connect(function(err) {
 //     res.send(result);
 //   }
 // }); 
-
-
-
-
 
 
 var app = express();
