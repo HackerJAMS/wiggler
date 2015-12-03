@@ -13,6 +13,7 @@
         RouteService.geocoding(searchText)
           .then(function successCb(res) {
             queryResult = res.data.features;
+            console.log(queryResult)
             defer.resolve(queryResult);
           }, function errorCb(res) {
             console.error("failed to rectrieve coordinates from mapbox...", res);
@@ -68,12 +69,16 @@
         RouteService.postRouteRequest(start, end, prefs)
           .then(function successCb(res) {
             RouteService.cleanMap(polyline !== "undefined", RouteService.map);
-
-            for (var pathType in res.data) {
-              console.log(pathType);
-              var coords = res.data[pathType][0];
-              var elevation = res.data[pathType][1];
-              plotRoute(coords, elevation, pathType);
+            var color = '';
+            for (var path in res.data) {
+              if (path === 'shortestPath') {
+                color = 'red';
+              } else if (path === 'minElevationPath') {
+                color = 'blue';
+              }
+              var coords = res.data[path][0];
+              var elevation = res.data[path][1];
+              plotRoute(coords, elevation, color);
             }
           
           }, function errorCb(res) {
