@@ -103,17 +103,14 @@
           .then(function successCb(res) {
             RouteService.cleanMap(polyline !== "undefined", RouteService.map);
             var color = '';
-            console.log(res.data);
             for (var path in res.data) {
               if (path === 'shortestPath') {
                 color = 'red';
               } else if (path === 'minElevationPath') {
                 color = 'blue';
               }
-              console.log(path, color);
               var coords = res.data[path][0];
               var elevation = res.data[path][1];
-              console.log("coords, elevation, color", coords, elevation, color)
               plotRoute(coords, elevation, color);
             }
           
