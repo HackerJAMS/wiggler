@@ -11,17 +11,24 @@ body {
 div.line {
     width: 30px;
     display: inline-block;
-    border-bottom-style: solid;
-    border-bottom-width: 3px;
+    border-style: solid;
+    border-width: 0 0 3px 0;
     margin: 4px 0px;
 }
-.red {
-  border-bottom: red
+.line.red {
+  border-color: red
 }
-.blue {
-  border-bottom: blue
+.line.blue {
+  border-color: blue
 }
 
+path.leaflet-clickable.route-shortestPath {
+  stroke: red
+}
+
+path.leaflet-clickable.route-minElevationPath {
+  stroke: blue
+}
 
 .tilted .leaflet-tile-container img {
   pointer-events: none;
@@ -186,6 +193,14 @@ md-content,
   transform: rotateX(180deg);
   width: 100px;
   -webkit-transform: rotateX(180deg) translateX(-50%);
+}
+
+.marker-shortestPath {
+  background-color: red
+}
+
+.marker-minElevationPath {
+  background-color: blue
 }
 
 .elevmarker:hover .elevfigure {
