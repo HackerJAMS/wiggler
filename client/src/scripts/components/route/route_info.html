@@ -1,6 +1,12 @@
 <div id="route-sidebar" ng-controller="RouteInfoController as routeCtrl">
 
-  <div ng-show="!routeCtrl.distance">No route selected</div>
-  <div ng-show="routeCtrl.distance">Distance: {{routeCtrl.distance}} miles</div>
+  <div ng-show="!routeCtrl.placeNameStart">No route selected</div>
+
+  <div ng-show="routeCtrl.placeNameStart">
+    <div>Start: {{routeCtrl.placeNameStart}}</div>
+    <div>End: {{routeCtrl.placeNameEnd}}</div>
+    <div>Shortest Distance: {{routeCtrl.shortestDistance}} miles</div>
+    <div>Minimum Elevation Distance: {{routeCtrl.minElevationDistance}} miles</div>
+  </div>
 
 </div>
