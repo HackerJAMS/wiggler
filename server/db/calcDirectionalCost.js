@@ -24,7 +24,7 @@ module.exports = function() {
   // ALTER TABLE ways ADD COLUMN count integer UNIQUE;
   // ALTER TABLE ways ALTER COLUMN count SET DEFAULT NEXTVAL('seq');
   // UPDATE ways SET count = NEXTVAL('seq');
-  subSetQuery(1301, 1400);
+  subSetQuery(2201, 2300);
 }
 
 var subSetQuery = function(countStart, countEnd) {
@@ -51,10 +51,9 @@ var subSetQuery = function(countStart, countEnd) {
                 console.log("i", param.index, "error when update cost columns...", err);
               } else {
                 console.log("i", param.index, "successfully updated cost!");
-                console.log("total rows:", total_rows, "counter: ", counter);
                 if (counter === total_rows) {
                   console.log("updating cost is done for count between " + countStart + " and " + countEnd);
-                  if (countEnd < 1500) {
+                  if (countEnd < 42469) {
                     countStart = countStart + 100;
                     countEnd = countEnd + 100;
                     subSetQuery(countStart, countEnd);
