@@ -19,17 +19,20 @@ module.exports = function() {
   // UPDATE nodes_with_elevation SET geog = ST_SetSRID(ST_MakePoint(lon, lat), 4326);
   // CREATE INDEX geog_idx ON nodes_with_elevation USING gist (geog);
 
+  // set highways cost to infinity -- our routing is for biking and walking only. 
+  // UPDATE ways SET el_dist_cost = '+infinity', r_el_dist_cost = '+infinity' WHERE class_id <= 107;
+
   // create an auto-increasing column count in table ways
   // CREATE SEQUENCE seq;
   // ALTER TABLE ways ADD COLUMN count integer UNIQUE;
   // ALTER TABLE ways ALTER COLUMN count SET DEFAULT NEXTVAL('seq');
   // UPDATE ways SET count = NEXTVAL('seq');
-  subSetQuery(2201, 2300);
+  subSetQuery(17901, 43000);
 }
 
 var subSetQuery = function(countStart, countEnd) {
   var start = new Date().getTime();
-  var queryString = "SELECT gid, length, ST_AsText(ST_Transform(the_geom,4326)) FROM ways WHERE class_id > 107 AND count >=" + countStart + " AND count <=" + countEnd;
+  var queryString = "SELECT gid, length, ST_AsText(ST_Transform(the_geom,4326)) FROM ways WHERE class_id > 107 AND el_dist_cost is null limit 5";
 
   db.query(queryString, function(err, result) {
     if (err) {
@@ -54,8 +57,8 @@ var subSetQuery = function(countStart, countEnd) {
                 if (counter === total_rows) {
                   console.log("updating cost is done for count between " + countStart + " and " + countEnd);
                   if (countEnd < 42469) {
-                    countStart = countStart + 100;
-                    countEnd = countEnd + 100;
+                    countStart = countStart + 1000;
+                    countEnd = countEnd + 1000;
                     subSetQuery(countStart, countEnd);
                   } else {
                     var end = new Date().getTime();
@@ -80,11 +83,11 @@ var getElevations = function(i, result) {
   var stringArr = string.slice(11, string.length - 1).split(',');
   var elevation = [];
   var count = 0;
-  // console.log('getElevations start i', i, "gid", result.rows[i].gid);
+  console.log('getElevations start i', i, "gid", result.rows[i].gid);
   for (var j = 0; j < stringArr.length; j++) {
     (function(j) {
       var pi = stringArr[j].split(' ');
-      db.query("SELECT * from nodes_with_elevation where geog=ST_MakePoint(" + pi[0] + "," + pi[1] + ");", function(err, nodes) {
+      db.query("SELECT * from nodes_with_elevation where lon=" + pi[0] + " and lat=" + pi[1], function(err, nodes) {
         if (err) {
           console.log('error during getElevations', err);
           defer.reject(err);
@@ -121,6 +124,7 @@ var getCost = function(param) {
     // the Math trig functions natively take and return radians, so we multiply by 180/PI to convert to degrees
     // units of elevation and distance must be the same, and param.length is in km, so we multiply by 1000 to standardize.
     sin_theta = ((+elevation[1]) - (+elevation[0])) / (param.length * 1000);
+    console.log("sin_theta: ", sin_theta);
     to_cost += (Math.asin(sin_theta) * (180 / Math.PI) + 90) * (param.length * 1000);
     rev_cost += (Math.asin(sin_theta * -1) * (180 / Math.PI) + 90) * (param.length * 1000);
     defer.resolve({
@@ -146,9 +150,9 @@ var getCost = function(param) {
             rev_cost += (Math.asin(sin_theta * -1) * (180 / Math.PI) + 90) * len;
           }
           count++;
-          // console.log(k, 'distance: ', distance.rows[0])
+          console.log(k, 'distance: ', distance.rows[0])
           if (count === (stringArr.length - 1)) {
-            // console.log('elevation: ', elevation, 'to_cost: ', to_cost, 'rev_cost: ', rev_cost);
+            console.log('elevation: ', elevation, 'to_cost: ', to_cost, 'rev_cost: ', rev_cost);
             defer.resolve({
               index: param.index,
               to_cost: to_cost,
