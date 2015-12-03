@@ -14,6 +14,7 @@
         RouteService.geocoding(searchText)
           .then(function successCb(res) {
             queryResult = res.data.features;
+            console.log(queryResult)
             defer.resolve(queryResult);
           }, function errorCb(res) {
             console.error("failed to rectrieve coordinates from mapbox...", res);
