@@ -7,6 +7,9 @@
       var polyline;
       var queryResult;
       var currentPosition;
+      var turfLines = {};
+      turfLines.type = 'FeatureCollection';
+      turfLines.features = [];
 
       vm.autocompleteQuery = function(searchText) {
         var defer = $q.defer();
@@ -84,7 +87,9 @@
 
         RouteService.postRouteRequest(start, end, prefs)
           .then(function successCb(res) {
+
             RouteService.cleanMap(polyline !== "undefined", RouteService.map);
+            turfLines.features = [];
 
             for (var pathType in res.data) {
               console.log(pathType);
@@ -92,6 +97,10 @@
               var elevation = res.data[pathType][1];
               plotRoute(coords, elevation, pathType);
             }
+
+            // add turfLines to featureLayer and fit map to the bounds
+            var featureLayer = L.mapbox.featureLayer(turfLines);
+            RouteService.map.fitBounds(featureLayer.getBounds());
 
           }, function errorCb(res) {
             console.log("error posting route request", res.status);
@@ -101,25 +110,25 @@
       var plotRoute = function(coords, elevation, pathType) {
         // path as array of long/lat tuple
         var path = RouteService.getPath(coords);
-        // re-format elevation data with turf points
-        var elevationCollection = RouteService.getElevationPath(elevation);
         // turf linestring
         RouteService.turfLine = turf.linestring(path);
         RouteService[pathType] = {
           'turfLine': RouteService.turfLine
         };
-        // resample turfline for 3d point display
+        // turfLines will be added to featureLayer
+        turfLines.features.push(RouteService.turfLine);        
+        // re-format elevation data with turf points
+        var elevationCollection = RouteService.getElevationPath(elevation);
 
+        // resample turfline for 3d point display
         var resampledPath = RouteService.getResampledPath(RouteService.turfLine, elevationCollection);
 
         // draw route on the map and fit the bounds of the map viewport to the route
         polyline = L.geoJson(RouteService.turfLine, {
           className: 'route-' + pathType
         }).addTo(RouteService.map);
-        RouteService.map.fitBounds(polyline.getBounds());
-        console.log(pathType, polyline.getBounds())
-        console.log('center', RouteService.map.getCenter())
-          // this allows the line and map to load before drawing the path
+        // RouteService.map.fitBounds(polyline.getBounds());
+        // this allows the line and map to load before drawing the path
         var path = angular.element(document.querySelectorAll('path.route-' + pathType));
         setTimeout(function() {
           path.css('stroke-dashoffset', 0)
@@ -132,8 +141,6 @@
             var cssHeight = roundedElev;
             var myIcon = L.divIcon({
               className: 'elevations',
-              // html: '<div class="elevmarker"><div class="markercircle bottomcap"></div><div class="markerline" style="height:' + cssHeight + 'px">' + '</div><div class="markercircle"></div><div class="elevfigure">' + roundedElev + ' ft.</div></div>'
-
               html: '<div class="elevmarker"><div class="markercircle bottomcap marker-' + pathType + '"></div><div class="markerline marker-' + pathType + '" style="height:' + cssHeight + 'px">' + '</div><div class="markercircle marker-' + pathType + '"></div><div class="elevfigure">' + roundedElev + ' ft.</div></div>'
             });
             return L.marker(latlng, {
