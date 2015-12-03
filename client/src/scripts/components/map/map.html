@@ -1,8 +1,9 @@
 <div ng-controller="MapController as ctrl">
   <div class="layout-column flex">
     <div class="map-controls">
-
+    
       <md-button ng-if="!ctrl.tiltCheck" ng-click="ctrl.tiltMap()">View in 3D</md-button>
+
       <md-button ng-if="ctrl.tiltCheck" ng-click="ctrl.restoreMap()">Edit Route</md-button>
       <div id="maprotor"  ng-mousedown="ctrl.mouseDown($event)" ng-mousemove="ctrl.mouseMove($event)" ng-mouseup="ctrl.mouseUp($event)">
         <mapbox callback="ctrl.callback"></mapbox>

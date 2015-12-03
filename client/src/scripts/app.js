@@ -15,7 +15,8 @@
     'app.routeInput',
     'app.routeInfo',
     'angularSpinner',
-    'ngLoadingSpinner'
+    'ngLoadingSpinner',
+    'ngMdIcons'
   ]);
 
 
