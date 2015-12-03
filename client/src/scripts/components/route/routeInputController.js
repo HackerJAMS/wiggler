@@ -54,10 +54,26 @@
 
       vm.submitRoute = function(start, end, prefs) {
 
-        // add default start/end points for testing (215 church to 500 divisadero)
+        // set default route for testing -- 'the wiggle'
+        if (!vm.selectedStart) {
+          vm.selectedStart =  {
+            place_name : '215 Church St, San Francisco, California 94114, United States',
+            center : [-122.428561, 37.767191]
+          }
+          vm.selectedEnd = {
+            place_name : '500 Divisadero St, San Francisco, California 94117, United States',
+            center : [-122.437364, 37.774222]
+          }
+        }
 
-        var start = vm.selectedStart ? vm.selectedStart.center : [-122.428561, 37.767191];
-        var end = vm.selectedEnd ? vm.selectedEnd.center : [-122.437364, 37.774222];
+        // start and end coordinates
+        var start = vm.selectedStart.center;
+        var end = vm.selectedEnd.center;
+
+        // store start/end address for route info display
+        RouteService.placeNameStart = vm.selectedStart.place_name;
+        RouteService.placeNameEnd = vm.selectedEnd.place_name;
+
         var prefs = {};
         prefs.shortestPathChecked = vm.shortestPathChecked;
         prefs.minElevPathChecked = vm.minElevPathChecked; 
@@ -93,6 +109,7 @@
         var elevationCollection = RouteService.getElevationPath(elevation);
         // turf linestring
         RouteService.turfLine = turf.linestring(path);
+        RouteService[pathType] = { 'turfLine' : RouteService.turfLine };
         // resample turfline for 3d point display
 
         var resampledPath = RouteService.getResampledPath(RouteService.turfLine, elevationCollection);
