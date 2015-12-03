@@ -54,9 +54,11 @@
       vm.submitRoute = function(start, end, prefs) {
 
         // add default start/end points for testing (215 church to 500 divisadero)
-
         var start = vm.selectedStart ? vm.selectedStart.center : [-122.428561, 37.767191];
         var end = vm.selectedEnd ? vm.selectedEnd.center : [-122.437364, 37.774222];
+        RouteService.placeNameStart = vm.selectedStart.place_name;
+        RouteService.placeNameEnd = vm.selectedEnd.place_name;
+
         var prefs = {};
         prefs.shortestPathChecked = vm.shortestPathChecked;
         prefs.minElevPathChecked = vm.minElevPathChecked; 
@@ -88,6 +90,7 @@
         var elevationCollection = RouteService.getElevationPath(elevation);
         // turf linestring
         RouteService.turfLine = turf.linestring(path);
+        RouteService[pathType] = { 'turfLine' : RouteService.turfLine };
         // resample turfline for 3d point display
 
         var resampledPath = RouteService.getResampledPath(RouteService.turfLine, elevationCollection);
