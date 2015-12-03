@@ -22,7 +22,7 @@ module.exports = function() {
   // UPDATE ways SET count = NEXTVAL('seq');
 
   var start = new Date().getTime();
-  subSetQuery(33001, 34000);
+  subSetQuery(1, 1000);
 }
 
 var subSetQuery = function(countStart, countEnd) {

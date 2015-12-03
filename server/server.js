@@ -9,10 +9,8 @@ var bodyParser = require('body-parser');
 var route = require('./route/route.js');
 var db = require('./db/db.js');
 var db_seq = require('./db/db_sequelize');
-// var elev_db = require('./db/createElevationDb');
 
 var resample = require('./resample_elevation/resample_elevation.js');
-
 
 db.connect(function(err) {
   if (err) {
@@ -33,19 +31,6 @@ db.connect(function(err) {
 //   }
 // }); 
 
-
-// var createEleCost = require('./db/createEleCost.js');
-// createEleCost(); 
-
-// var shortestPath = require('./utility/shortestPath.js');
-// shortestPath(30, 60, function(err, result){
-//   if(err) {
-//     console.error('could not obtain the shortest path: ', err);
-//     res.send(err);
-//   } else {
-//     console.log('result when querying the shortest path: ', result);
-//   }
-// }); 
 
 var app = express();
 

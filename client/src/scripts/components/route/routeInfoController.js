@@ -7,7 +7,10 @@
 
       // check if route has been submitted before calculating distance
       if (RouteService.turfLine) {
-        vm.distance = turf.lineDistance(RouteService.turfLine).toFixed(2);
+        vm.shortestDistance = turf.lineDistance(RouteService.shortestPath.turfLine).toFixed(2);
+        vm.minElevationDistance = turf.lineDistance(RouteService.minElevationPath.turfLine).toFixed(2);
+        vm.placeNameStart = RouteService.placeNameStart;
+        vm.placeNameEnd = RouteService.placeNameEnd;
       }
     }])
 })();

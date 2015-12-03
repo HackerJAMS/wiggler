@@ -1,31 +1,39 @@
 <div id="route-sidebar" ng-controller="RouteInputController as routeCtrl">
-  <div>
-    Start
-    <md-autocomplete md-selected-item="routeCtrl.selectedStart" md-search-text="routeCtrl.searchStart" md-items="item in routeCtrl.autocompleteQuery(routeCtrl.searchStart)" md-item-text="item.place_name" placeholder="start">
-      <span md-highlight-text="routeCtrl.searchStart">{{item.place_name}}</span>
-    </md-autocomplete>
-  </div>
-  <div>
-    End
-    <md-autocomplete md-selected-item="routeCtrl.selectedEnd" md-search-text="routeCtrl.searchEnd" md-items="item in routeCtrl.autocompleteQuery(routeCtrl.searchEnd)" md-item-text="item.place_name" placeholder="end">
-      <span md-highlight-text="routeCtrl.searchEnd">{{item.place_name}}</span>
-    </md-autocomplete>
-  </div>
+  <div id="icon-container"><br>
+    <ng-md-icon icon="my_location" id="navigation-icon" size="35" ng-click="routeCtrl.getLocation()"></ng-md-icon> 
+  </div><br>
+  <div id="route-input-container" layout="row" layout-wrap>
+    <div id="form-container" flex="85">
+      <div>
+        <md-autocomplete md-selected-item="routeCtrl.selectedStart" md-search-text="routeCtrl.searchStart" md-items="item in routeCtrl.autocompleteQuery(routeCtrl.searchStart)" md-item-text="item.place_name" placeholder="Start">
+          <span md-highlight-text="routeCtrl.searchStart">{{item.place_name}}</span>
+        </md-autocomplete>
+      </div>
+      
+      <div>
+        <md-autocomplete md-selected-item="routeCtrl.selectedEnd" md-search-text="routeCtrl.searchEnd" md-items="item in routeCtrl.autocompleteQuery(routeCtrl.searchEnd)" md-item-text="item.place_name" placeholder="End">
+          <span md-highlight-text="routeCtrl.searchEnd">{{item.place_name}}</span>
+        </md-autocomplete>
+      </div>
+    </div>
+      <div id="arrows-container">
+        <ng-md-icon icon="import_export" id="reverse-arrows-icon" size="45" ng-click="routeCtrl.flipStartEnd()"></ng-md-icon>
+      </div>
+    
+    <md-checkbox ng-init="routeCtrl.shortestPathChecked = true" ng-click="routeCtrl.shortestPathChecked = !routeCtrl.shortestPathChecked" ng-checked="routeCtrl.shortestPathChecked">
+      shortest path
+      <div class="line red"></div>
+    </md-checkbox>
+    <md-checkbox ng-init="routeCtrl.minElevPathChecked = true" ng-click="routeCtrl.minElevPathChecked = !routeCtrl.minElevPathChecked" ng-checked="routeCtrl.minElevPathChecked">
+      min elevation path
+      <div class="line blue"></div>  
+    </md-checkbox>  
 
-  <md-checkbox ng-init="routeCtrl.shortestPathChecked = true" ng-click="routeCtrl.shortestPathChecked = !routeCtrl.shortestPathChecked" ng-checked="routeCtrl.shortestPathChecked">
-    shortest path
-    <div class="line red"></div>
-  </md-checkbox>
-  <md-checkbox ng-init="routeCtrl.minElevPathChecked = true" ng-click="routeCtrl.minElevPathChecked = !routeCtrl.minElevPathChecked" ng-checked="routeCtrl.minElevPathChecked">
-    min elevation path
-    <div class="line blue"></div>    
-  </md-checkbox>  
+    <div>
+      <md-button class="md-raised md-primary" ng-click="routeCtrl.submitRoute()">Get Route</md-button>
+      <md-button class="md-raised" ng-click="routeCtrl.submitRoute()">Test Route</md-button>
+    <div>
+  </div> 
 
-  <div>
-    <md-button class="md-raised md-primary" ng-click="routeCtrl.submitRoute()">Get Route</md-button>
-    <md-button class="md-raised" ng-click="routeCtrl.submitRoute()">Test Route</md-button>
-    <md-button class="md-raised" ng-click="routeCtrl.flipStartEnd()">Reverse</md-button>
-    <md-button class="md-raised" ng-click="routeCtrl.getLocation()">Location</md-button>
-  <div>
 </div>
 
