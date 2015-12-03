@@ -85,16 +85,12 @@
         RouteService.postRouteRequest(start, end, prefs)
           .then(function successCb(res) {
             RouteService.cleanMap(polyline !== "undefined", RouteService.map);
-            var color = '';
-            for (var path in res.data) {
-              if (path === 'shortestPath') {
-                color = 'red';
-              } else if (path === 'minElevationPath') {
-                color = 'blue';
-              }
-              var coords = res.data[path][0];
-              var elevation = res.data[path][1];
-              plotRoute(coords, elevation, color);
+
+            for (var pathType in res.data) {
+              console.log(pathType);
+              var coords = res.data[pathType][0];
+              var elevation = res.data[pathType][1];
+              plotRoute(coords, elevation, pathType);
             }
 
           }, function errorCb(res) {
