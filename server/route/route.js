@@ -45,7 +45,6 @@ module.exports = function(req, res) {
             results.shortestPath = result;
             counter++;
             if (counter === totalSelections) {
-              console.log(results.shortestPath);
               res.send(results);
             }
           }
