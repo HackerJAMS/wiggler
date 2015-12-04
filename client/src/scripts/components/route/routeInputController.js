@@ -7,6 +7,7 @@
       var polyline;
       var queryResult;
       var currentPosition;
+      // turfLines store the returned routes and are added to featureLayer
       var turfLines = {};
       turfLines.type = 'FeatureCollection';
       turfLines.features = [];
@@ -178,6 +179,7 @@
         }).addTo(RouteService.map);
 
         RouteService.map.fitBounds(polyline.getBounds());
+        
         // this allows the line and map to load before drawing the path
         var path = angular.element(document.querySelectorAll('path.route-' + pathType));
         setTimeout(function() {
