@@ -19,7 +19,7 @@
           // molly's public token
           L.mapbox.accessToken = 'pk.eyJ1IjoibWxsb3lkIiwiYSI6Im9nMDN3aW8ifQ.mwiVAv4E-1OeaoR25QZAvw';
           var map = L.mapbox.map(element[0], 'mapbox.run-bike-hike', {
-            tileSize: 5120,
+            // tileSize: 5120,
             zoomControl: false,
             maxZoom: 19,
             minZoom: 11
@@ -34,11 +34,28 @@
             bounds.max.y = bounds.max.y + 1000;
             return bounds;
           };
+
           // this fixes the map glitch that causes the map to be loaded initially with
           // the wrong container size, causing the map to be incorrectly centered
           $timeout(function () {
             map.invalidateSize(true);
+            var locationsGeojson = [];
+            locationsGeojson.push({
+              "type": "Feature",
+              "geometry": {
+                "type": "Point",
+                "coordinates": [-122.437364, 37.774222]
+              },
+              "properties": {
+                "marker-color": "#DC3C05",
+                "marker-size": "large",
+                "marker-symbol": "star"
+              }
+            });
+          var markerLayer = L.mapbox.featureLayer(locationsGeojson).addTo(map);
+          L.circleMarker([-122.437364, 37.774222]).addTo(map);
           });
+
           RouteService.initMap(map);
         }
       };

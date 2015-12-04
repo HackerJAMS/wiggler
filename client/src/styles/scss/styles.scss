@@ -7,6 +7,9 @@ body {
   margin: 0 auto;
   font-family: 'Open Sans', sans-serif;
 }
+.leaflet-marker-pane {
+  z-index: 999999;
+}
 
 div.line {
     width: 30px;

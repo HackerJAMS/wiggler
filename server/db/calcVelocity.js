@@ -1,9 +1,14 @@
-// formulas taken with attribution from http://www.gribble.org/cycling/power_v_speed.html
 
-// calculate velocity using binary search algorithm
 var velocity = {};
 module.exports = velocity;
 
+// tobler's hiking algorithm
+velocity.hiking = function(grade){
+  return 6 * Math.exp(-3.5 * Math.abs(grade + .05));
+}
+
+// formulas taken with attribution from http://www.gribble.org/cycling/power_v_speed.html
+// calculate velocity using binary search algorithm
 velocity.biking = function(grade) {
   // How close to get before finishing.
   var epsilon = 0.000001;

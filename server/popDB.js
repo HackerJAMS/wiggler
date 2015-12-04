@@ -14,8 +14,10 @@ db.connect(function(err) {
 //// not needed to run the app - just needs to run on db setup
 // var calcDirCost = require('./db/calcDirectionalCost');
 // calcDirCost();
-var calcBikeCost = require('./db/calcBikeCost')
+var calcBikeCost = require('./db/calcBikeCost');
 calcBikeCost();
+// var calcHikeCost = require('./db/calcHikingCost');
+// calcHikeCost();
 // var createEleCost = require('./db/createEleCost.js');
 // createEleCost(); 
 // var elev_db = require('./db/createElevationDb');

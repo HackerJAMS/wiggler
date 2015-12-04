@@ -11,25 +11,28 @@
 var db = require('./db.js');
 var Q = require('q');
 var velocity = require('./calcVelocity');
-
-module.exports = function() {
+var start;
+module.exports = function(hikeOrBike) {
   // ALTER TABLE nodes_with_elevation ADD COLUMN geog geometry;
   // UPDATE nodes_with_elevation SET geog = ST_SetSRID(ST_MakePoint(lon, lat), 4326);
   // CREATE INDEX geog_idx ON nodes_with_elevation USING gist (geog);
 
-  // ALTER TABLE ways ADD COLUMN bike_cost double precision
-  // ALTER TABLE ways ADD COLUMN r_bike_cost double precision
+  // ALTER TABLE ways ADD COLUMN hike_cost double precision;
+  // ALTER TABLE ways ADD COLUMN r_hike_cost double precision
+  // ALTER TABLE ways ADD COLUMN bike_cost double precision;
+  // ALTER TABLE ways ADD COLUMN r_bike_cost double precision;
 
   // set cost to infinity for roads/paths that are not passable by foot/cycle -- our routing is for biking and walking only. 
-  // want to exclude class_ids: 101,102,103,104,106,107,105,122,112,115
-  // UPDATE ways SET bike_cost = '+infinity', r_bike_cost = '+infinity' WHERE class_id <= 107;
+  // want to exclude class_ids: 101,102,103,104,105,122
+  // UPDATE ways SET bike_cost = '+infinity', r_hike_cost = '+infinity' WHERE class_id in (101,102,103,104,105,122);
+  // UPDATE ways SET hike_cost = '+infinity', r_hike_cost = '+infinity' WHERE class_id in (101,102,103,104,105,122);
 
-  subSetQuery(1, 1000);
+  subSetQuery(1, 1000, hikeOrBike);
+  var start = new Date().getTime();
 }
 
-var subSetQuery = function(countStart, countEnd) {
-  var start = new Date().getTime();
-  var queryString = "SELECT gid, length, ST_AsText(ST_Transform(the_geom,4326)) FROM ways WHERE class_id NOT IN (101,102,103,104,105,122) AND bike_cost is null limit 1000" //count >=" + countStart + "AND count <"+ countEnd;
+var subSetQuery = function(countStart, countEnd, hikeOrBike) {
+  var queryString = "SELECT gid, length, ST_AsText(ST_Transform(the_geom,4326)) FROM ways WHERE class_id NOT IN (101,102,103,104,105,122) AND hike_cost is null limit 1000";
 
   db.query(queryString, function(err, result) {
     if (err) {
@@ -45,7 +48,7 @@ var subSetQuery = function(countStart, countEnd) {
         .then(getCost)
         .then(function(param) {
           var currentGid = result.rows[param.index].gid;
-          db.query("UPDATE ways SET bike_cost = " + param.to_cost + ", r_bike_cost= " + param.rev_cost + " where gid =" + currentGid, function(err, result) {
+          db.query("UPDATE ways SET hike_cost = " + param.to_cost + ", r_hike_cost= " + param.rev_cost + " where gid =" + currentGid, function(err, result) {
               counter++;
               if (err) {
                 console.log("i", param.index, "error when update cost columns...", err);
@@ -124,8 +127,8 @@ var getCost = function(param) {
     len=param.length;
     tan_theta = ((+elevation[1]) - (+elevation[0])) / (len*1000);
     // multiply by 60 to get cost from hours to in minutes
-    to_cost += (len*60)/velocity.biking(tan_theta);
-    rev_cost += (len*60)/velocity.biking(tan_theta*-1);
+    to_cost += (len*60)/velocity.hiking(tan_theta);
+    rev_cost += (len*60)/velocity.hiking(tan_theta*-1);
     console.log('tan_theta',tan_theta,'elevation: ', elevation, 'to_cost: ', to_cost, 'rev_cost: ', rev_cost);
 
     defer.resolve({
@@ -147,8 +150,8 @@ var getCost = function(param) {
             len = (distance.rows[0].st_distance_spheroid)/1000;
             tan_theta = ((+elevation[k + 1]) - (+elevation[k])) / (len*1000);
             // multiply by 60 to get cost from hours to in minutes
-            to_cost += (len*60)/velocity.biking(tan_theta);
-            rev_cost += (len*60)/velocity.biking(tan_theta*-1);
+            to_cost += (len*60)/velocity.hiking(tan_theta);
+            rev_cost += (len*60)/velocity.hiking(tan_theta*-1);
           }
           count++;
           console.log(k, 'distance: ', distance.rows[0], 'tan_theta', tan_theta);

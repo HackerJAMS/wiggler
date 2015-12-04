@@ -65,6 +65,20 @@
             center: [-122.437364, 37.774222]
           }
         }
+        var locationsGeojson = [];
+        locationsGeojson.push({
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [-122.437364, 37.774222]
+          },
+          "properties": {
+            "marker-color": "#DC3C05",
+            "marker-size": "large",
+            "marker-symbol": "star"
+          }
+        });
+        L.mapbox.featureLayer(locationsGeojson).addTo(RouteService.map);
 
         // start and end coordinates
         var start = vm.selectedStart.center;
