@@ -48,7 +48,6 @@ app.post('/route', function(req, res) {
 });
 
 app.post('/elevationquery', function(req,res){
-  // console.log('in the server-------->', req.body.coordinates);
   resample(req, res);
 })
 

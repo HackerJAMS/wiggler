@@ -12,6 +12,7 @@
       turfLines.features = [];
       var startCoords;
       var endCoords;
+      
 
       vm.autocompleteQuery = function(searchText) {
         var defer = $q.defer();
@@ -111,8 +112,6 @@
       };
 
       var plotRoute = function(coords, elevation, pathType) {
-
-        
         // path as array of long/lat tuple
         var path = RouteService.getPath(coords);
         // turf linestring
@@ -128,6 +127,45 @@
         // resample turfline for 3d point display
         var resampledPath = RouteService.getResampledPath(RouteService.turfLine, elevationCollection);
 
+   
+//************* calls googleapi for refined elevation data *************
+
+       // var newPoints = resampledPath.features.slice();
+       // var newPointCoordinates = newPoints.map(function(n, i) {
+       //        return n.geometry.coordinates;
+       //     });
+
+       // RouteService.postElevationRequest(newPointCoordinates)
+       // .then(function successCb(res){
+       //    var resampledPoints = RouteService.getElevationPath(res.data);
+       //   //test for unique values; refactor for jasmine test
+
+       //    var uniqueArr = resampledPoints.features;
+       //    var nonUniqueArr = resampledPath.features;
+       //    uniqueArr.forEach(function(feature){
+       //      console.log(feature.properties.elevation);
+       //  });
+
+            
+       //      L.geoJson(resampledPoints, {
+       //      pointToLayer: function(feature, latlng) {
+       //        var roundedElev = feature.properties.elevation.toFixed(2);
+       //        var cssHeight = roundedElev;
+       //        var myIcon = L.divIcon({
+       //          className: 'elevations',
+       //          html: '<div class="elevmarker"><div class="markercircle bottomcap marker-' + pathType + '"></div><div class="markerline marker-' + pathType + '" style="height:' + cssHeight + 'px">' + '</div><div class="markercircle marker-' + pathType + '"></div><div class="elevfigure">' + roundedElev + ' ft.</div></div>'
+       //        });
+       //        return L.marker(latlng, {
+       //          icon: myIcon
+       //        });
+       //      }
+       //    }).addTo(RouteService.map);
+       // }, function errorCb(res){
+       //    console.log('error in elevation request', res.status);
+       // });
+       
+//**************************************
+  
         // draw route on the map and fit the bounds of the map viewport to the route
 
         polyline = L.geoJson(RouteService.turfLine, {
@@ -140,42 +178,7 @@
         setTimeout(function() {
           path.css('stroke-dashoffset', 0)
         }, 10);
-//not working
-        L.mapbox.featureLayer({
-            // this feature is in the GeoJSON format: see geojson.org
-            // for the full specification
-            type: 'Feature',
-            geometry: {
-                type: 'Point',
-                // coordinates here are in longitude, latitude order because
-                // x, y is the standard for GeoJSON and many formats
-                coordinates: [-122.437364, 37.774222]
-            },
-            properties: {
-                title: 'Peregrine Espresso',
-                description: '1718 14th St NW, Washington, DC',
-                // one can customize markers by adding simplestyle properties
-                // https://www.mapbox.com/guides/an-open-platform/#simplestyle
-                'marker-size': 'large',
-                'marker-color': '#BE9A6B',
-                'marker-symbol': 'cafe'
-            }
-        }).addTo(RouteService.map);
-        
-
-        //add start and end markers to map
-        
-        var startPoint = resampledPath.features[0];
-        var endPoint = resampledPath.features[resampledPath.features.length-1];
-        startPoint.properties['marker-color'] = '#519CFF';
-        startPoint.properties['marker-symbol'] = "embassy";
-
-        endPoint.properties['marker-color'] = "#519CFF";
-        endPoint.properties['marker-symbol'] = "embassy";
-        
-
-        // renders the resampledRoute after the elevation data is returned from googleapi:
-
+   
         L.geoJson(resampledPath, {
           pointToLayer: function(feature, latlng) {
             var roundedElev = feature.properties.elevation.toFixed(2);
@@ -190,19 +193,6 @@
           }
         }).addTo(RouteService.map);
         
-        var circleMarkerOptions = {
-            radius: 8,
-            fillColor: "#ff7800",
-            color: "#000",
-            weight: 1,
-            opacity: 1,
-            fillOpacity: 0.8
-        };
-
-
-        var defaultIcon = new L.Icon.Default();
-
-    
         //clear out currentPosition
         currentPosition = null;
       };

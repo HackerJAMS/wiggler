@@ -109,6 +109,7 @@
           }
           return turf.featurecollection(collection);
         }
+
         // format elevation and path data to use as turf collection
       route.getElevationPath = function(elevation) {
         var collection = [];
