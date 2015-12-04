@@ -10,6 +10,8 @@
       var turfLines = {};
       turfLines.type = 'FeatureCollection';
       turfLines.features = [];
+      var startCoords;
+      var endCoords;
 
       vm.autocompleteQuery = function(searchText) {
         var defer = $q.defer();
@@ -72,7 +74,8 @@
         // start and end coordinates
         var start = vm.selectedStart.center;
         var end = vm.selectedEnd.center;
-
+        startCoords = vm.selectedStart.center;
+        endCoords = vm.selectedEnd.center;
         // store start/end address for route info display
         RouteService.placeNameStart = vm.selectedStart.place_name;
         RouteService.placeNameEnd = vm.selectedEnd.place_name;
@@ -108,6 +111,8 @@
       };
 
       var plotRoute = function(coords, elevation, pathType) {
+
+        
         // path as array of long/lat tuple
         var path = RouteService.getPath(coords);
         // turf linestring
@@ -124,17 +129,53 @@
         var resampledPath = RouteService.getResampledPath(RouteService.turfLine, elevationCollection);
 
         // draw route on the map and fit the bounds of the map viewport to the route
+
         polyline = L.geoJson(RouteService.turfLine, {
           className: 'route-' + pathType
         }).addTo(RouteService.map);
+
         // RouteService.map.fitBounds(polyline.getBounds());
         // this allows the line and map to load before drawing the path
         var path = angular.element(document.querySelectorAll('path.route-' + pathType));
         setTimeout(function() {
           path.css('stroke-dashoffset', 0)
         }, 10);
+//not working
+        L.mapbox.featureLayer({
+            // this feature is in the GeoJSON format: see geojson.org
+            // for the full specification
+            type: 'Feature',
+            geometry: {
+                type: 'Point',
+                // coordinates here are in longitude, latitude order because
+                // x, y is the standard for GeoJSON and many formats
+                coordinates: [-122.437364, 37.774222]
+            },
+            properties: {
+                title: 'Peregrine Espresso',
+                description: '1718 14th St NW, Washington, DC',
+                // one can customize markers by adding simplestyle properties
+                // https://www.mapbox.com/guides/an-open-platform/#simplestyle
+                'marker-size': 'large',
+                'marker-color': '#BE9A6B',
+                'marker-symbol': 'cafe'
+            }
+        }).addTo(RouteService.map);
+        
+
+        //add start and end markers to map
+        
+        var startPoint = resampledPath.features[0];
+        var endPoint = resampledPath.features[resampledPath.features.length-1];
+        startPoint.properties['marker-color'] = '#519CFF';
+        startPoint.properties['marker-symbol'] = "embassy";
+
+        endPoint.properties['marker-color'] = "#519CFF";
+        endPoint.properties['marker-symbol'] = "embassy";
+        
 
         // renders the resampledRoute after the elevation data is returned from googleapi:
+
         L.geoJson(resampledPath, {
           pointToLayer: function(feature, latlng) {
             var roundedElev = feature.properties.elevation.toFixed(2);
@@ -148,7 +189,20 @@
             });
           }
         }).addTo(RouteService.map);
+        
+        var circleMarkerOptions = {
+            radius: 8,
+            fillColor: "#ff7800",
+            color: "#000",
+            weight: 1,
+            opacity: 1,
+            fillOpacity: 0.8
+        };
 
+
+        var defaultIcon = new L.Icon.Default();
+
+    
         //clear out currentPosition
         currentPosition = null;
       };
