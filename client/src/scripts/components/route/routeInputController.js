@@ -112,6 +112,10 @@
               plotRoute(coords, elevation, pathType);
             }
 
+           // add turfLines to featureLayer and fit map to the bounds
+           var featureLayer = L.mapbox.featureLayer(turfLines);
+           RouteService.map.fitBounds(featureLayer.getBounds());
+ 
           }, function errorCb(res) {
             console.log("error posting route request", res.status);
           });
@@ -178,8 +182,6 @@
           className: 'route-' + pathType
         }).addTo(RouteService.map);
 
-        RouteService.map.fitBounds(polyline.getBounds());
-        
         // this allows the line and map to load before drawing the path
         var path = angular.element(document.querySelectorAll('path.route-' + pathType));
         setTimeout(function() {
