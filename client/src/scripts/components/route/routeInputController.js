@@ -10,6 +10,8 @@
       var turfLines = {};
       turfLines.type = 'FeatureCollection';
       turfLines.features = [];
+      
+      
 
       vm.autocompleteQuery = function(searchText) {
         var defer = $q.defer();
@@ -72,7 +74,7 @@
         // start and end coordinates
         var start = vm.selectedStart.center;
         var end = vm.selectedEnd.center;
-
+    
         // store start/end address for route info display
         RouteService.placeNameStart = vm.selectedStart.place_name;
         RouteService.placeNameEnd = vm.selectedEnd.place_name;
@@ -123,18 +125,58 @@
         // resample turfline for 3d point display
         var resampledPath = RouteService.getResampledPath(RouteService.turfLine, elevationCollection);
 
+   
+//************* calls googleapi for refined elevation data *************
+
+       // var newPoints = resampledPath.features.slice();
+       // var newPointCoordinates = newPoints.map(function(n, i) {
+       //        return n.geometry.coordinates;
+       //     });
+
+       // RouteService.postElevationRequest(newPointCoordinates)
+       // .then(function successCb(res){
+       //    var resampledPoints = RouteService.getElevationPath(res.data);
+       //   //test for unique values; refactor for jasmine test
+
+       //    var uniqueArr = resampledPoints.features;
+       //    var nonUniqueArr = resampledPath.features;
+       //    uniqueArr.forEach(function(feature){
+       //      console.log(feature.properties.elevation);
+       //  });
+
+            
+       //      L.geoJson(resampledPoints, {
+       //      pointToLayer: function(feature, latlng) {
+       //        var roundedElev = feature.properties.elevation.toFixed(2);
+       //        var cssHeight = roundedElev;
+       //        var myIcon = L.divIcon({
+       //          className: 'elevations',
+       //          html: '<div class="elevmarker"><div class="markercircle bottomcap marker-' + pathType + '"></div><div class="markerline marker-' + pathType + '" style="height:' + cssHeight + 'px">' + '</div><div class="markercircle marker-' + pathType + '"></div><div class="elevfigure">' + roundedElev + ' ft.</div></div>'
+       //        });
+       //        return L.marker(latlng, {
+       //          icon: myIcon
+       //        });
+       //      }
+       //    }).addTo(RouteService.map);
+       // }, function errorCb(res){
+       //    console.log('error in elevation request', res.status);
+       // });
+       
+//**************************************
+  
         // draw route on the map and fit the bounds of the map viewport to the route
+
         polyline = L.geoJson(RouteService.turfLine, {
           className: 'route-' + pathType
         }).addTo(RouteService.map);
+
         // RouteService.map.fitBounds(polyline.getBounds());
         // this allows the line and map to load before drawing the path
         var path = angular.element(document.querySelectorAll('path.route-' + pathType));
         setTimeout(function() {
           path.css('stroke-dashoffset', 0)
         }, 10);
-
-        // renders the resampledRoute after the elevation data is returned from googleapi:
+   
         L.geoJson(resampledPath, {
           pointToLayer: function(feature, latlng) {
             var roundedElev = feature.properties.elevation.toFixed(2);
@@ -148,7 +190,7 @@
             });
           }
         }).addTo(RouteService.map);
-
+        
         //clear out currentPosition
         currentPosition = null;
       };
