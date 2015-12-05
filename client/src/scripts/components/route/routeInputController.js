@@ -96,17 +96,16 @@
         var prefs = {};
         prefs.shortestPathChecked = vm.shortestPathChecked;
         prefs.minElevPathChecked = vm.minElevPathChecked;
-        prefs.minBikingChecked = false;
-        prefs.minHikingChecked = false;
+        prefs.minBikingChecked = vm.minBikingChecked;
+        prefs.minHikingChecked = vm.minHikingChecked;
 
         RouteService.cleanMap(polyline !== "undefined", RouteService.map);
         turfLines.features = [];
-        
+
         RouteService.postRouteRequest(start, end, prefs)
           .then(function successCb(res) {
             RouteService.addLegend(prefs);
             for (var pathType in res.data) {
-              console.log(pathType);
               var coords = res.data[pathType][0];
               var elevation = res.data[pathType][1];
               plotRoute(coords, elevation, pathType);
