@@ -3,7 +3,7 @@
   'use strict';
 
   angular.module('app')
-    .directive('mapbox', ['RouteService', '$timeout',function(RouteService, $timeout) {
+    .directive('mapbox', ['RouteService', '$timeout', function(RouteService, $timeout) {
       return {
         // restrict this directive to an html element ('E':element, 'A': attribute, 'C': component)
         restrict: 'E',
@@ -12,7 +12,7 @@
         scope: {
           callback: "="
         },
-        
+
         template: '<div id="map"/>',
         // link function allows the directive to manipulate the DOM
         link: function(scope, element, attributes) {
@@ -35,29 +35,29 @@
             return bounds;
           };
 
-          // this fixes the map glitch that causes the map to be loaded initially with
-          // the wrong container size, causing the map to be incorrectly centered
-          $timeout(function () {
-            map.invalidateSize(true);
-            var locationsGeojson = [];
-            locationsGeojson.push({
-              "type": "Feature",
-              "geometry": {
-                "type": "Point",
-                "coordinates": [-122.437364, 37.774222]
-              },
-              "properties": {
-                "marker-color": "#DC3C05",
-                "marker-size": "large",
-                "marker-symbol": "star"
-              }
-            });
+          var locationsGeojson = [];
+          locationsGeojson.push({
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [-122.437364, 37.774222]
+            },
+            "properties": {
+              "marker-color": "#DC3C05",
+              "marker-size": "large",
+              "marker-symbol": "star"
+            }
+          });
           var markerLayer = L.mapbox.featureLayer(locationsGeojson).addTo(map);
           L.circleMarker([-122.437364, 37.774222]).addTo(map);
-          });
 
-          RouteService.initMap(map);
+          // this fixes the map glitch that causes the map to be loaded initially with
+          // the wrong container size, causing the map to be incorrectly centered
+          $timeout(function() {
+            map.invalidateSize(true);
+            RouteService.initMap(map);
+          })
         }
-      };
+      }
     }]);
 })();

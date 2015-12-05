@@ -13,6 +13,25 @@
         }).addTo(map);
         map.setView([37.774, -122.446], 13);
         map.scrollWheelZoom.disable();
+        var routeTypes = {
+          "Shortest": '#43665F',
+          "Minimum elevation change": '#D291B8',
+          "Fastest biking": '#5ACC74',
+          "Fastest walking": '#57FFDC'
+        };
+
+        function getLegendHTML() {
+          var labels = [];
+          for (var i = 0; i < Object.keys(routeTypes).length; i++) {
+            var r = Object.keys(routeTypes)[i];
+            console.log(routeTypes[r]);
+            labels.push(
+              '<li><span class="swatch" style="background:' + routeTypes[r] + '"></span> ' + r + '</li>');
+          }
+          return '<span>Route Types</span><ul>' + labels.join('') + '</ul>';
+        }
+
+        map.legendControl.addLegend(getLegendHTML());
         route.map = map;
       };
       // bounding box for the auto-complete query
@@ -35,6 +54,7 @@
           }
         }]
       }
+
       route.postRouteRequest = function(start, end, preferences) {
         return $http({
           method: 'POST',

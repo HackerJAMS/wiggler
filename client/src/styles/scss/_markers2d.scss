@@ -1,0 +1,37 @@
+
+
+path.leaflet-clickable {
+  stroke-width: 4px;
+  stroke-dashoffset: 10000;
+  stroke-dasharray: 10000;
+  -moz-transition: stroke-dashoffset 3s;
+  -webkit-transition: stroke-dashoffset 3s;
+  pointer-events: none;
+  &.route-shortestPath {
+    stroke: red
+  }
+  &.route-minElevationPath {
+    stroke: blue
+  }
+}
+
+div.line {
+  width: 30px;
+  display: inline-block;
+  border-style: solid;
+  border-width: 0 0 3px 0;
+  margin: 4px 0px;
+}
+
+.line.red {
+  border-color: red
+}
+
+.line.blue {
+  border-color: blue
+}
+
+.tilted path.leaflet-clickable,
+.tilted .leaflet-control-container {
+  display: none;
+}
