@@ -10,25 +10,16 @@ path.leaflet-clickable {
   &.route-shortestPath {
     stroke: $shortest_path;
   }
-  &.route-minElevationPath {
+  &.route-minElevPath {
     stroke: $min_elevation_path;
   }
-}
+  &.route-minBiking {
+    stroke: $fastest_biking;
+  }
+  &.route-minHiking {
+    stroke: $fastest_walking;
+  }
 
-div.line {
-  width: 30px;
-  display: inline-block;
-  border-style: solid;
-  border-width: 0 0 3px 0;
-  margin: 4px 0px;
-}
-
-.line.red {
-  border-color: red
-}
-
-.line.blue {
-  border-color: blue
 }
 
 .tilted path.leaflet-clickable,

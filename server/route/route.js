@@ -17,62 +17,65 @@ module.exports = function(req, res) {
     .then(function(param){
       var start = param.startNode;
       var end = param.endNode;
+      var prefs = req.body.preferences;
       
-      var shortestPathChecked = req.body.preferences.shortestPathChecked;
-      var minElevPathChecked = req.body.preferences.minElevPathChecked;
-
-      console.log("shortestPathChecked",shortestPathChecked);
-      console.log("minElevPathChecked", minElevPathChecked); 
-
       var totalSelections = 0;
-      if (shortestPathChecked) {
-        totalSelections++;
+      for (var key in prefs) {
+        if (prefs[key] === true){
+          totalSelections++;
+        }
       }
-      if (minElevPathChecked) {
-        totalSelections++;
-      }
+
+      var pathFunctions = {
+        "shortestPathChecked" : shortestPath,
+        "minElevPathChecked" : minElevationPath,
+        "minBikingChecked" : [minHikeBike, "bike"],
+        "minHikingChecked" : [minHikeBike, "hike"]
+      };
 
       var counter = 0;
-      if( start && end && shortestPathChecked) {
-        /**
-        Shortest Path from Dijkstra Algorithm
-        **/
-        console.log("calculating shortest path..."); 
-        shortestPath(start, end, function(err, result){
-          if(err) {
-            console.error('could not obtain the shortest path: ', err);
-            res.send(err);
-          } else {
-            results.shortestPath = result;
-            counter++;
-            if (counter === totalSelections) {
-              res.send(results);
-            }
-          }
-        });       
-      } 
 
-      if (start && end && minElevPathChecked) {
-        /**
-        Minimum Elevation Path from Dijkstra Algorithm
-        **/
-        console.log("calculating minimum elevation route...");
-        minHikeBike(start, end, "bike", function(err, result){
-          if(err) {
-            console.error('could not obtain the minimum elevation path: ', err);
-            res.send(err);
+      function addPath(pathCheckedKey) {
+        if (start && end && prefs[pathCheckedKey]) {
+          /**
+          Shortest Path from Dijkstra Algorithm
+          **/
+          console.log("calculating"+ pathCheckedKey +" path...");
+          if (pathFunctions[pathCheckedKey].constructor === Array) {
+            pathFunctions[pathCheckedKey][0](start, end, pathFunctions[pathCheckedKey][1], function(err, result) {
+              if (err) {
+                console.error('could not obtain the'+ pathCheckedKey + ' path: ', err);
+                res.send(err);
+              } else {
+                var results_key = pathCheckedKey.replace("Checked","")
+                results[results_key] = result;
+                counter++;
+                if (counter === totalSelections) {
+                  res.send(results);
+                }
+              }
+            })
           } else {
-            // console.log('result when querying the minimum elevation path: ', result[0]);
-            // result[0][0].unshift([req.body.start[1], req.body.start[0]]);
-            // result[0][result[0].length-1].push([req.body.end[1], req.body.end[0]]);
-            results.minElevationPath = result;
-            counter++;
-            if (counter === totalSelections) {
-              res.send(results);
-            }            
+            pathFunctions[pathCheckedKey](start, end, function(err, result) {
+              if (err) {
+                console.error('could not obtain the'+ pathCheckedKey + ' path: ', err);
+                res.send(err);
+              } else {
+                var results_key = pathCheckedKey.replace("Checked","")
+                results[results_key] = result;
+                counter++;
+                if (counter === totalSelections) {
+                  res.send(results);
+                }
+              }
+            });
           }
-        });     
+        }
       }
+
+    for (var key in prefs) {
+      addPath(key);
+    }
 
     });
   }
