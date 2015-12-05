@@ -27,9 +27,9 @@
           };
 
           var routeColors = {
-            "Shortest": '#43665F',
-            "Minimum elevation change": '#D291B8',
-            "Fastest biking": '#5ACC74',
+            "Shortest": '#D28014',
+            "Minimum elevation change": '#545166',
+            "Fastest biking": '#3D1BFF',
             "Fastest walking": '#57FFDC'
           };
           var routeTypes = {};
@@ -43,7 +43,6 @@
             var labels = [];
             for (var i = 0; i < Object.keys(routeTypes).length; i++) {
               var r = Object.keys(routeTypes)[i];
-              console.log(routeTypes[r]);
               labels.push(
                 '<li><span class="swatch" style="background:' + routeTypes[r] + '"></span> ' + r + '</li>');
             }
@@ -105,8 +104,6 @@
         }
         // this function removes any existing polylines from the map before adding a new one 
       route.cleanMap = function(polyline, map) {
-        console.log("clean map called -- polyline", polyline);
-
         // clear 2d lines
         map.eachLayer(function(layer) {
             if (layer instanceof L.Polyline) {

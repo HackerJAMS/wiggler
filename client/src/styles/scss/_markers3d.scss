@@ -64,6 +64,14 @@
   background-color: $shortest_path;
 }
 
-.marker-minElevationPath {
+.marker-minElevPath {
   background-color: $min_elevation_path;
 }
+
+.marker-minBiking {
+  background-color: $fastest_biking;
+}
+.marker-minHiking {
+  background-color: $fastest_walking;
+}
+

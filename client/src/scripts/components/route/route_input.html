@@ -26,7 +26,12 @@
     <md-checkbox ng-init="routeCtrl.minElevPathChecked = true" ng-click="routeCtrl.minElevPathChecked = !routeCtrl.minElevPathChecked" ng-checked="routeCtrl.minElevPathChecked">
       min elevation path
     </md-checkbox>  
-
+    <md-checkbox ng-init="routeCtrl.minBikingChecked = true" ng-click="routeCtrl.minBikingChecked = !routeCtrl.minBikingChecked" ng-checked="routeCtrl.minBikingChecked">
+      fastest biking path
+    </md-checkbox> 
+    <md-checkbox ng-init="routeCtrl.minHikingChecked = true" ng-click="routeCtrl.minHikingChecked = !routeCtrl.minHikingChecked" ng-checked="routeCtrl.minHikingChecked">
+      fastest walking path
+    </md-checkbox>
     <div>
       <md-button class="md-raised md-primary" ng-click="routeCtrl.submitRoute()">Get Route</md-button>
       <md-button class="md-raised" ng-click="routeCtrl.submitRoute()">Test Route</md-button>
