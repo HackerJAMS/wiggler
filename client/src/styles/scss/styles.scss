@@ -26,4 +26,21 @@ body {
   color: black;
 }
 
+#locator {
+  line-height:1;
+  size:5;
+  vertical-align: middle;
+  display:inline-block;
+}
+#toolbar {
+  font-size: 2em;
+}
+
+.md-button.md-fab {
+  min-width: 0;
+  width: 3.6rem;
+  height: 3.6rem;
+  border-radius: 50%;
+}
+
 

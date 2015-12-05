@@ -12,8 +12,6 @@
       turfLines.type = 'FeatureCollection';
       turfLines.features = [];
       
-      
-
       vm.autocompleteQuery = function(searchText) {
         var defer = $q.defer();
         RouteService.geocoding(searchText)
