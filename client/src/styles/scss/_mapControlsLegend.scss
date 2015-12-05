@@ -1,0 +1,22 @@
+.map-legend .swatch {
+  width: 20px;
+  height: 20px;
+  float: left;
+  margin-right: 10px;
+}
+
+ul {
+  list-style: none;
+  padding-left: 5px;
+}
+
+.map-controls button {
+  z-index: 999;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid;
+  margin-top: 12px;
+  /* move button out of the way of zoom-in/out control */
+  &:first-of-type {
+    margin-left: 60px;
+  }
+}

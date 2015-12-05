@@ -8,6 +8,7 @@ var Q = require('q');
 var shortestPath = require('../utility/shortestPath.js');
 var minElevationPath = require('../utility/minElevationPath.js');
 var closestNode = require('../utility/closestNode.js');
+var minHikeBike = require('../utility/minHikeBike.js');
 module.exports = function(req, res) {
   var results = {};
 
@@ -56,7 +57,7 @@ module.exports = function(req, res) {
         Minimum Elevation Path from Dijkstra Algorithm
         **/
         console.log("calculating minimum elevation route...");
-        minElevationPath(start, end, function(err, result){
+        minHikeBike(start, end, "bike", function(err, result){
           if(err) {
             console.error('could not obtain the minimum elevation path: ', err);
             res.send(err);

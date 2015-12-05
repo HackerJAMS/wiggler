@@ -10,29 +10,30 @@
 
 var db = require('./db.js');
 var Q = require('q');
-module.exports = function() {
-
-  // ALTER TABLE ways ADD COLUMN el_dist_cost double precision
-  // ALTER TABLE ways ADD COLUMN r_el_dist_cost double precision
-
+var velocity = require('./calcVelocity');
+var start;
+var transport_method;
+module.exports = function(hikeOrBike) {
   // ALTER TABLE nodes_with_elevation ADD COLUMN geog geometry;
   // UPDATE nodes_with_elevation SET geog = ST_SetSRID(ST_MakePoint(lon, lat), 4326);
   // CREATE INDEX geog_idx ON nodes_with_elevation USING gist (geog);
 
-  // set highways cost to infinity -- our routing is for biking and walking only. 
-  // UPDATE ways SET el_dist_cost = '+infinity', r_el_dist_cost = '+infinity' WHERE class_id <= 107;
+  // ALTER TABLE ways ADD COLUMN hike_cost double precision;
+  // ALTER TABLE ways ADD COLUMN r_hike_cost double precision
+  // ALTER TABLE ways ADD COLUMN bike_cost double precision;
+  // ALTER TABLE ways ADD COLUMN r_bike_cost double precision;
 
-  // create an auto-increasing column count in table ways
-  // CREATE SEQUENCE seq;
-  // ALTER TABLE ways ADD COLUMN count integer UNIQUE;
-  // ALTER TABLE ways ALTER COLUMN count SET DEFAULT NEXTVAL('seq');
-  // UPDATE ways SET count = NEXTVAL('seq');
-  subSetQuery(17901, 43000);
+  // set cost to infinity for roads/paths that are not passable by foot/cycle -- our routing is for biking and walking only. 
+  // want to exclude class_ids: 101,102,103,104,105,122
+  // UPDATE ways SET bike_cost = '+infinity', r_hike_cost = '+infinity' WHERE class_id in (101,102,103,104,105,122);
+  // UPDATE ways SET hike_cost = '+infinity', r_hike_cost = '+infinity' WHERE class_id in (101,102,103,104,105,122);
+  transport_method=hikeOrBike;
+  subSetQuery(1, 1000);
+  var start = new Date().getTime();
 }
 
 var subSetQuery = function(countStart, countEnd) {
-  var start = new Date().getTime();
-  var queryString = "SELECT gid, length, ST_AsText(ST_Transform(the_geom,4326)) FROM ways WHERE class_id > 107 AND el_dist_cost is null limit 5";
+  var queryString = "SELECT gid, length, ST_AsText(ST_Transform(the_geom,4326)) FROM ways WHERE class_id NOT IN (101,102,103,104,105,122) AND hike_cost is null limit 1000";
 
   db.query(queryString, function(err, result) {
     if (err) {
@@ -48,7 +49,7 @@ var subSetQuery = function(countStart, countEnd) {
         .then(getCost)
         .then(function(param) {
           var currentGid = result.rows[param.index].gid;
-          db.query("UPDATE ways SET el_dist_cost = " + param.to_cost + ", r_el_dist_cost= " + param.rev_cost + " where gid =" + currentGid, function(err, result) {
+          db.query("UPDATE ways SET hike_cost = " + param.to_cost + ", r_hike_cost= " + param.rev_cost + " where gid =" + currentGid, function(err, result) {
               counter++;
               if (err) {
                 console.log("i", param.index, "error when update cost columns...", err);
@@ -67,7 +68,7 @@ var subSetQuery = function(countStart, countEnd) {
                 }
               }
             })
-            // console.log('gid: ', result.rows[param.index].gid);
+            console.log('gid: ', result.rows[param.index].gid);
         })
         .catch(function(err) {
           console.log('error...', err);
@@ -112,21 +113,26 @@ var getElevations = function(i, result) {
 
 // calculate cost of each line segment based on elevation change of points on the segment
 var getCost = function(param) {
+
   var defer = Q.defer();
   var to_cost = 0;
   var rev_cost = 0;
   var count = 0;
-  var sin_theta;
+  var len = 0;
+  var tan_theta;
   var elevation = param.elevation;
   var stringArr = param.stringArr;
   if (stringArr.length === 2) {
-    // cost = (arcsin(elevation_change/distance) + 90) * distance
-    // the Math trig functions natively take and return radians, so we multiply by 180/PI to convert to degrees
+    // our unit of cost is now time calculated as a function of velocity and distance
+    // velocity is calculated using a binary search algorithm available in calcVelocity.js
     // units of elevation and distance must be the same, and param.length is in km, so we multiply by 1000 to standardize.
-    sin_theta = ((+elevation[1]) - (+elevation[0])) / (param.length * 1000);
-    console.log("sin_theta: ", sin_theta);
-    to_cost += (Math.asin(sin_theta) * (180 / Math.PI) + 90) * (param.length * 1000);
-    rev_cost += (Math.asin(sin_theta * -1) * (180 / Math.PI) + 90) * (param.length * 1000);
+    len=param.length;
+    tan_theta = ((+elevation[1]) - (+elevation[0])) / (len*1000);
+    // multiply by 60 to get cost from hours to in minutes
+    to_cost += (len*60)/velocity.hiking(tan_theta);
+    rev_cost += (len*60)/velocity.hiking(tan_theta*-1);
+    console.log('tan_theta',tan_theta,'elevation: ', elevation, 'to_cost: ', to_cost, 'rev_cost: ', rev_cost);
+
     defer.resolve({
       index: param.index,
       to_cost: to_cost,
@@ -137,20 +143,20 @@ var getCost = function(param) {
       (function(k) {
         var p1 = stringArr[k].split(' ');
         var p2 = stringArr[k + 1].split(' ');
-        var len = 0
         db.query("SELECT ST_Distance_Spheroid(ST_MakePoint(" + p1[0] + "," + p1[1] + "),ST_MakePoint(" + p2[0] + "," + p2[1] + "),'SPHEROID[\"WGS 84\",6378137,298.257223563]')", function(err, distance) {
           if (err) {
             console.log('error during getCost', err);
             defer.reject(err);
           }
           if (distance.rows[0].st_distance_spheroid !== 0) {
-            len = (distance.rows[0].st_distance_spheroid);
-            sin_theta = ((+elevation[k + 1]) - (+elevation[k])) / len;
-            to_cost += (Math.asin(sin_theta) * (180 / Math.PI) + 90) * len;
-            rev_cost += (Math.asin(sin_theta * -1) * (180 / Math.PI) + 90) * len;
+            len = (distance.rows[0].st_distance_spheroid)/1000;
+            tan_theta = ((+elevation[k + 1]) - (+elevation[k])) / (len*1000);
+            // multiply by 60 to get cost from hours to in minutes
+            to_cost += (len*60)/velocity.hiking(tan_theta);
+            rev_cost += (len*60)/velocity.hiking(tan_theta*-1);
           }
           count++;
-          console.log(k, 'distance: ', distance.rows[0])
+          console.log(k, 'distance: ', distance.rows[0], 'tan_theta', tan_theta);
           if (count === (stringArr.length - 1)) {
             console.log('elevation: ', elevation, 'to_cost: ', to_cost, 'rev_cost: ', rev_cost);
             defer.resolve({

@@ -1,0 +1,69 @@
+
+
+.elevmarker {
+  -moz-transform: rotateX(90deg);
+  -moz-transform-origin: 0% 0%;
+  -moz-transform-style: preserve-3d;
+  -webkit-transform: rotateX(90deg);
+  -webkit-transform-origin: 0% 0%;
+  transform-style: preserve-3d;
+  margin: 6px;
+  &:hover .elevfigure {
+    display: block;
+  }
+}
+
+.tilted .elevations {
+  display: block
+}
+
+.elevations {
+  opacity: 0.5;
+  display: none;
+}
+
+.markerline {
+  width: 4px;
+  margin-left: -2px;
+  background: #30a07A;
+  height: 0px;
+  -moz-transition: height 0.2s ease-in;
+  transition: height 0.2s ease-in;
+}
+
+.markercircle {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  margin: -2px;
+  background: #60d0aA;
+  -moz-transform: rotateX(90deg);
+  -moz-transform-style: preserve-3d;
+  // -webkit-transform: rotateX(90deg);
+  -webkit-transform-style: preserve-3d;
+}
+
+.bottomcap {
+  background: #30a07A;
+}
+
+.elevfigure {
+  background: purple;
+  border-radius: 3px;
+  color: white;
+  display: none;
+  margin-top: 10px;
+  padding: 0px 4px;
+  text-align: center;
+  transform: rotateX(180deg);
+  width: 100px;
+  -webkit-transform: rotateX(180deg) translateX(-50%);
+}
+
+.marker-shortestPath {
+  background-color: $shortest_path;
+}
+
+.marker-minElevationPath {
+  background-color: $min_elevation_path;
+}
