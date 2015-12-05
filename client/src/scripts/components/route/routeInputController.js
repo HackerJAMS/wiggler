@@ -70,6 +70,20 @@
             center: [-122.437364, 37.774222]
           }
         }
+        var locationsGeojson = [];
+        locationsGeojson.push({
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [-122.437364, 37.774222]
+          },
+          "properties": {
+            "marker-color": "#DC3C05",
+            "marker-size": "large",
+            "marker-symbol": "star"
+          }
+        });
+        L.mapbox.featureLayer(locationsGeojson).addTo(RouteService.map);
 
         // start and end coordinates
         var start = vm.selectedStart.center;
@@ -82,27 +96,21 @@
         var prefs = {};
         prefs.shortestPathChecked = vm.shortestPathChecked;
         prefs.minElevPathChecked = vm.minElevPathChecked;
+        prefs.minBikingChecked = false;
+        prefs.minHikingChecked = false;
 
-        //console.log("shortestPathChecked", prefs.shortestPathChecked);
-        //console.log("minElevPathChecked", prefs.minElevPathChecked);       
-        // console.log("start", start, "end", end);
-
+        RouteService.cleanMap(polyline !== "undefined", RouteService.map);
+        turfLines.features = [];
+        
         RouteService.postRouteRequest(start, end, prefs)
           .then(function successCb(res) {
-
-            RouteService.cleanMap(polyline !== "undefined", RouteService.map);
-            turfLines.features = [];
-
+            RouteService.addLegend(prefs);
             for (var pathType in res.data) {
               console.log(pathType);
               var coords = res.data[pathType][0];
               var elevation = res.data[pathType][1];
               plotRoute(coords, elevation, pathType);
             }
-
-            // add turfLines to featureLayer and fit map to the bounds
-            var featureLayer = L.mapbox.featureLayer(turfLines);
-            RouteService.map.fitBounds(featureLayer.getBounds());
 
           }, function errorCb(res) {
             console.log("error posting route request", res.status);
@@ -170,7 +178,7 @@
           className: 'route-' + pathType
         }).addTo(RouteService.map);
 
-        // RouteService.map.fitBounds(polyline.getBounds());
+        RouteService.map.fitBounds(polyline.getBounds());
         // this allows the line and map to load before drawing the path
         var path = angular.element(document.querySelectorAll('path.route-' + pathType));
         setTimeout(function() {

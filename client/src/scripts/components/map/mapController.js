@@ -17,6 +17,8 @@
 
       vm.tiltCheck = false;
 
+      
+
       vm.mouseDown = function(e) {
         if (vm.tiltCheck) {
           vm.xpos = e.pageX;
@@ -60,7 +62,7 @@
       vm.restoreMap = function() {
         var elevMarker = angular.element(document.querySelectorAll('.elevmarker'));
         var path = angular.element(document.querySelector('path'));
-        
+
         mapEl.attr('style', 'transition:all 0.25s');
         elevMarker.attr('style', '');
         // path.css('stroke-dashoffset', 0)

@@ -3,7 +3,7 @@
   'use strict';
 
   angular.module('app')
-    .directive('mapbox', ['RouteService', '$timeout',function(RouteService, $timeout) {
+    .directive('mapbox', ['RouteService', '$timeout', function(RouteService, $timeout) {
       return {
         // restrict this directive to an html element ('E':element, 'A': attribute, 'C': component)
         restrict: 'E',
@@ -12,14 +12,14 @@
         scope: {
           callback: "="
         },
-        
+
         template: '<div id="map"/>',
         // link function allows the directive to manipulate the DOM
         link: function(scope, element, attributes) {
           // molly's public token
           L.mapbox.accessToken = 'pk.eyJ1IjoibWxsb3lkIiwiYSI6Im9nMDN3aW8ifQ.mwiVAv4E-1OeaoR25QZAvw';
           var map = L.mapbox.map(element[0], 'mapbox.run-bike-hike', {
-            tileSize: 5120,
+            // tileSize: 5120,
             zoomControl: false,
             maxZoom: 19,
             minZoom: 11
@@ -34,13 +34,15 @@
             bounds.max.y = bounds.max.y + 1000;
             return bounds;
           };
+
+
           // this fixes the map glitch that causes the map to be loaded initially with
           // the wrong container size, causing the map to be incorrectly centered
-          $timeout(function () {
+          $timeout(function() {
             map.invalidateSize(true);
-          });
-          RouteService.initMap(map);
+            RouteService.initMap(map);
+          })
         }
-      };
+      }
     }]);
 })();

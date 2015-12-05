@@ -11,3 +11,6 @@ mapbox-elev.js
 db_dump.sql
 
 *.orig
+
+server/db/calcBikeCost.js
+server/db/calcHikingCost.js
