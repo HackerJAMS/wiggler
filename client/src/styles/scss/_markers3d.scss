@@ -61,9 +61,9 @@
 }
 
 .marker-shortestPath {
-  background-color: red
+  background-color: $shortest_path;
 }
 
 .marker-minElevationPath {
-  background-color: blue
+  background-color: $min_elevation_path;
 }

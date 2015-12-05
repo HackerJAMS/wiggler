@@ -8,10 +8,10 @@ path.leaflet-clickable {
   -webkit-transition: stroke-dashoffset 3s;
   pointer-events: none;
   &.route-shortestPath {
-    stroke: red
+    stroke: $shortest_path;
   }
   &.route-minElevationPath {
-    stroke: blue
+    stroke: $min_elevation_path;
   }
 }
 

@@ -1,10 +1,18 @@
+$shortest_path: #43665F;
+$min_elevation_path: #D291B8;
+$fastest_biking: #5ACC74;
+$fastest_walking: #57FFDC;
+
+
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700');
 @import 'map3d';
 @import 'markers2d';
 @import 'markers3d';
 @import 'mapControlsLegend';
 
-$green: #8EE5A3;
+
+
+
 body {
   background-color: white;
   width: 100%;
