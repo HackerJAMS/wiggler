@@ -7,34 +7,52 @@
 
       route.map;
       route.turfLine;
+      route.legendData;
       route.initMap = function(map) {
         new L.Control.Zoom({
           position: 'topleft'
         }).addTo(map);
         map.setView([37.774, -122.446], 13);
         map.scrollWheelZoom.disable();
-        var routeTypes = {
-          "Shortest": '#43665F',
-          "Minimum elevation change": '#D291B8',
-          "Fastest biking": '#5ACC74',
-          "Fastest walking": '#57FFDC'
-        };
-
-        function getLegendHTML() {
-          var labels = [];
-          for (var i = 0; i < Object.keys(routeTypes).length; i++) {
-            var r = Object.keys(routeTypes)[i];
-            console.log(routeTypes[r]);
-            labels.push(
-              '<li><span class="swatch" style="background:' + routeTypes[r] + '"></span> ' + r + '</li>');
-          }
-          return '<span>Route Types</span><ul>' + labels.join('') + '</ul>';
-        }
-
-        map.legendControl.addLegend(getLegendHTML());
         route.map = map;
       };
-      // bounding box for the auto-complete query
+
+      route.addLegend = function(prefs) {
+
+          var checkBoxes = {
+            shortestPathChecked: "Shortest",
+            minElevPathChecked: "Minimum elevation change",
+            minBikingChecked: "Fastest biking",
+            minHikingChecked: "Fastest walking"
+          };
+
+          var routeColors = {
+            "Shortest": '#43665F',
+            "Minimum elevation change": '#D291B8',
+            "Fastest biking": '#5ACC74',
+            "Fastest walking": '#57FFDC'
+          };
+          var routeTypes = {};
+          for (var key in prefs) {
+            if (prefs[key] === true) {
+              routeTypes[checkBoxes[key]] = routeColors[checkBoxes[key]]
+            }
+          }
+
+          function getLegendHTML() {
+            var labels = [];
+            for (var i = 0; i < Object.keys(routeTypes).length; i++) {
+              var r = Object.keys(routeTypes)[i];
+              console.log(routeTypes[r]);
+              labels.push(
+                '<li><span class="swatch" style="background:' + routeTypes[r] + '"></span> ' + r + '</li>');
+            }
+            return '<span>Route Types</span><ul>' + labels.join('') + '</ul>';
+          }
+          route.legendData = getLegendHTML()
+          route.map.legendControl.addLegend(route.legendData);
+        }
+        // bounding box for the auto-complete query
       route.within = {
         "type": "FeatureCollection",
         "features": [{
@@ -44,11 +62,11 @@
             "type": "Polygon",
             "coordinates": [
               [
-                [-122.55661010742188,37.680559803205114],
-                [-122.55661010742188,37.820632846207864],
-                [-122.33139038085936,37.820632846207864],
-                [-122.33139038085936,37.680559803205114],
-                [-122.55661010742188,37.680559803205114]
+                [-122.55661010742188, 37.680559803205114],
+                [-122.55661010742188, 37.820632846207864],
+                [-122.33139038085936, 37.820632846207864],
+                [-122.33139038085936, 37.680559803205114],
+                [-122.55661010742188, 37.680559803205114]
               ]
             ]
           }
@@ -87,15 +105,20 @@
         }
         // this function removes any existing polylines from the map before adding a new one 
       route.cleanMap = function(polyline, map) {
-        if (polyline) {
-          map.eachLayer(function(layer) {
+        console.log("clean map called -- polyline", polyline);
+
+        // clear 2d lines
+        map.eachLayer(function(layer) {
             if (layer instanceof L.Polyline) {
               map.removeLayer(layer);
             }
           })
-        }
+          // clear 3d markers
         var elevationIcons = angular.element(document.querySelectorAll('.elevations'));
         elevationIcons.remove();
+        // clear legend
+        route.map.legendControl.removeLegend(route.legendData);
+        route.legendData = "";
       };
       // process the coordinates in the path sent from the server routing algorithm
       route.getPath = function(coords) {

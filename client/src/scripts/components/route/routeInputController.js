@@ -91,15 +91,14 @@
         var prefs = {};
         prefs.shortestPathChecked = vm.shortestPathChecked;
         prefs.minElevPathChecked = vm.minElevPathChecked;
+        prefs.minBikingChecked = false;
+        prefs.minHikingChecked = false;
 
-        //console.log("shortestPathChecked", prefs.shortestPathChecked);
-        //console.log("minElevPathChecked", prefs.minElevPathChecked);       
-        // console.log("start", start, "end", end);
-
+        RouteService.cleanMap(polyline !== "undefined", RouteService.map);
+        
         RouteService.postRouteRequest(start, end, prefs)
           .then(function successCb(res) {
-            RouteService.cleanMap(polyline !== "undefined", RouteService.map);
-
+            RouteService.addLegend(prefs);
             for (var pathType in res.data) {
               console.log(pathType);
               var coords = res.data[pathType][0];
