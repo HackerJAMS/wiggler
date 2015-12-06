@@ -140,8 +140,7 @@
 
         // resample turfline for 3d point display
         var resampledPath = RouteService.getResampledPath(RouteService.turfLine, elevationCollection, 100);
-      
-        RouteService.getDirections(RouteService.getResampledPath(RouteService.turfLine, elevationCollection, 50).features.map(function (point){ return point.geometry.coordinates}));
+        
    
 //************* calls googleapi for refined elevation data *************
 

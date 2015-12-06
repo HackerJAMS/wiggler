@@ -12,5 +12,24 @@
         vm.placeNameStart = RouteService.placeNameStart;
         vm.placeNameEnd = RouteService.placeNameEnd;
       }
+
+      vm.displayDirections = function(pathType) {
+        RouteService.getDirections(RouteService.getResampledPath(RouteService.turfLine, [], 50).features.map(function(point) {
+            return point.geometry.coordinates
+          }))
+          .then(function(directions) {
+            var steps = directions.filter(function(step) {
+              return step.search("Reach waypoint") === -1 && step.search("You have arrived at your destination") === -1;
+            });
+            steps.push("You have arrived at your destination.");
+
+            console.log(steps);
+          })
+
+      }
+
+      vm.displayDirections("minElevPath");
+
+
     }])
 })();

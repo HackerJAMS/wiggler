@@ -142,11 +142,12 @@
 
         for (var i = 0; i < resamplePoints; i++) {
           var point = turf.along(line, distance, 'miles');
-          // use elevation data from nearest point in elevationCollection
-          var nearest = turf.nearest(point, elevationCollection);
-          // push resampled point and elevation into collection
           collection.push(point);
-          collection[i].properties.elevation = nearest.properties.elevation;
+          // use elevation data from nearest point in elevationCollection
+          if (elevationCollection.features !== undefined){
+            var nearest = turf.nearest(point, elevationCollection);
+            collection[i].properties.elevation = nearest.properties.elevation;
+          }
           // dist_jia.push(distance);
           // elev_jia.push(nearest.properties.elevation);
           // update distance
@@ -186,7 +187,7 @@
         var coordStr = coords.slice(0, 25).join(';');
         var coordStr2 = coords.slice(25).join(';');
 
-        $http({
+        return $http({
           method: 'GET',
           url: 'https://api.mapbox.com/v4/directions/mapbox.walking/' + coordStr + '.json/',
           params: {
@@ -197,7 +198,7 @@
             type: "Feature",
             geometry: res.data.routes[0].geometry
           };
-          $http({
+          return $http({
             method: 'GET',
             url: 'https://api.mapbox.com/v4/directions/mapbox.walking/' + coordStr2 + '.json/',
             params: {
@@ -206,22 +207,20 @@
           }).then(function successCb(res2) {
             var directions = res.data.routes[0].steps.map(function (step) {
               return step.maneuver.instruction;
-            })
+            });
+
             res2.data.routes[0].steps.forEach(function (step){
               directions.push(step.maneuver.instruction)
             })
-            directions.filter(function (step){
-              return step.search("Reach waypoint") === -1 && step.search("You have arrived at your destination") === -1 })
-            }).push("You have arrived at your destination.");
-
-
+            
+            return directions;
           }, function errorCb(res2) {
-            console.log("error getting cycling directions", res2)
+            console.log("error getting directions", res2)
 
           })
 
         }, function errorCb(res) {
-          console.log("error getting cycling directions", res)
+          console.log("error getting directions", res)
         })
       }
 
