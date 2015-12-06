@@ -6,14 +6,14 @@
       var route = {};
 
       // data shared by controllers
-      route.map; 
+      route.map;
       route.turfLine;
       route.legendData;
       route.routeData; // raw route data from server
       route.currentPosition;
       route.routePrefs;
 
-//************* Map Services *************      
+      //************* Map Services *************      
       route.initMap = function(map) {
         new L.Control.Zoom({
           position: 'topleft'
@@ -31,7 +31,7 @@
               map.removeLayer(layer);
             }
           })
-        // clear 3d markers
+          // clear 3d markers
         var elevationIcons = angular.element(document.querySelectorAll('.elevations'));
         elevationIcons.remove();
         // clear legend
@@ -39,7 +39,7 @@
         route.legendData = "";
       };
 
-//************* Route Services *************   
+      //************* Route Services *************   
       route.addLegend = function(prefs) {
         var checkBoxes = {
           shortestPathChecked: "Shortest",
@@ -156,7 +156,7 @@
           var point = turf.along(line, distance, 'miles');
           collection.push(point);
           // use elevation data from nearest point in elevationCollection
-          if (elevationCollection.features !== undefined){
+          if (elevationCollection.features !== undefined) {
             var nearest = turf.nearest(point, elevationCollection);
             collection[i].properties.elevation = nearest.properties.elevation;
           }
@@ -217,14 +217,14 @@
               access_token: 'pk.eyJ1IjoibWxsb3lkIiwiYSI6Im9nMDN3aW8ifQ.mwiVAv4E-1OeaoR25QZAvw'
             }
           }).then(function successCb(res2) {
-            var directions = res.data.routes[0].steps.map(function (step) {
+            var directions = res.data.routes[0].steps.map(function(step) {
               return step.maneuver.instruction;
             });
 
-            res2.data.routes[0].steps.forEach(function (step){
+            res2.data.routes[0].steps.forEach(function(step) {
               directions.push(step.maneuver.instruction)
             })
-            
+
             return directions;
           }, function errorCb(res2) {
             console.log("error getting directions", res2)
@@ -234,6 +234,23 @@
         }, function errorCb(res) {
           console.log("error getting directions", res)
         })
+      }
+      route.addStartEndMarkers = function(start, end) {
+        var locationsGeojson = [];
+        [start, end].forEach(function(point,i) {
+          locationsGeojson.push({
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": point
+            },
+            "properties": {
+              "marker-size": "small",
+              "marker-symbol": i === 0 ? "pitch" : "embassy"
+            }
+          });
+        })
+        return locationsGeojson;
       }
 
       return route;

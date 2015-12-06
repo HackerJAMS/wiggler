@@ -66,20 +66,8 @@
             center: [-122.437364, 37.774222]
           }
         }
-        var locationsGeojson = [];
-        function addStartEndMarkers (point){
-          locationsGeojson.push({
-            "type": "Feature",
-            "geometry": {
-              "type": "Point",
-              "coordinates": point.center
-            },
-            "properties": {
-              "marker-size": "small",
-              "marker-symbol": point===vm.selectedStart ? "pitch" : "embassy"
-            }
-          });
-        }
+        
+
         
 
         // start and end coordinates
@@ -97,16 +85,14 @@
         prefs.minHikingChecked = vm.minHikingChecked;
         RouteService.routePrefs = prefs;
 
-        RouteService.cleanMap(polyline !== "undefined", RouteService.map);
         //add start and end markers to the map
-        addStartEndMarkers(vm.selectedStart);
-        addStartEndMarkers(vm.selectedEnd);
-        L.mapbox.featureLayer(locationsGeojson).addTo(RouteService.map);
+        
 
         RouteService.postRouteRequest(start, end, prefs)
           .then(function successCb(res) {
+            res.start = start;
+            res.end = end;
             RouteService.routeData = res;
-
           }, function errorCb(res) {
             console.log("error posting route request", res.status);
           });

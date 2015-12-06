@@ -5,6 +5,7 @@
     .controller('RouteInfoController', ['RouteService', function(RouteService) {
       var vm = this;
 
+
       // check if route has been submitted before calculating distance
       if (RouteService.turfLine) {
         vm.shortestDistance = turf.lineDistance(RouteService.shortestPath.turfLine).toFixed(2);
@@ -23,7 +24,10 @@
             });
             steps.push("You have arrived at your destination.");
 
-            console.log(steps);
+            vm.directions = []
+            steps.forEach(function (step, i){
+              vm.directions[i] = {"num":(i+1)+".","step": step}
+            })
           })
 
       }

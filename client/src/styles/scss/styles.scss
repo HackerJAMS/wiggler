@@ -39,10 +39,13 @@ md-whiteframe {
   padding: 5px;
   height: 400px;
 }
-md-tabs.md-default-theme, md-tabs md-tabs-wrapper {
+
+md-tabs.md-default-theme,
+md-tabs md-tabs-wrapper {
   border-width: 0 0 1px;
   border-style: solid;
 }
+
 .md-button.md-icon-button {
   margin: 10px 0 0 0;
   height: 25px;
@@ -50,4 +53,16 @@ md-tabs.md-default-theme, md-tabs md-tabs-wrapper {
   i {
     font-size: 18px;
   }
+}
+
+#vertical-container {
+  height: 200px;
+  width: 400px;
+}
+
+.repeated-item {
+  border-bottom: 1px solid #ddd;
+  box-sizing: border-box;
+  height: 40px;
+  padding-top: 10px;
 }
