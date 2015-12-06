@@ -48,12 +48,13 @@
           minHikingChecked: "Fastest walking"
         };
 
-        var routeColors = {
-          "Shortest": '#D28014',
-          "Minimum elevation change": '#545166',
-          "Fastest biking": '#3D1BFF',
-          "Fastest walking": '#57FFDC'
-        };
+        //solarized colors
+          var routeColors = {
+            "Minimum elevation change": '#2176C7',
+            "Shortest": '#C61C6F',
+            "Fastest biking": '#BD3613',
+            "Fastest walking": '#D9A800'
+          };
 
         var routeTypes = {};
         for (var key in prefs) {

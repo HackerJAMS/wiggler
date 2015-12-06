@@ -17,25 +17,27 @@
           <span md-highlight-text="routeCtrl.searchEnd">{{item.place_name}}</span>
         </md-autocomplete>
       </div>
-      <div class="layout-row flex">
-        <md-checkbox class="md-primary" ng-init="routeCtrl.shortestPathChecked = true" ng-click="routeCtrl.shortestPathChecked = !routeCtrl.shortestPathChecked" ng-checked="routeCtrl.shortestPathChecked">
-          shortest path
-        </md-checkbox>
-        <md-checkbox class="md-primary" ng-init="routeCtrl.minElevPathChecked = true" ng-click="routeCtrl.minElevPathChecked = !routeCtrl.minElevPathChecked" ng-checked="routeCtrl.minElevPathChecked">
-          min elevation path
-        </md-checkbox>
-      </div>
-      <div class="layout-row flex">
-        <md-checkbox class="md-primary" ng-init="routeCtrl.minBikingChecked = true" ng-click="routeCtrl.minBikingChecked = !routeCtrl.minBikingChecked" ng-checked="routeCtrl.minBikingChecked">
-          fastest biking path
-        </md-checkbox>
-        <md-checkbox class="md-primary" ng-init="routeCtrl.minHikingChecked = true" ng-click="routeCtrl.minHikingChecked = !routeCtrl.minHikingChecked" ng-checked="routeCtrl.minHikingChecked">
-          fastest walking path
-        </md-checkbox>
-      </div>
-      <div>
-        <md-button class="md-raised md-primary" ng-click="routeCtrl.submitRoute()">Get Route</md-button>
-        <md-button class="md-raised" ng-click="routeCtrl.submitRoute()">Test Route</md-button>
+      <!-- <div id="arrows-container">
+    <md-button class="md-raised md-primary" id="reverse-btn">
+      <ng-md-icon icon="import_export" id="reverse-arrows-icon" size="35" ng-click="routeCtrl.flipStartEnd()"></ng-md-icon>
+    </md-button>
+  </div> -->
+      <div id="path-selection" flex="100">
+        <div class="layout-row flex">
+          <md-switch class="md-primary" id="min-elevation-switch" ng-init="routeCtrl.minElevPathChecked = true" ng-click="routeCtrl.minElevPathChecked = !routeCtrl.minElevPathChecked" ng-checked="routeCtrl.minElevPathChecked">Flattest Route</md-switch>
+          <md-switch class="md-primary" ng-init="routeCtrl.shortestPathChecked = true" ng-click="routeCtrl.shortestPathChecked = !routeCtrl.shortestPathChecked" ng-checked="routeCtrl.shortestPathChecked">Shortest Route</md-switch>
+        </div>
+        <div class="layout-row flex">
+          <md-switch class="md-primary" ng-init="routeCtrl.minBikingChecked = false" ng-click="routeCtrl.minBikingChecked = !routeCtrl.minBikingChecked" ng-checked="routeCtrl.minBikingChecked">
+            <ng-md-icon icon="directions_bike" size="25"></ng-md-icon>
+          </md-switch>
+          <md-switch class="md-hue-4" ng-init="routeCtrl.minHikingChecked = false" ng-click="routeCtrl.minHikingChecked = !routeCtrl.minHikingChecked" ng-checked="routeCtrl.minHikingChecked">
+            <ng-md-icon icon="directions_walk" size="25"></ng-md-icon>
+          </md-switch>
+        </div>
+        <div id="route-submit">
+          <md-button class="md-raised md-primary" aria-label="get route" ng-click="routeCtrl.submitRoute()">Get Route</md-button>
+        </div>
       </div>
     </div>
   </div>

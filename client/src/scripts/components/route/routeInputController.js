@@ -85,9 +85,6 @@
         prefs.minHikingChecked = vm.minHikingChecked;
         RouteService.routePrefs = prefs;
 
-        //add start and end markers to the map
-        
-
         RouteService.postRouteRequest(start, end, prefs)
           .then(function successCb(res) {
             res.start = start;
