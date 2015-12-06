@@ -5,15 +5,11 @@ $shortest_path: #D28014;
 $min_elevation_path: #545166;
 $fastest_biking: #3D1BFF;
 $fastest_walking: #57FFDC;
-
-
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700');
 @import 'map3d';
 @import 'markers2d';
 @import 'markers3d';
 @import 'mapControlsLegend';
-
-
 body {
   background-color: white;
   width: 100%;
@@ -27,20 +23,31 @@ body {
 }
 
 #locator {
-  line-height:1;
-  size:5;
+  line-height: 1;
+  size: 5;
   vertical-align: middle;
-  display:inline-block;
+  display: inline-block;
 }
+
 #toolbar {
   font-size: 2em;
 }
 
-.md-button.md-fab {
-  min-width: 0;
-  width: 3.6rem;
-  height: 3.6rem;
-  border-radius: 50%;
+md-whiteframe {
+  background: #fff;
+  margin: 5px;
+  padding: 5px;
+  height: 400px;
 }
-
-
+md-tabs.md-default-theme, md-tabs md-tabs-wrapper {
+  border-width: 0 0 1px;
+  border-style: solid;
+}
+.md-button.md-icon-button {
+  margin: 10px 0 0 0;
+  height: 25px;
+  width: 25px;
+  i {
+    font-size: 18px;
+  }
+}
