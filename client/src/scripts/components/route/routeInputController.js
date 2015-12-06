@@ -70,19 +70,20 @@
           }
         }
         var locationsGeojson = [];
-        locationsGeojson.push({
-          "type": "Feature",
-          "geometry": {
-            "type": "Point",
-            "coordinates": [-122.437364, 37.774222]
-          },
-          "properties": {
-            "marker-color": "#DC3C05",
-            "marker-size": "large",
-            "marker-symbol": "star"
-          }
-        });
-        L.mapbox.featureLayer(locationsGeojson).addTo(RouteService.map);
+        function addStartEndMarkers (point){
+          locationsGeojson.push({
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": point.center
+            },
+            "properties": {
+              "marker-size": "small",
+              "marker-symbol": point===vm.selectedStart ? "pitch" : "embassy"
+            }
+          });
+        }
+        
 
         // start and end coordinates
         var start = vm.selectedStart.center;
@@ -100,6 +101,10 @@
 
         RouteService.cleanMap(polyline !== "undefined", RouteService.map);
         turfLines.features = [];
+        //add start and end markers to the map
+        addStartEndMarkers(vm.selectedStart);
+        addStartEndMarkers(vm.selectedEnd);
+        L.mapbox.featureLayer(locationsGeojson).addTo(RouteService.map);
 
         RouteService.postRouteRequest(start, end, prefs)
           .then(function successCb(res) {
@@ -124,6 +129,7 @@
         var path = RouteService.getPath(coords);
         // turf linestring
         RouteService.turfLine = turf.linestring(path);
+
         RouteService[pathType] = {
           'turfLine': RouteService.turfLine
         };
@@ -133,8 +139,9 @@
         var elevationCollection = RouteService.getElevationPath(elevation);
 
         // resample turfline for 3d point display
-        var resampledPath = RouteService.getResampledPath(RouteService.turfLine, elevationCollection);
-
+        var resampledPath = RouteService.getResampledPath(RouteService.turfLine, elevationCollection, 100);
+      
+        RouteService.getDirections(RouteService.getResampledPath(RouteService.turfLine, elevationCollection, 50).features.map(function (point){ return point.geometry.coordinates}));
    
 //************* calls googleapi for refined elevation data *************
 
@@ -175,7 +182,6 @@
 //**************************************
   
         // draw route on the map and fit the bounds of the map viewport to the route
-
         polyline = L.geoJson(RouteService.turfLine, {
           className: 'route-' + pathType
         }).addTo(RouteService.map);
@@ -192,7 +198,7 @@
             var cssHeight = roundedElev;
             var myIcon = L.divIcon({
               className: 'elevations',
-              html: '<div class="elevmarker"><div class="markercircle bottomcap marker-' + pathType + '"></div><div class="markerline marker-' + pathType + '" style="height:' + cssHeight + 'px">' + '</div><div class="markercircle marker-' + pathType + '"></div><div class="elevfigure">' + roundedElev + ' ft.</div></div>'
+              html: '<div class="elevmarker"><div class="markercircle bottomcap marker-' + pathType + '"></div><div class="markerline marker-' + pathType + '" style="height:' + cssHeight + 'px">' + '</div><div class="markercircle marker-' + pathType + '"></div><div class="elevfigure">' + roundedElev * 3.28084 + ' ft.</div></div>'
             });
             return L.marker(latlng, {
               icon: myIcon
