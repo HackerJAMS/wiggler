@@ -1,9 +1,10 @@
-/* if you change these variables, make sure you change the legend colors in the MapController to match*/
+/* if you change these variables, make sure you change the legend colors in the RouteService to match*/
 
-$shortest_path: #D28014;
-$min_elevation_path: #545166;
-$fastest_biking: #3D1BFF;
-$fastest_walking: #57FFDC;
+
+$shortest_path: #2176C7;
+$min_elevation_path: #C61C6F;
+$fastest_biking: #BD3613;
+$fastest_walking: #D9A800;
 
 
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700');
@@ -26,20 +27,36 @@ body {
 }
 
 #locator {
-  line-height:1;
-  size:5;
+  fill: currentColor; 
   vertical-align: middle;
-  display:inline-block;
+  display: inline-block;
+  line-height: 1;
 }
 #toolbar {
   font-size: 2em;
 }
 
-.md-button.md-fab {
-  min-width: 0;
-  width: 3.6rem;
-  height: 3.6rem;
-  border-radius: 50%;
+.md-button.md-fab.md-mini {
+  line-height: 4rem;
+  width: 3.5rem;
+  height: 2rem;
+}
+
+#arrows-container {
+  width:30px;
+  height: 45px;
+}
+  
+#reverse-btn {
+  min-width: 45px;
+  max-height: 35px
+}
+#reverse-arrows-icon {
+  fill: currentColor;
+}
+#app-name {
+ vertical-align: middle;
+ height: 64px;
 }
 
 

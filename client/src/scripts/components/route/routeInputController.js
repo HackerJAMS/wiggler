@@ -66,24 +66,39 @@
             center: [-122.437364, 37.774222]
           }
         }
+        
+        // start and end coordinates
+        var start = vm.selectedStart.center;
+        var end = vm.selectedEnd.center;
         var locationsGeojson = [];
+        //refactor this
         locationsGeojson.push({
           "type": "Feature",
           "geometry": {
             "type": "Point",
-            "coordinates": [-122.437364, 37.774222]
+            "coordinates": start
           },
           "properties": {
-            "marker-color": "#DC3C05",
-            "marker-size": "large",
-            "marker-symbol": "star"
+            "marker-color": "#2176C7",
+            "marker-size": "medium",
+            "marker-symbol": "school"
           }
         });
+        locationsGeojson.push({
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": end
+          },
+          "properties": {
+            "marker-color": "#2176C7",
+            "marker-size": "medium",
+            "marker-symbol": "alcohol-shop"
+          }
+        });
+
         L.mapbox.featureLayer(locationsGeojson).addTo(RouteService.map);
 
-        // start and end coordinates
-        var start = vm.selectedStart.center;
-        var end = vm.selectedEnd.center;
     
         // store start/end address for route info display
         RouteService.placeNameStart = vm.selectedStart.place_name;
