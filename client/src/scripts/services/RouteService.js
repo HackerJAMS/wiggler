@@ -5,9 +5,15 @@
     .factory('RouteService', ['$http', function($http) {
       var route = {};
 
-      route.map;
+      // data shared by controllers
+      route.map; 
       route.turfLine;
       route.legendData;
+      route.routeData; // raw route data from server
+      route.currentPosition;
+      route.routePrefs;
+
+//************* Map Services *************      
       route.initMap = function(map) {
         new L.Control.Zoom({
           position: 'topleft'
@@ -17,41 +23,59 @@
         route.map = map;
       };
 
+      // this function removes any existing polylines from the map before adding a new one 
+      route.cleanMap = function(polyline, map) {
+        // clear 2d lines
+        map.eachLayer(function(layer) {
+            if (layer instanceof L.Polyline || layer instanceof L.Marker) {
+              map.removeLayer(layer);
+            }
+          })
+        // clear 3d markers
+        var elevationIcons = angular.element(document.querySelectorAll('.elevations'));
+        elevationIcons.remove();
+        // clear legend
+        route.map.legendControl.removeLegend(route.legendData);
+        route.legendData = "";
+      };
+
+//************* Route Services *************   
       route.addLegend = function(prefs) {
+        var checkBoxes = {
+          shortestPathChecked: "Shortest",
+          minElevPathChecked: "Minimum elevation change",
+          minBikingChecked: "Fastest biking",
+          minHikingChecked: "Fastest walking"
+        };
 
-          var checkBoxes = {
-            shortestPathChecked: "Shortest",
-            minElevPathChecked: "Minimum elevation change",
-            minBikingChecked: "Fastest biking",
-            minHikingChecked: "Fastest walking"
-          };
-          // if you change these, change the corresponding variables in the scss as well :)
-          var routeColors = {
-            "Shortest": '#D28014',
-            "Minimum elevation change": '#545166',
-            "Fastest biking": '#3D1BFF',
-            "Fastest walking": '#57FFDC'
-          };
-          var routeTypes = {};
-          for (var key in prefs) {
-            if (prefs[key] === true) {
-              routeTypes[checkBoxes[key]] = routeColors[checkBoxes[key]]
-            }
-          }
+        var routeColors = {
+          "Shortest": '#D28014',
+          "Minimum elevation change": '#545166',
+          "Fastest biking": '#3D1BFF',
+          "Fastest walking": '#57FFDC'
+        };
 
-          function getLegendHTML() {
-            var labels = [];
-            for (var i = 0; i < Object.keys(routeTypes).length; i++) {
-              var r = Object.keys(routeTypes)[i];
-              labels.push(
-                '<li><span class="swatch" style="background:' + routeTypes[r] + '"></span> ' + r + '</li>');
-            }
-            return '<span>Route Types</span><ul>' + labels.join('') + '</ul>';
+        var routeTypes = {};
+        for (var key in prefs) {
+          if (prefs[key] === true) {
+            routeTypes[checkBoxes[key]] = routeColors[checkBoxes[key]]
           }
-          route.legendData = getLegendHTML()
-          route.map.legendControl.addLegend(route.legendData);
         }
-        // bounding box of sf for the auto-complete query
+
+        function getLegendHTML() {
+          var labels = [];
+          for (var i = 0; i < Object.keys(routeTypes).length; i++) {
+            var r = Object.keys(routeTypes)[i];
+            labels.push(
+              '<li><span class="swatch" style="background:' + routeTypes[r] + '"></span> ' + r + '</li>');
+          }
+          return '<span>Route Types</span><ul>' + labels.join('') + '</ul>';
+        }
+        route.legendData = getLegendHTML()
+        route.map.legendControl.addLegend(route.legendData);
+      }
+
+      // bounding box for the auto-complete query
       route.within = {
         "type": "FeatureCollection",
         "features": [{
@@ -70,6 +94,16 @@
             ]
           }
         }]
+      }
+
+      // convert user-entered addresses to coordinates through mapbox query
+      route.geocoding = function(address) {
+        var accessToken = 'pk.eyJ1IjoiMTI3NnN0ZWxsYSIsImEiOiJjaWg4ZGEwZmEwdGNkdjBraXl1czIzNnFjIn0.RXXfMNV-gtrQyrRzrP2yvQ';
+        var query = address.replace(/\s+/g, '+');
+        return $http({
+          method: 'GET',
+          url: 'https://api.mapbox.com/geocoding/v5/mapbox.places/' + query + '.json?proximity=-122.446,37.773&access_token=' + accessToken
+        })
       }
 
       route.postRouteRequest = function(start, end, preferences) {
@@ -93,30 +127,7 @@
           }
         })
       };
-      // convert user-entered addresses to coordinates through mapbox query
-      route.geocoding = function(address) {
-          var accessToken = 'pk.eyJ1IjoiMTI3NnN0ZWxsYSIsImEiOiJjaWg4ZGEwZmEwdGNkdjBraXl1czIzNnFjIn0.RXXfMNV-gtrQyrRzrP2yvQ';
-          var query = address.replace(/\s+/g, '+');
-          return $http({
-            method: 'GET',
-            url: 'https://api.mapbox.com/geocoding/v5/mapbox.places/' + query + '.json?proximity=-122.446,37.773&access_token=' + accessToken
-          })
-        }
-        // this function removes any existing polylines from the map before adding a new one 
-      route.cleanMap = function(polyline, map) {
-        // clear 2d lines
-        map.eachLayer(function(layer) {
-            if (layer instanceof L.Polyline || layer instanceof L.Marker) {
-              map.removeLayer(layer);
-            }
-          })
-          // clear 3d markers
-        var elevationIcons = angular.element(document.querySelectorAll('.elevations'));
-        elevationIcons.remove();
-        // clear legend
-        route.map.legendControl.removeLegend(route.legendData);
-        route.legendData = "";
-      };
+
       // process the coordinates in the path sent from the server routing algorithm
       route.getPath = function(coords) {
         var route = [];
@@ -131,12 +142,13 @@
       };
 
       // resample route with more points for 3d elevation display
+
       route.getResampledPath = function(line, elevationCollection, numPoints) {
         // var dist_jia = [];
         // var elev_jia = [];
         var collection = [];
         var distance = 0;
-        var resamplePoints = numPoints;
+        var resamplePoints = numPoints || 100;
         var turfDistance = turf.lineDistance(line, 'miles');
         var interval = turfDistance / resamplePoints;
 
@@ -170,16 +182,16 @@
         return turf.featurecollection(collection);
       }
 
-      route.drawRoute = function(path) {
-        var polyline = L.polyline(path, {
-          color: "red",
-          className: "path_2d"
-        }).addTo(route.map);
-        // console.log("polyline bounds", polyline.getBounds());
-        route.map.fitBounds(polyline.getBounds());
-        // console.log("map bounds after fit", route.map.getBounds())
+      // route.drawRoute = function(path) {
+      //   var polyline = L.polyline(path, {
+      //     color: "red",
+      //     className: "path_2d"
+      //   }).addTo(route.map);
+      //   // console.log("polyline bounds", polyline.getBounds());
+      //   route.map.fitBounds(polyline.getBounds());
+      //   // console.log("map bounds after fit", route.map.getBounds())
+      // }
 
-      }
 
       route.getDirections = function(coords) {
         // mapbox directions api will only accept 25 waypoints, which was not enough to ensure
