@@ -23,8 +23,9 @@
   app.config(['$stateProvider', '$urlRouterProvider', "$mdThemingProvider", function($stateProvider, $urlRouterProvider, $mdThemingProvider) {
     
     $mdThemingProvider.theme('default')
-        .primaryPalette('blue')
+        .primaryPalette('blue-grey')
         .accentPalette('blue-grey');  
+
     
 
     $urlRouterProvider.otherwise('/home/new');
