@@ -75,9 +75,10 @@
 
       // watch the change of RouteService.routeData
       $scope.$watch(function() {return RouteService.routeData}, function(newData, oldData) {
-
         if (newData !== oldData) {
           RouteService.cleanMap(polyline !== "undefined", RouteService.map);
+          var newMarkers = RouteService.addStartEndMarkers(newData.start, newData.end);
+          L.mapbox.featureLayer(newMarkers).addTo(RouteService.map);
           // turfLines store the returned routes and are added to featureLayer
           var turfLines = {};
           turfLines.type = 'FeatureCollection';

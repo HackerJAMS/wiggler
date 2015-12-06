@@ -1,50 +1,44 @@
-
 <div id="route-sidebar" ng-controller="RouteInputController as routeCtrl">
-
   <div id="route-input-container" layout="row" layout-wrap>
     <div id="form-container" flex="100">
-      <div><br>
-        <md-autocomplete md-floating-label="Start" md-selected-item="routeCtrl.selectedStart" md-search-text="routeCtrl.searchStart" md-items="item in routeCtrl.autocompleteQuery(routeCtrl.searchStart)" md-item-text="item.place_name" placeholder="Start">
+      <div class="layout-row flex">
+        <md-button flex="10" class="md-icon-button" ng-click="routeCtrl.getLocation()">
+          <i class="material-icons">gps_fixed</i>
+        </md-button>
+        <md-autocomplete flex="90" md-floating-label="Start" md-selected-item="routeCtrl.selectedStart" md-search-text="routeCtrl.searchStart" md-items="item in routeCtrl.autocompleteQuery(routeCtrl.searchStart)" md-item-text="item.place_name" placeholder="Start">
           <span md-highlight-text="routeCtrl.searchStart">{{item.place_name}}</span>
         </md-autocomplete>
-        <md-autocomplete md-floating-label="End" md-selected-item="routeCtrl.selectedEnd" md-search-text="routeCtrl.searchEnd" md-items="item in routeCtrl.autocompleteQuery(routeCtrl.searchEnd)" md-item-text="item.place_name" placeholder="End">
+      </div>
+      <div class="layout-row flex">
+        <md-button flex="10" class="md-icon-button" ng-click="routeCtrl.flipStartEnd()">
+          <i class="material-icons">swap_vert</i>
+        </md-button>
+        <md-autocomplete flex="90" md-floating-label="End" md-selected-item="routeCtrl.selectedEnd" md-search-text="routeCtrl.searchEnd" md-items="item in routeCtrl.autocompleteQuery(routeCtrl.searchEnd)" md-item-text="item.place_name" placeholder="End">
           <span md-highlight-text="routeCtrl.searchEnd">{{item.place_name}}</span>
         </md-autocomplete>
       </div>
-    </div>
-
-  <!-- <div id="arrows-container">
+      <!-- <div id="arrows-container">
     <md-button class="md-raised md-primary" id="reverse-btn">
       <ng-md-icon icon="import_export" id="reverse-arrows-icon" size="35" ng-click="routeCtrl.flipStartEnd()"></ng-md-icon>
     </md-button>
   </div> -->
-  <div id="path-selection" flex="100">
-    <md-switch class="md-primary" id="min-elevation-switch" ng-init="routeCtrl.minElevPathChecked = true" ng-click="routeCtrl.minElevPathChecked = !routeCtrl.minElevPathChecked" ng-checked="routeCtrl.minElevPathChecked">min elevation</md-switch>
-    <md-switch class="md-primary" ng-init="routeCtrl.shortestPathChecked = true" ng-click="routeCtrl.shortestPathChecked = !routeCtrl.shortestPathChecked" ng-checked="routeCtrl.shortestPathChecked">shortest</md-switch>
-    <md-switch class="md-primary" ng-init="routeCtrl.minBikingChecked = false" ng-click="routeCtrl.minBikingChecked = !routeCtrl.minBikingChecked" ng-checked="routeCtrl.minBikingChecked">
-      <ng-md-icon icon="directions_bike" size="25"></ng-md-icon>  
-    </md-switch>
-    <md-switch class="md-hue-4" ng-init="routeCtrl.minHikingChecked = false" ng-click="routeCtrl.minHikingChecked = !routeCtrl.minHikingChecked" ng-checked="routeCtrl.minHikingChecked">
-      <ng-md-icon icon="directions_walk" size="25"></ng-md-icon> 
-    </md-switch>
-  </div>
-
-    <div id="route-submit">
-      <md-button class="md-raised md-primary" aria-label="get route" ng-click="routeCtrl.submitRoute()">Get Route</md-button>
-      <!-- <md-button class="md-raised" ng-click="routeCtrl.submitRoute()">Test Route</md-button> -->
-      <md-button id="locator" class="md-fab md-mini md-primary" aria-label="my location">
-        <ng-md-icon icon="my_location" id="navigation-icon" size="25" style=""ng-click="routeCtrl.getLocation()"></ng-md-icon> 
-        <!-- <md-tooltip>
-          My Location
-        </md-tooltip> -->
-      </md-button>
+      <div id="path-selection" flex="100">
+        <div class="layout-row flex">
+          <md-switch class="md-hue-4" id="min-elevation-switch" ng-init="routeCtrl.minElevPathChecked = true" ng-click="routeCtrl.minElevPathChecked = !routeCtrl.minElevPathChecked" ng-checked="routeCtrl.minElevPathChecked">Flattest Route</md-switch>
+          <md-switch class="md-hue-4" ng-init="routeCtrl.shortestPathChecked = true" ng-click="routeCtrl.shortestPathChecked = !routeCtrl.shortestPathChecked" ng-checked="routeCtrl.shortestPathChecked">Shortest Route</md-switch>
+        </div>
+        <div class="layout-row flex">
+          <md-switch class="md-hue-4" aria-label="Biking directions" ng-init="routeCtrl.minBikingChecked = false" ng-click="routeCtrl.minBikingChecked = !routeCtrl.minBikingChecked" ng-checked="routeCtrl.minBikingChecked">
+            <ng-md-icon  icon="directions_bike" size="25"></ng-md-icon>
+          </md-switch>
+          <md-switch class="md-hue-4" aria-label="walking directions" ng-init="routeCtrl.minHikingChecked = false" ng-click="routeCtrl.minHikingChecked = !routeCtrl.minHikingChecked" ng-checked="routeCtrl.minHikingChecked">
+            <ng-md-icon icon="directions_walk" size="25"></ng-md-icon>
+          </md-switch>
+        </div>
+        <div id="route-submit">
+          <md-button class="md-raised md-primary" aria-label="get route" ng-click="routeCtrl.submitRoute()">Get Route</md-button>
+        </div>
+      </div>
     </div>
-    <div id="arrows-container">
-    <md-button class="md-raised md-primary" id="reverse-btn">
-      <ng-md-icon icon="import_export" id="reverse-arrows-icon" size="35" ng-click="routeCtrl.flipStartEnd()"></ng-md-icon>
-    </md-button>
   </div>
-  </div> 
 </div>
-
-       

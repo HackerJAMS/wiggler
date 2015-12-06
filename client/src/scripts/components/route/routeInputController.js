@@ -67,38 +67,12 @@
           }
         }
         
+
+        
+
         // start and end coordinates
         var start = vm.selectedStart.center;
         var end = vm.selectedEnd.center;
-        var locationsGeojson = [];
-        //refactor this
-        locationsGeojson.push({
-          "type": "Feature",
-          "geometry": {
-            "type": "Point",
-            "coordinates": start
-          },
-          "properties": {
-            "marker-color": "#2176C7",
-            "marker-size": "medium",
-            "marker-symbol": "school"
-          }
-        });
-        locationsGeojson.push({
-          "type": "Feature",
-          "geometry": {
-            "type": "Point",
-            "coordinates": end
-          },
-          "properties": {
-            "marker-color": "#2176C7",
-            "marker-size": "medium",
-            "marker-symbol": "alcohol-shop"
-          }
-        });
-
-        L.mapbox.featureLayer(locationsGeojson).addTo(RouteService.map);
-
     
         // store start/end address for route info display
         RouteService.placeNameStart = vm.selectedStart.place_name;
@@ -113,8 +87,9 @@
 
         RouteService.postRouteRequest(start, end, prefs)
           .then(function successCb(res) {
+            res.start = start;
+            res.end = end;
             RouteService.routeData = res;
-
           }, function errorCb(res) {
             console.log("error posting route request", res.status);
           });

@@ -24,7 +24,7 @@
     
     $mdThemingProvider.theme('default')
         .primaryPalette('blue-grey')
-        .accentPalette('blue-grey');  
+        .accentPalette('pink');  
 
     
 
