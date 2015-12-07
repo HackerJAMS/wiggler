@@ -71,6 +71,5 @@
         RouteService.map.fitBounds(RouteService.featureLayer.getBounds());
 
       };
-
     }])
 })();
