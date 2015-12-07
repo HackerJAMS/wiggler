@@ -12,7 +12,6 @@ module.exports = function(start, end, hikeOrBike,callback) {
     if(err) {
       console.log("err when query table ways...", err);
     }
-    // console.log(result);
     var coordinates = process(result);
     var path_data;
     // callback(err, [coordinates,[]]);
