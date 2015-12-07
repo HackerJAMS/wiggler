@@ -41,7 +41,8 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.use(express.static(__dirname + '/../client/'));
- 
+
+app.get('/?*')
 module.exports = app;
 
 app.post('/route', function(req, res) {

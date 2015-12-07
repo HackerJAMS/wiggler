@@ -25,6 +25,7 @@
             minZoom: 11
           });
           var getPxBounds = map.getPixelBounds;
+
           map.getPixelBounds = function() {
             var bounds = getPxBounds.call(this);
             // ... extend the bounds for 3d viewing purposes
@@ -35,11 +36,11 @@
             return bounds;
           };
 
-
           // this fixes the map glitch that causes the map to be loaded initially with
           // the wrong container size, causing the map to be incorrectly centered
           $timeout(function() {
             map.invalidateSize(true);
+            scope.callback(map);
             RouteService.initMap(map);
           })
         }

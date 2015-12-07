@@ -74,7 +74,9 @@
       };
 
       // watch the change of RouteService.routeData
-      $scope.$watch(function() {return RouteService.routeData}, function(newData, oldData) {
+      $scope.$watch(function() {
+        return RouteService.routeData
+      }, function(newData, oldData) {
         if (newData !== oldData) {
           RouteService.cleanMap(polyline !== "undefined", RouteService.map);
           var newMarkers = RouteService.addStartEndMarkers(newData.start, newData.end);
@@ -88,10 +90,10 @@
             var elevation = RouteService.routeData.data[pathType][1];
             plotRoute(coords, elevation, pathType, turfLines);
           }
-         // add turfLines to featureLayer and fit map to the bounds
-         featureLayer = L.mapbox.featureLayer(turfLines);
-         RouteService.map.fitBounds(featureLayer.getBounds());
-         RouteService.addLegend(RouteService.routePrefs);
+          // add turfLines to featureLayer and fit map to the bounds
+          featureLayer = L.mapbox.featureLayer(turfLines);
+          RouteService.map.fitBounds(featureLayer.getBounds());
+          RouteService.addLegend(RouteService.routePrefs);
         }
 
       });
@@ -106,51 +108,51 @@
           'turfLine': RouteService.turfLine
         };
         // turfLines will be added to featureLayer
-        turfLines.features.push(RouteService.turfLine);        
+        turfLines.features.push(RouteService.turfLine);
         // re-format elevation data with turf points
         var elevationCollection = RouteService.getElevationPath(elevation);
 
         // resample turfline for 3d point display
         var resampledPath = RouteService.getResampledPath(RouteService.turfLine, elevationCollection);
-   
-//************* calls googleapi for refined elevation data *************
 
-       // var newPoints = resampledPath.features.slice();
-       // var newPointCoordinates = newPoints.map(function(n, i) {
-       //        return n.geometry.coordinates;
-       //     });
+        //************* calls googleapi for refined elevation data *************
 
-       // RouteService.postElevationRequest(newPointCoordinates)
-       // .then(function successCb(res){
-       //    var resampledPoints = RouteService.getElevationPath(res.data);
-       //   //test for unique values; refactor for jasmine test
+        // var newPoints = resampledPath.features.slice();
+        // var newPointCoordinates = newPoints.map(function(n, i) {
+        //        return n.geometry.coordinates;
+        //     });
 
-       //    var uniqueArr = resampledPoints.features;
-       //    var nonUniqueArr = resampledPath.features;
-       //    uniqueArr.forEach(function(feature){
-       //      console.log(feature.properties.elevation);
-       //  });
+        // RouteService.postElevationRequest(newPointCoordinates)
+        // .then(function successCb(res){
+        //    var resampledPoints = RouteService.getElevationPath(res.data);
+        //   //test for unique values; refactor for jasmine test
 
-            
-       //      L.geoJson(resampledPoints, {
-       //      pointToLayer: function(feature, latlng) {
-       //        var roundedElev = feature.properties.elevation.toFixed(2);
-       //        var cssHeight = roundedElev;
-       //        var myIcon = L.divIcon({
-       //          className: 'elevations',
-       //          html: '<div class="elevmarker"><div class="markercircle bottomcap marker-' + pathType + '"></div><div class="markerline marker-' + pathType + '" style="height:' + cssHeight + 'px">' + '</div><div class="markercircle marker-' + pathType + '"></div><div class="elevfigure">' + roundedElev + ' ft.</div></div>'
-       //        });
-       //        return L.marker(latlng, {
-       //          icon: myIcon
-       //        });
-       //      }
-       //    }).addTo(RouteService.map);
-       // }, function errorCb(res){
-       //    console.log('error in elevation request', res.status);
-       // });
-       
-//**************************************
-  
+        //    var uniqueArr = resampledPoints.features;
+        //    var nonUniqueArr = resampledPath.features;
+        //    uniqueArr.forEach(function(feature){
+        //      console.log(feature.properties.elevation);
+        //  });
+
+
+        //      L.geoJson(resampledPoints, {
+        //      pointToLayer: function(feature, latlng) {
+        //        var roundedElev = feature.properties.elevation.toFixed(2);
+        //        var cssHeight = roundedElev;
+        //        var myIcon = L.divIcon({
+        //          className: 'elevations',
+        //          html: '<div class="elevmarker"><div class="markercircle bottomcap marker-' + pathType + '"></div><div class="markerline marker-' + pathType + '" style="height:' + cssHeight + 'px">' + '</div><div class="markercircle marker-' + pathType + '"></div><div class="elevfigure">' + roundedElev + ' ft.</div></div>'
+        //        });
+        //        return L.marker(latlng, {
+        //          icon: myIcon
+        //        });
+        //      }
+        //    }).addTo(RouteService.map);
+        // }, function errorCb(res){
+        //    console.log('error in elevation request', res.status);
+        // });
+
+        //**************************************
+
         // draw route on the map and fit the bounds of the map viewport to the route
 
         var polyline = L.geoJson(RouteService.turfLine, {
@@ -162,7 +164,7 @@
         setTimeout(function() {
           path.css('stroke-dashoffset', 0)
         }, 10);
-   
+
         L.geoJson(resampledPath, {
           pointToLayer: function(feature, latlng) {
             var roundedElev = feature.properties.elevation.toFixed(2);
@@ -176,10 +178,24 @@
             });
           }
         }).addTo(RouteService.map);
-        
+
         //clear out currentPosition
         RouteService.currentPosition = null;
       };
 
+      vm.clickMarker = function(map) {
+        map.on("click", function(e){
+          var latlngArr = [e.latlng["lat"].toFixed(4), e.latlng["lng"].toFixed(4)];
+          var tempMarker = L.mapbox.featureLayer({
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [latlngArr[1], latlngArr[0]],
+              "marker-color": "#5644FF"
+            }
+          }).addTo(map);
+        })
+        
+      }
     }])
 })();

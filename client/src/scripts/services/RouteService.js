@@ -254,6 +254,10 @@
         return locationsGeojson;
       }
 
+      route.clickMarkers = function (e){
+
+      }
+
       return route;
     }])
 
