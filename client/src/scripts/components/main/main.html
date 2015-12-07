@@ -3,19 +3,38 @@
     <div ui-view="header" flex class="header"></div>
   </div>
   <div id="main-content" class="layout-row flex" layout-margin>
-    <div flex="66" ui-view="map" class="map-container"></div>
-    <div layout-margin flex="33">
-      <md-whiteframe class="md-whiteframe-1dp" layout layout-align="top center">
-        <div class="layout-column flex">
-          <div flex="20">
-          <md-tabs>
-            <md-tab ui-sref="main.route-input" label="New Route"></md-tab>
-            <md-tab ui-sref="main.route-info" label="Route Info"></md-tab>
-          </md-tabs>
-          </div>
-          <div ui-view></div>
-        </div>
-      </md-whiteframe>
-    </div>
+    <div flex="100" ui-view="map" class="map-container"></div>
+    
+    <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left">x
+        <md-toolbar layout="row">
+         <div class="md-toolbar-tools">
+            <h2>
+              <span>Side Panel</span>
+            </h2>
+            <span flex></span>
+            <md-button class="md-icon-button" id="sidebar-toggle" aria-label="Close Side Panel" ng-click="ctrl.closeSideNavPanel()">
+              <!-- <md-tooltip>Close Side Panel</md-tooltip> -->
+              <md-icon class="md-default-theme" class="material-icons">&#xE5CD;</md-icon>
+            </md-button>
+           </div>
+        </md-toolbar> 
+        <md-content layout-padding="">
+           <div layout-margin flex="33">
+             <md-whiteframe class="md-whiteframe-1dp" layout layout-align="top center">
+               <div class="layout-column flex">
+                 <div flex="20">
+                 <md-tabs>
+                   <md-tab ui-sref="main.route-input" label="New Route"></md-tab>
+                   <md-tab ui-sref="main.route-info" label="Route Info"></md-tab>
+                 </md-tabs>
+                 </div>
+                 <div ui-view></div>
+               </div>
+             </md-whiteframe>
+           </div>
+       
+          Side navigation Panel
+        </md-content> 
+    </md-sidenav>
   </div>
 </md-content>

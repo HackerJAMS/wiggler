@@ -1,18 +1,14 @@
-
-<div layout="column" layout-fill>
-  <md-toolbar class="md-primary">
-    <div class="md-toolbar-tools" id="toolbar">
-      <span id="app-name">wiggler</span>
-      <!-- fill up the space between left and right area -->
-
-      <!-- <md-button id="locator" class="md-fab md-accent" aria-label="my location">
-        <ng-md-icon icon="my_location" id="navigation-icon" size="35" style=""ng-click="routeCtrl.getLocation()"></ng-md-icon>  -->
-  
-  </md-button>
-      <span flex></span>
-      <md-button>
-        Sign in
-      </md-button>
-    </div>
-  </md-toolbar>
+<div ng-controller="HeaderController as ctrl">
+  <div layout="column" layout-fill>
+    <md-toolbar class="md-primary">
+      <div class="md-toolbar-tools" id="toolbar">
+        <span id="app-name">wiggler</span>
+        <!-- fill up the space between left and right area -->
+        <span flex></span>
+        <md-button ng-click="ctrl.openSidebar()" ng-hide="ctrl.isOpen()">
+          <md-icon class="md-default-theme" class="material-icons">&#xE5D2;</md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+  </div>
 </div>

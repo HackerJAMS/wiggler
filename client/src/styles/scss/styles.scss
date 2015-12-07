@@ -34,6 +34,7 @@ body {
 
 #toolbar {
   font-size: 2em;
+  min-height: 128px;
 }
 md-whiteframe {
   background: #fff;
@@ -65,7 +66,7 @@ md-tabs md-tabs-wrapper {
 
 #app-name {
  vertical-align: middle;
- height: 64px;
+  font-size: 64px;
 }
 
 .md-button.md-icon-button {
@@ -88,3 +89,11 @@ md-tabs md-tabs-wrapper {
   height: 40px;
   padding-top: 10px;
 }
+
+md-sidenav, 
+  md-sidenav.md-locked-open, 
+  md-sidenav.md-closed.md-locked-open-add-active {
+      min-width: 200px !important;
+      width: 85vw !important;
+      max-width: 400px !important;
+} 

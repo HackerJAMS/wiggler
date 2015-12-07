@@ -18,11 +18,6 @@
           <span md-highlight-text="routeCtrl.searchEnd">{{item.place_name}}</span>
         </md-autocomplete>
       </div>
-      <!-- <div id="arrows-container">
-    <md-button class="md-raised md-primary" id="reverse-btn">
-      <ng-md-icon icon="import_export" id="reverse-arrows-icon" size="35" ng-click="routeCtrl.flipStartEnd()"></ng-md-icon>
-    </md-button>
-  </div> -->
       <div id="path-selection" flex="100" ng-init="routeCtrl.initPathSelection()">
         <div class="layout-row flex">
           <md-switch class="md-hue-4" id="min-elevation-switch" ng-click="routeCtrl.minElevPathChecked = !routeCtrl.minElevPathChecked" ng-checked="routeCtrl.minElevPathChecked">Flattest Route</md-switch>

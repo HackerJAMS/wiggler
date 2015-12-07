@@ -52,12 +52,13 @@
         };
 
         //solarized colors
-        var routeColors = {
-          "Minimum elevation change": '#2176C7',
-          "Shortest": '#C61C6F',
-          "Fastest biking": '#BD3613',
-          "Fastest walking": '#D9A800'
-        };
+          var routeColors = {
+            "Minimum elevation change": '#C61C6F',
+            "Shortest": '#2176C7',
+            "Fastest biking": '#BD3613',
+            "Fastest walking": '#D9A800'
+          };
+
 
         var routeTypes = {};
         for (var key in prefs) {
