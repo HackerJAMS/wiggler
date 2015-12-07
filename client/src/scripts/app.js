@@ -14,9 +14,11 @@
     'app.map',
     'app.routeInput',
     'app.routeInfo',
+    'app.elevationGraph',
     'angularSpinner',
     'ngLoadingSpinner',
-    'ngMdIcons'
+    'ngMdIcons',
+    'd3'
   ]);
 
 

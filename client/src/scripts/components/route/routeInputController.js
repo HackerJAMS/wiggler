@@ -2,7 +2,7 @@
 (function() {
   'use strict';
   angular.module('app.routeInput', [])
-    .controller('RouteInputController', ['$location', '$q', 'RouteService', function($location, $q, RouteService) {
+    .controller('RouteInputController', ['$scope', '$location', '$q', 'RouteService', function($scope, $location, $q, RouteService) {
       var vm = this;
       vm.selectedStart;
       vm.selectedEnd;
@@ -133,6 +133,12 @@
 
         // resample turfline for 3d point display
         var resampledPath = RouteService.getResampledPath(RouteService.turfLine, elevationCollection);
+
+        // broadcast elevationCollection to d3 controller
+        // test with minElevationPath
+        if (pathType === 'minElevPath') {
+          $scope.$broadcast('init2DGraph', resampledPath);
+        }
    
 //************* calls googleapi for refined elevation data *************
 
