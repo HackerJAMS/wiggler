@@ -9,9 +9,10 @@
       route.map;
       route.turfLine;
       route.legendData;
-      route.routeData; // raw route data from server
+      route.routeData = []; // raw route data from server
       route.currentPosition;
       route.routePrefs;
+      route.featureLayer;
 
       //************* Map Services *************      
       route.initMap = function(map) {
@@ -251,7 +252,7 @@
             }
           });
         })
-        return locationsGeojson;
+        L.mapbox.featureLayer(locationsGeojson).addTo(route.map);
       }
 
       route.markers = [];

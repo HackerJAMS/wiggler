@@ -6,7 +6,7 @@
 
       <md-button ng-if="ctrl.tiltCheck" ng-click="ctrl.restoreMap()">Flat</md-button>
       <div id="maprotor" ng-click="ctrl.addMarker" ng-mousedown="ctrl.mouseDown($event)" ng-mousemove="ctrl.mouseMove($event)" ng-mouseup="ctrl.mouseUp($event)">
-        <mapbox callback="ctrl.callback"></mapbox>
+        <mapbox></mapbox>
         <span us-spinner="{radius:30, width:8, length: 16, lines: 15, color: '#607D8B', scale: 1.75, opacity: 0.25, rotate: 0, direction: 1, speed: 1, trail: 60}"></span>
       </div>
     </div>

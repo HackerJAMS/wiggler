@@ -34,6 +34,6 @@
 
       vm.displayDirections("minElevPath");
 
-
     }])
 })();
+

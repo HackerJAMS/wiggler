@@ -43,7 +43,6 @@
           // the wrong container size, causing the map to be incorrectly centered
           $timeout(function() {
             map.invalidateSize(true);
-            scope.callback(map);
             RouteService.initMap(map);
           })
         }
