@@ -8,9 +8,6 @@
     vm.openSidebar = function (){
       $mdSidenav('left').open();
     }
-    vm.closeSideNavPanel = function (){
-      $mdSidenav('left').close();
-    }
-  
+    
   }])
 })();

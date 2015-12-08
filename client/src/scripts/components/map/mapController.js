@@ -2,7 +2,8 @@
 (function() {
   'use strict';
   angular.module('app.map', [])
-    .controller('MapController', ['$location', 'RouteService', function($location, RouteService, usSpinnerService) {
+    .controller('MapController', ['$location', 'RouteService', 'usSpinnerService','$mdSidenav', function($location, RouteService, usSpinnerService, $mdSidenav) {
+
       var vm = this;
       
       // functions for 3d map rotation

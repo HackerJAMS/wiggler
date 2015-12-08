@@ -15,6 +15,7 @@
     'app.routeInput',
     'app.routeInfo',
     'app.elevationGraph',
+    'app.main',
     'angularSpinner',
     'ngLoadingSpinner',
     'ngMdIcons',
@@ -45,7 +46,6 @@
           },
           "header@main": {
             templateUrl: "src/scripts/components/header/header.html",
-            controller: "HeaderController"
           }
         }
       })
