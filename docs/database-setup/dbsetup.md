@@ -122,4 +122,7 @@ select sum(oldCount-1) from (select count(*) as oldCount from elevation_test gro
 
 #to test the connection from your local computer:
 psql --host=ec2-52-33-5-195.us-west-2.compute.amazonaws.com --port=5432 --dbname=sf_routing --username=postgres
+
+## to  restart
+sudo service postgresql restart
 ```

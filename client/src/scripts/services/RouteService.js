@@ -2,7 +2,7 @@
 (function() {
   'use strict';
   angular.module('app.routeService', [])
-    .factory('RouteService', ['$http', function($http) {
+    .factory('RouteService', ['$rootScope','$http', function($rootScope, $http) {
       var route = {};
 
       // data shared by controllers
@@ -50,12 +50,12 @@
         };
 
         //solarized colors
-          var routeColors = {
-            "Minimum elevation change": '#2176C7',
-            "Shortest": '#C61C6F',
-            "Fastest biking": '#BD3613',
-            "Fastest walking": '#D9A800'
-          };
+        var routeColors = {
+          "Minimum elevation change": '#2176C7',
+          "Shortest": '#C61C6F',
+          "Fastest biking": '#BD3613',
+          "Fastest walking": '#D9A800'
+        };
 
         var routeTypes = {};
         for (var key in prefs) {
@@ -239,7 +239,7 @@
       }
       route.addStartEndMarkers = function(start, end) {
         var locationsGeojson = [];
-        [start, end].forEach(function(point,i) {
+        [start, end].forEach(function(point, i) {
           locationsGeojson.push({
             "type": "Feature",
             "geometry": {
@@ -252,9 +252,30 @@
             }
           });
         })
-        return locationsGeojson;
+        L.mapbox.featureLayer(locationsGeojson).addTo(route.map);
       }
 
+      route.markers = [];
+      route.clickMarker = function(e) {
+        if (route.markers.length < 2) {
+          var latlngArr = [e.latlng["lat"].toFixed(4), e.latlng["lng"].toFixed(4)];
+          var marker = L.marker(new L.LatLng(latlngArr[0], latlngArr[1]), {
+            icon: L.mapbox.marker.icon({
+              "marker-color": "ff8888",
+              "marker-size": "small",
+              "marker-symbol": route.markers.length === 0 ? "pitch" : "embassy"
+            }),
+            draggable: true
+          });
+          marker.on("dragend", function (){
+            $rootScope.$emit("markerUpdate", route.markers);
+          })
+          marker.addTo(route.map);
+          route.markers.push(marker);
+          $rootScope.$emit("markerUpdate", route.markers);
+
+        }
+      }
       return route;
     }])
 
