@@ -2,7 +2,7 @@
 (function() {
   'use strict';
   angular.module('app.routeInfo', [])
-    .controller('RouteInfoController', ['RouteService', function(RouteService) {
+    .controller('RouteInfoController', ['$location','RouteService', function($location, RouteService) {
       var vm = this;
 
 
@@ -10,8 +10,8 @@
       if (RouteService.turfLine) {
         vm.shortestDistance = turf.lineDistance(RouteService.shortestPath.turfLine).toFixed(2);
         vm.minElevationDistance = turf.lineDistance(RouteService.minElevPath.turfLine).toFixed(2);
-        vm.placeNameStart = RouteService.placeNameStart;
-        vm.placeNameEnd = RouteService.placeNameEnd;
+        vm.placeNameStart = RouteService.selectedStart.place_name;
+        vm.placeNameEnd = RouteService.selectedEnd.place_name;
       }
 
       vm.displayDirections = function(pathType) {
@@ -33,6 +33,20 @@
       }
 
       vm.displayDirections("minElevPath");
+
+      vm.createUrl = function() {
+        var start = RouteService.selectedStart.center;
+        var end = RouteService.selectedEnd.center;
+        var prefs = RouteService.routePrefs;
+
+        var link = "?slon=" + start[0] + "&slat=" + start[1] + "&elon=" + end[0] + "&elat=" + end[1];
+        for (var pathType in prefs) {
+          link += "&" + pathType + "=" + prefs[pathType];
+        }
+        link = $location.host() + ":" + $location.port() + '/#home/new' + link;
+        vm.url = link;
+        console.log('link', link);
+      }
 
     }])
 })();

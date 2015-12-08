@@ -10,10 +10,12 @@
       route.turfLine;
       route.legendData;
       route.routeData = []; // raw route data from server
+      route.selectedStart;
+      route.selectedEnd;
       route.currentPosition;
       route.routePrefs;
       route.featureLayer;
-
+      var accessToken = 'pk.eyJ1IjoiMTI3NnN0ZWxsYSIsImEiOiJjaWg4ZGEwZmEwdGNkdjBraXl1czIzNnFjIn0.RXXfMNV-gtrQyrRzrP2yvQ';
       //************* Map Services *************      
       route.initMap = function(map) {
         new L.Control.Zoom({
@@ -99,12 +101,18 @@
       }
 
       // convert user-entered addresses to coordinates through mapbox query
-      route.geocoding = function(address) {
-        var accessToken = 'pk.eyJ1IjoiMTI3NnN0ZWxsYSIsImEiOiJjaWg4ZGEwZmEwdGNkdjBraXl1czIzNnFjIn0.RXXfMNV-gtrQyrRzrP2yvQ';
+      route.reverseGeocoding = function(address) {
         var query = address.replace(/\s+/g, '+');
         return $http({
           method: 'GET',
-          url: 'https://api.mapbox.com/geocoding/v5/mapbox.places/' + query + '.json?proximity=-122.446,37.773&access_token=' + accessToken
+          url: 'https://api.mapbox.com/geocoding/v5/mapbox.places/' + query + '.json?access_token=' + accessToken
+        })
+      }
+
+      route.geocoding = function(lon, lat) {
+        return $http({
+          method: 'GET',
+          url: 'https://api.mapbox.com/geocoding/v5/mapbox.places/' + lon + "," + lat + '.json?proximity=-122.446,37.773&access_token=' + accessToken
         })
       }
 

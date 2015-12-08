@@ -42,7 +42,6 @@ app.use(bodyParser.urlencoded({
 
 app.use(express.static(__dirname + '/../client/'));
 
-app.get('/?*')
 module.exports = app;
 
 app.post('/route', function(req, res) {
@@ -53,8 +52,6 @@ app.post('/elevationquery', function(req,res){
   // console.log('in the server-------->', req.body.coordinates);
   resample(req, res);
 })
-
-
 
 var port = process.env.PORT || 3000;
 app.listen(port);
