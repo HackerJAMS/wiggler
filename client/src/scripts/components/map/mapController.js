@@ -182,20 +182,22 @@
         //clear out currentPosition
         RouteService.currentPosition = null;
       };
-
-      vm.clickMarker = function(map) {
-        map.on("click", function(e){
-          var latlngArr = [e.latlng["lat"].toFixed(4), e.latlng["lng"].toFixed(4)];
-          var tempMarker = L.mapbox.featureLayer({
-            "type": "Feature",
-            "geometry": {
-              "type": "Point",
-              "coordinates": [latlngArr[1], latlngArr[0]],
-              "marker-color": "#5644FF"
-            }
-          }).addTo(map);
-        })
-        
+      
+      vm.callback = function(map) {
+        // map.on("click", function(e){
+        //   
+        vm.map = map;
+          // var start = L.mapbox.featureLayer({
+          //   "type": "Feature",
+          //   "geometry": {
+          //     "type": "Point",
+          //     "coordinates": [latlngArr[1], latlngArr[0]],
+          //     "marker-color": "#5644FF"
+          //   }
+          // }).addTo(map);
+        // })
       }
+      
+
     }])
 })();

@@ -2,13 +2,28 @@
 (function() {
   'use strict';
   angular.module('app.routeInput', [])
-    .controller('RouteInputController', ['$location', '$q', 'RouteService', function($location, $q, RouteService) {
+    .controller('RouteInputController', ['$rootScope', '$location', '$q', 'RouteService', function($rootScope, $location, $q, RouteService) {
       var vm = this;
       vm.selectedStart;
       vm.selectedEnd;
 
       var polyline;
-      var queryResult;      
+      var queryResult;
+
+      $rootScope.$on("markerUpdate", function(event, args) {
+        vm.selectedStart = {};
+        var tempCoords = args[0].getLatLng();
+        vm.selectedStart.center = [tempCoords.lng, tempCoords.lat];
+        vm.selectedStart.place_name = 'Marker Start Position';
+        console.log(vm.selectedStart);
+        
+        if (args[1]) {
+          vm.selectedEnd = {};
+          tempCoords = args[1].getLatLng();
+          vm.selectedEnd.center = [tempCoords.lng, tempCoords.lat];
+          vm.selectedEnd.place_name = 'Marker End Position';
+        }
+      })
 
       vm.autocompleteQuery = function(searchText) {
         var defer = $q.defer();
@@ -23,6 +38,7 @@
 
         return defer.promise;
       };
+
 
       vm.flipStartEnd = function() {
         var start = vm.selectedStart;
@@ -66,14 +82,14 @@
             center: [-122.437364, 37.774222]
           }
         }
-        
 
-        
+
+
 
         // start and end coordinates
         var start = vm.selectedStart.center;
         var end = vm.selectedEnd.center;
-    
+
         // store start/end address for route info display
         RouteService.placeNameStart = vm.selectedStart.place_name;
         RouteService.placeNameEnd = vm.selectedEnd.place_name;

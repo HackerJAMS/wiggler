@@ -35,7 +35,10 @@
             bounds.max.y = bounds.max.y + 1000;
             return bounds;
           };
-
+          
+          map.on("click", function (e){
+            RouteService.clickMarker(e);
+          })
           // this fixes the map glitch that causes the map to be loaded initially with
           // the wrong container size, causing the map to be incorrectly centered
           $timeout(function() {
