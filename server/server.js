@@ -12,13 +12,13 @@ var db_seq = require('./db/db_sequelize');
 
 var resample = require('./resample_elevation/resample_elevation.js');
 
-db.connect(function(err) {
-  if (err) {
-    return console.error('could not connect to postgres: ', err);
-  } else {
-    console.log('connected to postgres database');
-  }
-});
+// db.connect(function(err) {
+//   if (err) {
+//     return console.error('could not connect to postgres: ', err);
+//   } else {
+//     console.log('connected to postgres database');
+//   }
+// });
 
 // var minElevationPath = require('./utility/minElevationPath.js');
 // minElevationPath(30, 60, function(err, result){

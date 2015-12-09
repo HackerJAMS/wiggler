@@ -100,38 +100,50 @@
         prefs.minHikingChecked = vm.minHikingChecked;
         RouteService.routePrefs = prefs;
 
-        RouteService.postRouteRequest(start, end, prefs)
-          .then(function successCb(res) {
-            res.start = start;
-            res.end = end;
-            RouteService.routeData = res;
+      RouteService.data = {};
+      RouteService.data.minElevPath = [[1,3],
+                                       [2,6],
+                                       [3,2],
+                                       [4,7],
+                                       [5,5]];
 
-       // $scope.$watch(function() {return RouteService.routeData}, function(newData, oldData) {
+      RouteService.data.shortestPath = {};
+      RouteService.data.shortestPath.distance = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+      RouteService.data.shortestPath.elevation = [1, 3, 2, 7, 5, 6, 2, 3, 8, 9];  
 
-       //    if (newData !== oldData) {
-            // console.log('newData',newData,'oldData',oldData);
-            RouteService.cleanMap(polyline !== "undefined", RouteService.map);
-            RouteService.addStartEndMarkers(start, end);
-            // turfLines store the returned routes and are added to featureLayer
-            var turfLines = {};
-            turfLines.type = 'FeatureCollection';
-            turfLines.features = [];
-            for (var pathType in RouteService.routeData.data) {
-              var coords = RouteService.routeData.data[pathType][0];
-              var elevation = RouteService.routeData.data[pathType][1];
-              plotRoute(coords, elevation, pathType, turfLines);
-            }
-            // add turfLines to featureLayer and fit map to the bounds
-            RouteService.featureLayer = L.mapbox.featureLayer(turfLines);
-            RouteService.map.fitBounds(RouteService.featureLayer.getBounds());
-            RouteService.addLegend(RouteService.routePrefs);        
-        //   }
 
-        // });
+       //  RouteService.postRouteRequest(start, end, prefs)
+       //    .then(function successCb(res) {
+       //      res.start = start;
+       //      res.end = end;
+       //      RouteService.routeData = res;
 
-          }, function errorCb(res) {
-            console.log("error posting route request", res.status);
-          });
+       // // $scope.$watch(function() {return RouteService.routeData}, function(newData, oldData) {
+
+       // //    if (newData !== oldData) {
+       //      // console.log('newData',newData,'oldData',oldData);
+       //      RouteService.cleanMap(polyline !== "undefined", RouteService.map);
+       //      RouteService.addStartEndMarkers(start, end);
+       //      // turfLines store the returned routes and are added to featureLayer
+       //      var turfLines = {};
+       //      turfLines.type = 'FeatureCollection';
+       //      turfLines.features = [];
+       //      for (var pathType in RouteService.routeData.data) {
+       //        var coords = RouteService.routeData.data[pathType][0];
+       //        var elevation = RouteService.routeData.data[pathType][1];
+       //        plotRoute(coords, elevation, pathType, turfLines);
+       //      }
+       //      // add turfLines to featureLayer and fit map to the bounds
+       //      RouteService.featureLayer = L.mapbox.featureLayer(turfLines);
+       //      RouteService.map.fitBounds(RouteService.featureLayer.getBounds());
+       //      RouteService.addLegend(RouteService.routePrefs);        
+       //  //   }
+
+       //  // });
+
+       //    }, function errorCb(res) {
+       //      console.log("error posting route request", res.status);
+       //    });
       };
 
       // plot 2D routes and 3D markers on the map
@@ -140,9 +152,6 @@
         var path = RouteService.getPath(coords);
         // turf linestring
         RouteService.turfLine = turf.linestring(path);
-        RouteService[pathType] = {
-          'turfLine': RouteService.turfLine
-        };
         // turfLines will be added to featureLayer
         turfLines.features.push(RouteService.turfLine);        
         // re-format elevation data with turf points
@@ -150,12 +159,10 @@
 
         // resample turfline for 3d point display
         var resampledPath = RouteService.getResampledPath(RouteService.turfLine, elevationCollection);
-
-        // broadcast elevationCollection to d3 controller
-        // test with minElevationPath
-        if (pathType === 'minElevPath') {
-          $scope.$broadcast('init2DGraph', resampledPath);
-        }
+        RouteService[pathType] = {
+          'turfLine': RouteService.turfLine,
+          'resampledPath': resampledPath
+        };
   
         // draw route on the map and fit the bounds of the map viewport to the route
 

@@ -2,7 +2,7 @@
 (function() {
   'use strict';
   angular.module('app.routeInfo', [])
-    .controller('RouteInfoController', ['$location','RouteService', function($location, RouteService) {
+    .controller('RouteInfoController', ['$scope','$location','RouteService', function($scope, $location, RouteService) {
       var vm = this;
 
 
@@ -13,6 +13,16 @@
         vm.placeNameStart = RouteService.selectedStart.place_name;
         vm.placeNameEnd = RouteService.selectedEnd.place_name;
       }
+        // broadcast elevationCollection to d3 controller
+        // test with minElevationPath
+
+        console.log('dada')
+        $scope.data = RouteService.data.minElevPath;
+        console.log("$scope.data", $scope.data)
+          
+      // if (RouteService['minElevPath'].resampledPath) {
+      //   $scope.$broadcast('init2DGraph', RouteService['minElevPath'].resampledPath);
+      // }
 
       vm.displayDirections = function(pathType) {
         RouteService.getDirections(RouteService.getResampledPath(RouteService.turfLine, [], 50).features.map(function(point) {
@@ -32,7 +42,7 @@
 
       }
 
-      vm.displayDirections("minElevPath");
+      // vm.displayDirections("minElevPath");
 
       vm.createUrl = function() {
         var start = RouteService.selectedStart.center;

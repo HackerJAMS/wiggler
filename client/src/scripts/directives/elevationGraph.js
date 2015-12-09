@@ -5,7 +5,9 @@
     .directive('elevationGraph', ['d3Service', '$window', function(d3Service, $window) {
       return {
         restrict: 'E',
-        scope: {},
+        scope: {
+          data: '='
+        },
         link: function(scope, element, attr) {
           d3Service.d3().then(function(d3) {
 
@@ -18,8 +20,8 @@
               width = 400 - margin.left - margin.right,
               height = 300 - margin.top - margin.bottom;
 
-            var x = d3.scale.ordinal()
-              .rangeRoundBands([0, width], .1);
+            var x = d3.scale.linear()
+              .range([0, width]);
 
             var y = d3.scale.linear()
               .range([height, 0]);
@@ -33,31 +35,33 @@
               .orient("left")
               .ticks(10, "ft");
 
+            var line = d3.svg.line()
+              // .interpolate("basis")
+              .x(function(d) {return x(d[0])})
+              .y(function(d) {return y(d[1])});
+
             var svg = d3.select(element[0]).append('svg')
               .attr("width", width + margin.left + margin.right)
               .attr("height", height + margin.top + margin.bottom)
               .append("g")
               .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-            scope: {
-              obj: '='
-            }
-
             // listen for init function in routeInputController
-            scope.$on('init2DGraph', function(event, data) {
+            // scope.$on('init2DGraph', function(event, data) {
 
-              scope.data = data.features;
-
+              console.log("recieved data on", scope.data);
               // remove all previous items before render
               svg.selectAll('*').remove();
 
-              x.domain(scope.data.map(function(d) {
-                // console.log(d, 'xdomain');
-                return d.geometry.coordinates[0];
-              }));
-              y.domain([0, d3.max(scope.data, function(d) {
-                return d.properties.elevation;
-              })]);
+              console.log('x bounds', d3.extent(scope.data, function(d){return d[0];}))
+              console.log('y bounds', d3.extent(scope.data, function(d){return d[1];}))
+              x.domain(d3.extent(scope.data, function(d){return d[0];}));
+              y.domain(d3.extent(scope.data, function(d){return d[1];}));
+
+              svg.append("g")
+                .attr("class", "x axis")
+                .attr("transform", "translate(0," + height + ")")
+                .call(xAxis);
 
               svg.append("g")
                 .attr("class", "y axis")
@@ -69,21 +73,11 @@
                 .style("text-anchor", "end")
                 .text("Elevation");
 
-              svg.selectAll(".bar")
-                .data(scope.data)
-                .enter().append("rect")
-                .attr("class", "bar")
-                .attr("x", function(d) {
-                  return x(d.geometry.coordinates[0]);
-                })
-                .attr("width", x.rangeBand())
-                .attr("y", function(d) {
-                  return y(d.properties.elevation);
-                })
-                .attr("height", function(d) {
-                  return height - y(d.properties.elevation);
-                });
-            });
+              svg.append("path")
+                .datum(scope.data)
+                .attr("class", "line")
+                .attr("d", line);
+            // });
           });
         }
       };
