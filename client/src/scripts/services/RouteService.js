@@ -120,6 +120,17 @@
         })
       };
 
+      route.postLoopRequest= function(start, distance) {
+        return $http({
+          method: 'POST',
+          url: '/loop',
+          data : {
+            // start: start,
+            // distance: distance
+          }
+        })
+      };
+
       route.postElevationRequest = function(coordinates) {
         return $http({
           method: 'POST',

@@ -3,6 +3,7 @@ var polyUtil = require('polyline-encoded');
 
 
 module.exports = function getPathElev(pathArray, callback) {
+  console.log("in elevation data");
   var numsArray = flatten(pathArray).map(function (d) {
     var arr = [];
     d.forEach(function (e){
@@ -14,6 +15,7 @@ module.exports = function getPathElev(pathArray, callback) {
   // and the resampled path generally doesn't have that many nodes. but we will need to figure out a solution to this
   // with the google maps api
   // this just ignores all nodes above 512 (the google limit)
+  console.log("numsArray length", numsArray.length);
   if (numsArray.length > 512) {
     numsArray = numsArray.slice(0,511);
   }
@@ -51,5 +53,6 @@ function flatten(array) {
       output.push(array[i][j]);
     }
   }
+  console.log("did flatten work?", output.length)
   return output;
 }

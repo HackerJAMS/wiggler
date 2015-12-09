@@ -35,6 +35,9 @@
           <md-switch class="md-hue-4" aria-label="walking directions" ng-init="routeCtrl.minHikingChecked = false" ng-click="routeCtrl.minHikingChecked = !routeCtrl.minHikingChecked" ng-checked="routeCtrl.minHikingChecked">
             <ng-md-icon icon="directions_walk" size="25"></ng-md-icon>
           </md-switch>
+          <md-switch class="md-hue-4" aria-label="loop directions" ng-click="routeCtrl.submitLoopRoute()" ng-checked="routeCtrl.minHikingChecked">
+            <ng-md-icon icon="keyboard_alt" size="25"></ng-md-icon>
+          </md-switch>
         </div>
         <div id="route-submit">
           <md-button class="md-raised md-primary" aria-label="get route" ng-click="routeCtrl.submitRoute()">Get Route</md-button>

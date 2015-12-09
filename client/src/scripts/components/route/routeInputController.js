@@ -102,10 +102,6 @@
             res.end = end;
             RouteService.routeData = res;
 
-       // $scope.$watch(function() {return RouteService.routeData}, function(newData, oldData) {
-
-       //    if (newData !== oldData) {
-            // console.log('newData',newData,'oldData',oldData);
             RouteService.cleanMap(polyline !== "undefined", RouteService.map);
             RouteService.addStartEndMarkers(start, end);
             // turfLines store the returned routes and are added to featureLayer
@@ -129,6 +125,20 @@
             console.log("error posting route request", res.status);
           });
       };
+      vm.submitLoopRoute = function (start, distance) {
+        RouteService.postLoopRequest(start, distance)
+        .then(function successCb (res){
+          var turfLines = {};
+            turfLines.type = 'FeatureCollection';
+            turfLines.features = [];
+          console.log(res)
+          var coords = res.data["loop_path"][0];
+          var elevation = res.data["loop_path"][1];
+          plotRoute(coords, elevation,"loop_path", turfLines);
+        }, function errorCb (res){
+          console.log("error", res)
+        })
+      }
 
       // plot 2D routes and 3D markers on the map
       var plotRoute = function(coords, elevation, pathType, turfLines) {
