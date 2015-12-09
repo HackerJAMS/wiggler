@@ -10,6 +10,7 @@
       route.turfLine;
       route.legendData;
       route.routeData = []; // raw route data from server
+      route.resampledRoutes = {}; // processed resampled routes
       route.selectedStart;
       route.selectedEnd;
       route.currentPosition;
@@ -52,13 +53,12 @@
         };
 
         //solarized colors
-          var routeColors = {
-            "Minimum elevation change": '#C61C6F',
-            "Shortest": '#2176C7',
-            "Fastest biking": '#BD3613',
-            "Fastest walking": '#D9A800'
-          };
-
+        var routeColors = {
+          "Shortest": '#2176C7',
+          "Minimum elevation change": '#C61C6F',
+          "Fastest biking": '#BD3613',
+          "Fastest walking": '#D9A800'
+        };
 
         var routeTypes = {};
         for (var key in prefs) {
@@ -170,6 +170,7 @@
           if (elevationCollection.features !== undefined) {
             var nearest = turf.nearest(point, elevationCollection);
             collection[i].properties.elevation = nearest.properties.elevation;
+            collection[i].properties.distance = distance;
           }
           // dist_jia.push(distance);
           // elev_jia.push(nearest.properties.elevation);

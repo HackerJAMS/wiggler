@@ -99,13 +99,13 @@
         prefs.minBikingChecked = vm.minBikingChecked;
         prefs.minHikingChecked = vm.minHikingChecked;
         RouteService.routePrefs = prefs;
+        RouteService.resampledRoutes = {};
 
         RouteService.postRouteRequest(start, end, prefs)
           .then(function successCb(res) {
             res.start = start;
             res.end = end;
             RouteService.routeData = res;
-
        // $scope.$watch(function() {return RouteService.routeData}, function(newData, oldData) {
 
        //    if (newData !== oldData) {
@@ -140,9 +140,6 @@
         var path = RouteService.getPath(coords);
         // turf linestring
         RouteService.turfLine = turf.linestring(path);
-        RouteService[pathType] = {
-          'turfLine': RouteService.turfLine
-        };
         // turfLines will be added to featureLayer
         turfLines.features.push(RouteService.turfLine);        
         // re-format elevation data with turf points
@@ -150,12 +147,10 @@
 
         // resample turfline for 3d point display
         var resampledPath = RouteService.getResampledPath(RouteService.turfLine, elevationCollection);
-
-        // broadcast elevationCollection to d3 controller
-        // test with minElevationPath
-        if (pathType === 'minElevPath') {
-          $scope.$broadcast('init2DGraph', resampledPath);
-        }
+        RouteService.resampledRoutes[pathType] = {
+          'turfLine': RouteService.turfLine,
+          'resampledPath': resampledPath
+        };
   
         // draw route on the map and fit the bounds of the map viewport to the route
 
