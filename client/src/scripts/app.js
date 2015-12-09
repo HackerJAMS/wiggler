@@ -8,13 +8,14 @@
     'ngAria',
     // router
     'ui.router',
-
     //app modules
+    'app.header',
     'app.routeService',
     'app.map',
     'app.routeInput',
     'app.routeInfo',
     'app.elevationGraph',
+    'app.main',
     'angularSpinner',
     'ngLoadingSpinner',
     'ngMdIcons',
@@ -44,7 +45,7 @@
             controller: "MapController"
           },
           "header@main": {
-            templateUrl: "src/scripts/components/header/header.html"
+            templateUrl: "src/scripts/components/header/header.html",
           }
         }
       })

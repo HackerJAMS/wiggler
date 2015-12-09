@@ -34,12 +34,15 @@ body {
 
 #toolbar {
   font-size: 2em;
+  margin-bottom: 8px;
 }
+
 md-whiteframe {
   background: #fff;
   margin: 5px;
   padding: 5px;
   height: 400px;
+  position: relative;
 }
 md-tabs.md-default-theme,
 md-tabs md-tabs-wrapper {
@@ -51,6 +54,17 @@ md-tabs md-tabs-wrapper {
   line-height: 4rem;
   width: 3.5rem;
   height: 2rem;
+}
+#submit-btn {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+.switch-icon {
+  display: block;
+}
+.switch-icon-mobile {
+  display: none;
 }
 
 #arrows-container {
@@ -64,8 +78,15 @@ md-tabs md-tabs-wrapper {
 }
 
 #app-name {
- vertical-align: middle;
- height: 64px;
+  vertical-align: middle;
+  font-size: 48px;
+}
+
+#sidebar-icon {
+  display: none;
+}
+#sidebar-btn { 
+  display: none;
 }
 
 .md-button.md-icon-button {
@@ -75,6 +96,13 @@ md-tabs md-tabs-wrapper {
   i {
     font-size: 18px;
   }
+}
+.get-directions-btn {
+  display: none;
+}
+
+.md-input {
+  line-height: 100px;
 }
 
 #vertical-container {
@@ -88,3 +116,135 @@ md-tabs md-tabs-wrapper {
   height: 40px;
   padding-top: 10px;
 }
+
+
+//mobile responsive styling
+@media only screen and (max-device-width: 768px) {
+   #app-name {
+     vertical-align: middle;
+     font-size: 64px; }
+
+     .md-button.md-icon-button {
+       margin: 10px 0 0 0;
+       height: 64px;
+       width: 64px;
+       i {
+         font-size: 56px;
+       }
+     }
+
+     md-sidenav, 
+       md-sidenav.md-locked-open, 
+       md-sidenav.md-closed.md-locked-open-add-active {
+           min-width: 200px !important;
+           width: 100vw !important;
+           max-width: none !important;
+     }
+     md-whiteframe {
+       height: 1000px;
+     }
+     md-input-container {
+     line-height : 100px;
+   }
+   .md-button {
+     max-height: 84px;
+     line-height: 84px;
+     min-width: 72px;
+     font-size: 36px;
+   }
+   #desktop-route-pnl {
+     display: none;
+   }
+   #toolbar {
+     // font-size: 64px;
+     min-height: 128px;
+
+   }
+   #sidebar-icon {
+     height: 64px;
+     width: 64px;
+     font-size: 64px;
+     display: block;
+   }
+   #sidebar-btn { 
+     display: block;
+   }
+   md-tabs-canvas {
+    height: 128px;
+   }
+   .md-tab {
+    font-size: 48px;
+  
+   }
+   .md-toolbar-tools {
+    height : 128px;
+    max-height: 128px;
+   }
+   .md-toolbar-tools h2 {
+    font-size: 56px;
+   }
+   input {
+    font-size: 36px;
+   }
+   // div.md-container {
+   //  width: 80;
+   //  height: 80;
+   // }
+   md-switch {
+    font-size: 48px;
+   }
+
+   md-switch .md-bar {
+    width: 55px;
+    height: 25px;
+    top:10px;
+   }
+  md-switch .md-thumb {
+    width: 40px;
+    height: 40px;
+    right: 25px;
+    bottom: 60px;
+  }
+   .switch-icon {
+     display: none;
+   }
+   .switch-icon-mobile {
+     display: block;
+     margin-left: 50px;
+   }
+   .md-item-text {
+    // font-size: 36px
+   }
+   // .get-directions-btn {
+   //  display: block;
+   //  margin-left: 60px;
+   //  // right: 0;
+   //  // bottom: 0;
+   // }
+   #vertical-container {
+    height: 900px;
+    width: 100%;
+   }
+   // md-content {
+   //  font-size: 18px;
+   // }
+   .repeated-item {
+    height: 90px;
+    font-size: 48px;
+   }
+   #directions-title {
+    font-size: 38px;
+   }
+   md-pagination-wrapper{
+    height: 96px;
+   }
+   .route-type-label{
+    margin-left: 50px;
+   }
+   md-input-container.ng-scope.flex{
+    font-size: 48px;
+   }
+   
+}
+
+

@@ -2,7 +2,9 @@
 (function() {
   'use strict';
   angular.module('app.routeInput', [])
-    .controller('RouteInputController', ['$stateParams', '$rootScope','$scope', '$location', '$q', 'RouteService', function($stateParams, $rootScope, $scope, $location, $q, RouteService) {
+
+    .controller('RouteInputController', ['$stateParams', '$rootScope','$scope', '$location', '$q', 'RouteService', '$mdSidenav', function($stateParams, $rootScope, $scope, $location, $q, RouteService, $mdSidenav) {
+
       var vm = this;
 
       var polyline;   
@@ -21,6 +23,10 @@
           vm.selectedEnd.place_name = 'Marker End Position';
         }
       })
+
+      vm.closeSideNavPanel = function () {
+        $mdSidenav('left').close();
+      }   
 
       vm.autocompleteQuery = function(searchText) {
         var defer = $q.defer();
