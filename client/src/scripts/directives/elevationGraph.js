@@ -18,7 +18,7 @@
                 left: 40
               },
               width = 400 - margin.left - margin.right,
-              height = 300 - margin.top - margin.bottom;
+              height = 200 - margin.top - margin.bottom;
 
             var x = d3.scale.linear()
               .range([0, width]);
@@ -35,7 +35,6 @@
               .orient("left")
               .ticks(10, "ft");
             
-            //////////////////////////
             var line = d3.svg.line()
               .interpolate("monotone")
               .x(function(d) {return x(d.properties.distance)})
@@ -53,11 +52,6 @@
             // remove all previous items before render
             svg.selectAll('*').remove();
 
-            //   var array1 = scope.data.minElevPath.resampledPath.features.concat(scope.data.shortestPath.resampledPath.features);
-
-            //   var array2 = scope.data.minHiking.resampledPath.features.concat(scope.data.minBiking.resampledPath.features);  
-
-            //   var domainArray = array1.concat(array2); 
             var paths = [];
             for (var pathType in scope.data) {
               paths = paths.concat(scope.data[pathType].resampledPath.features);
@@ -67,23 +61,6 @@
             x.domain(d3.extent(paths, function(d){return d.properties.distance;}));
             y.domain(d3.extent(paths, function(d){return d.properties.elevation;}));
 
-            // var paths = [];
-            // for (var pathType in scope.data) {
-            //   paths.push(scope.data[pathType].resampledPath.features);
-            // }
-
-            // x.domain([d3.min(paths, function(path){ return d3.min(path, function(d){
-            //   return d.properties.distance;
-            // })}), d3.max(paths, function(path){ return d3.max(path, function(d){
-            //   return d.properties.distance;
-            // })})])
-
-            // y.domain([d3.min(paths, function(path){ return d3.min(path, function(d){
-            //   return d.properties.elevation;
-            // })}), d3.max(paths, function(path){ return d3.max(path, function(d){
-            //   return d.properties.elevation;
-            // })})])
-
             svg.append("g")
               .attr("class", "x axis")
               .attr("transform", "translate(0," + height + ")")
@@ -91,6 +68,7 @@
               .append("text")
               .attr("x", width)
               .attr("dx", ".71em")
+              .attr("dy", "-0.71em")
               .style("text-anchor", "end")
               .text("Distance / miles");
 
@@ -104,31 +82,51 @@
               .style("text-anchor", "end")
               .text("Elevation / meters");
 
-            //////////////////////////
+            var path;
             if (scope.data.minElevPath) {
-              svg.append("path")
-                .datum(scope.data.minElevPath.resampledPath.features)
-                .attr("class", "line min_elevation_path")
-                .attr("d", line);
+              path = svg.append("path")
+                      .datum(scope.data.minElevPath.resampledPath.features)
+                      .attr("class", "line min_elevation_path")
+                      .attr("d", line);
+              drawPath(path);                                
             }
             if (scope.data.shortestPath) {
-              svg.append("path")
-                .datum(scope.data.shortestPath.resampledPath.features)
-                .attr("class", "line shortest_path")
-                .attr("d", line);
+              path = svg.append("path")
+                      .datum(scope.data.shortestPath.resampledPath.features)
+                      .attr("class", "line shortest_path")
+                      .attr("d", line);
+              drawPath(path);   
             }
             if (scope.data.minHiking) {
-              svg.append("path")
-                .datum(scope.data.minHiking.resampledPath.features)
-                .attr("class", "line fastest_walking")
-                .attr("d", line);
+              path = svg.append("path")
+                      .datum(scope.data.minHiking.resampledPath.features)
+                      .attr("class", "line fastest_walking")
+                      .attr("d", line);
+              drawPath(path);                   
             }
             if (scope.data.minBiking) {
-              svg.append("path")
-                .datum(scope.data.minBiking.resampledPath.features)
-                .attr("class", "line fastest_biking")
-                .attr("d", line);
-            }            
+              path = svg.append("path")
+                      .datum(scope.data.minBiking.resampledPath.features)
+                      .attr("class", "line fastest_biking")
+                      .attr("d", line); 
+              drawPath(path);               
+            }   
+
+            // draw path animation
+            function drawPath(path) {
+              var totalLength = path.node().getTotalLength();
+
+              // stroke-dasharray: the length of the rendered part of the line and the length of the gap
+              // stroke-dashoffset: the position where the dasharray starts
+              path
+                .attr("stroke-dasharray", totalLength + " " + totalLength)
+                .attr("stroke-dashoffset", totalLength)
+                .transition()
+                  .duration(2000)
+                  .ease("linear")
+                  .attr("stroke-dashoffset", 0);
+            }
+                   
             // });
           });
         }

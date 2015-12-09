@@ -128,3 +128,21 @@
 //       };
 //     }]);
 // })();
+
+
+            // var paths = [];
+            // for (var pathType in scope.data) {
+            //   paths.push(scope.data[pathType].resampledPath.features);
+            // }
+
+            // x.domain([d3.min(paths, function(path){ return d3.min(path, function(d){
+            //   return d.properties.distance;
+            // })}), d3.max(paths, function(path){ return d3.max(path, function(d){
+            //   return d.properties.distance;
+            // })})])
+
+            // y.domain([d3.min(paths, function(path){ return d3.min(path, function(d){
+            //   return d.properties.elevation;
+            // })}), d3.max(paths, function(path){ return d3.max(path, function(d){
+            //   return d.properties.elevation;
+            // })})])

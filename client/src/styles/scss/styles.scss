@@ -41,7 +41,8 @@ md-whiteframe {
   background: #fff;
   margin: 5px;
   padding: 5px;
-  height: 400px;
+  width: 400px;
+  // height: 400px;
   position: relative;
 }
 md-tabs.md-default-theme,
@@ -116,7 +117,6 @@ md-tabs md-tabs-wrapper {
   height: 40px;
   padding-top: 10px;
 }
-
 
 //mobile responsive styling
 @media only screen and (max-device-width: 768px) {
@@ -247,4 +247,20 @@ md-tabs md-tabs-wrapper {
    
 }
 
+.md-virtual-repeat-container {
+  margin-top: 10px;
+}
 
+#route-sidebar {
+  font-size: 14px;
+}
+
+#route-sidebar {
+  md-divider {
+    margin: 10px 0px;
+  }
+  .md-raised {
+    font-size: 12px;
+    margin-top: 20px;
+  }
+}

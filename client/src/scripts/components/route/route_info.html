@@ -3,21 +3,26 @@
   <div id="route-info"ng-show="!routeCtrl.placeNameStart">No route selected</div>
   <md-content>
     <div ng-show="routeCtrl.placeNameStart">
-      <div>Start: {{routeCtrl.placeNameStart}}</div>
-      <div>End: {{routeCtrl.placeNameEnd}}</div>
-      <div>Shortest Distance: {{routeCtrl.shortestDistance}} miles</div>
-      <div>Minimum Elevation Distance: {{routeCtrl.minElevationDistance}} miles</div>
+      <div><span><strong>Start</strong></span>: {{routeCtrl.placeNameStart}}</div>
+      <div><span><strong>End</strong></span>: {{routeCtrl.placeNameEnd}}</div>
+<!--       <div>Shortest Distance: {{routeCtrl.shortestDistance}} miles</div>
+      <div>Minimum Elevation Distance: {{routeCtrl.minElevationDistance}} miles</div> -->
     </div>
-  <md-virtual-repeat-container id="vertical-container">
-      <div><span><strong id="directions-title">Directions</strong></span></div>
-      <div md-virtual-repeat="step in routeCtrl.directions" class="repeated-item" flex>
-        <span><strong>{{step.num}}</strong></span> {{step.step}}
-      </div>
+    
+    <md-divider></md-divider> 
+    <div><span><strong>Elevation Profile</strong></span></div>
+    <!-- d3 elevation graph -->
+    <elevation-graph data="data"></elevation-graph>
+    
+    <md-divider></md-divider>
+    <div><span><strong id="directions-title">Directions</strong></span></div>
+    <md-virtual-repeat-container id="vertical-container">
+        <div md-virtual-repeat="step in routeCtrl.directions" class="repeated-item" flex>
+          <span><strong>{{step.num}}</strong></span> {{step.step}}
+        </div>
     </md-virtual-repeat-container>
   </md-content>
-  
-  <!-- d3 elevation graph -->
-  <elevation-graph data="data"></elevation-graph>
+ 
 
   <div>
     <md-button class="md-raised md-primary" aria-lable="create url" ng-click="routeCtrl.createUrl()">Create Url</md-button>
