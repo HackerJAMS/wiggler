@@ -1,4 +1,6 @@
 <div id="route-sidebar" ng-controller="RouteInfoController as routeCtrl">
+  
+  <div id="route-info" ng-show="!routeCtrl.placeNameStart">No route selected</div>
   <md-content>
     <!-- if the loop route is selected -->
     <div id="route-info" ng-show="!routeCtrl.placeNameStart">
@@ -8,8 +10,6 @@
     <div id="place-names" ng-show="routeCtrl.placeNameStart">
       <div><span class="route-detail"><strong>Start</strong>: {{routeCtrl.placeNameStart}}</span></div>
       <div><span class="route-detail"><strong>End</strong>: {{routeCtrl.placeNameEnd}}</span></div>
-<!--       <div>Shortest Distance: {{routeCtrl.shortestDistance}} miles</div>
-      <div>Minimum Elevation Distance: {{routeCtrl.minElevationDistance}} miles</div> -->
     </div>
     <md-divider></md-divider>
     <div><span><strong>Elevation Profile</strong></span></div>
