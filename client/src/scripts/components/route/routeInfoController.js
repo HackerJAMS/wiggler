@@ -8,17 +8,15 @@
 
       // check if route has been submitted before calculating distance
       if (RouteService.turfLine) {
-        vm.shortestDistance = turf.lineDistance(RouteService.shortestPath.turfLine).toFixed(2);
-        vm.minElevationDistance = turf.lineDistance(RouteService.minElevPath.turfLine).toFixed(2);
+        vm.shortestDistance = turf.lineDistance(RouteService.resampledRoutes.shortestPath.turfLine).toFixed(2);
+        vm.minElevationDistance = turf.lineDistance(RouteService.resampledRoutes.minElevPath.turfLine).toFixed(2);
         vm.placeNameStart = RouteService.selectedStart.place_name;
         vm.placeNameEnd = RouteService.selectedEnd.place_name;
       }
-        // broadcast elevationCollection to d3 controller
-        // test with minElevationPath
 
-        console.log('dada')
-        $scope.data = RouteService.data.minElevPath;
-        console.log("$scope.data", $scope.data)
+      // RouteService.resampleRoutes.minElevPath.resampledPath.features = [{properties: {distance: dist, elevation: elev}, {}, ...]
+
+      $scope.data = RouteService.resampledRoutes;
           
       // if (RouteService['minElevPath'].resampledPath) {
       //   $scope.$broadcast('init2DGraph', RouteService['minElevPath'].resampledPath);
@@ -42,7 +40,7 @@
 
       }
 
-      // vm.displayDirections("minElevPath");
+      vm.displayDirections("minElevPath");
 
       vm.createUrl = function() {
         var start = RouteService.selectedStart.center;

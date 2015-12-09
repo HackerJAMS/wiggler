@@ -34,11 +34,12 @@
               .scale(y)
               .orient("left")
               .ticks(10, "ft");
-
+            
+            //////////////////////////
             var line = d3.svg.line()
-              // .interpolate("basis")
-              .x(function(d) {return x(d[0])})
-              .y(function(d) {return y(d[1])});
+              .interpolate("monotone")
+              .x(function(d) {return x(d.properties.distance)})
+              .y(function(d) {return y(d.properties.elevation)});
 
             var svg = d3.select(element[0]).append('svg')
               .attr("width", width + margin.left + margin.right)
@@ -49,34 +50,85 @@
             // listen for init function in routeInputController
             // scope.$on('init2DGraph', function(event, data) {
 
-              console.log("recieved data on", scope.data);
-              // remove all previous items before render
-              svg.selectAll('*').remove();
+            // remove all previous items before render
+            svg.selectAll('*').remove();
 
-              console.log('x bounds', d3.extent(scope.data, function(d){return d[0];}))
-              console.log('y bounds', d3.extent(scope.data, function(d){return d[1];}))
-              x.domain(d3.extent(scope.data, function(d){return d[0];}));
-              y.domain(d3.extent(scope.data, function(d){return d[1];}));
+            //   var array1 = scope.data.minElevPath.resampledPath.features.concat(scope.data.shortestPath.resampledPath.features);
 
-              svg.append("g")
-                .attr("class", "x axis")
-                .attr("transform", "translate(0," + height + ")")
-                .call(xAxis);
+            //   var array2 = scope.data.minHiking.resampledPath.features.concat(scope.data.minBiking.resampledPath.features);  
 
-              svg.append("g")
-                .attr("class", "y axis")
-                .call(yAxis)
-                .append("text")
-                .attr("transform", "rotate(-90)")
-                .attr("y", 6)
-                .attr("dy", ".71em")
-                .style("text-anchor", "end")
-                .text("Elevation");
+            //   var domainArray = array1.concat(array2); 
+            var paths = [];
+            for (var pathType in scope.data) {
+              paths = paths.concat(scope.data[pathType].resampledPath.features);
+            } 
 
+            // //////////////////////////
+            x.domain(d3.extent(paths, function(d){return d.properties.distance;}));
+            y.domain(d3.extent(paths, function(d){return d.properties.elevation;}));
+
+            // var paths = [];
+            // for (var pathType in scope.data) {
+            //   paths.push(scope.data[pathType].resampledPath.features);
+            // }
+
+            // x.domain([d3.min(paths, function(path){ return d3.min(path, function(d){
+            //   return d.properties.distance;
+            // })}), d3.max(paths, function(path){ return d3.max(path, function(d){
+            //   return d.properties.distance;
+            // })})])
+
+            // y.domain([d3.min(paths, function(path){ return d3.min(path, function(d){
+            //   return d.properties.elevation;
+            // })}), d3.max(paths, function(path){ return d3.max(path, function(d){
+            //   return d.properties.elevation;
+            // })})])
+
+            svg.append("g")
+              .attr("class", "x axis")
+              .attr("transform", "translate(0," + height + ")")
+              .call(xAxis)
+              .append("text")
+              .attr("x", width)
+              .attr("dx", ".71em")
+              .style("text-anchor", "end")
+              .text("Distance / miles");
+
+            svg.append("g")
+              .attr("class", "y axis")
+              .call(yAxis)
+              .append("text")
+              .attr("transform", "rotate(-90)")
+              .attr("y", 6)
+              .attr("dy", ".71em")
+              .style("text-anchor", "end")
+              .text("Elevation / meters");
+
+            //////////////////////////
+            if (scope.data.minElevPath) {
               svg.append("path")
-                .datum(scope.data)
-                .attr("class", "line")
+                .datum(scope.data.minElevPath.resampledPath.features)
+                .attr("class", "line min_elevation_path")
                 .attr("d", line);
+            }
+            if (scope.data.shortestPath) {
+              svg.append("path")
+                .datum(scope.data.shortestPath.resampledPath.features)
+                .attr("class", "line shortest_path")
+                .attr("d", line);
+            }
+            if (scope.data.minHiking) {
+              svg.append("path")
+                .datum(scope.data.minHiking.resampledPath.features)
+                .attr("class", "line fastest_walking")
+                .attr("d", line);
+            }
+            if (scope.data.minBiking) {
+              svg.append("path")
+                .datum(scope.data.minBiking.resampledPath.features)
+                .attr("class", "line fastest_biking")
+                .attr("d", line);
+            }            
             // });
           });
         }

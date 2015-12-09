@@ -17,12 +17,24 @@
   shape-rendering: crispEdges;
 }
 
-.x.axis path {
-  display: none;
-}
-
 .line {
   fill: none;
   stroke: steelblue;
   stroke-width: 1.5px;
+}
+
+.shortest_path {
+  stroke: $shortest_path
+}
+
+.min_elevation_path {
+  stroke: $min_elevation_path
+}
+
+.fastest_biking {
+  stroke: $fastest_biking
+}
+
+.fastest_walking {
+  stroke: $fastest_walking
 }

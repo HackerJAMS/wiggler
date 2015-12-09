@@ -99,51 +99,39 @@
         prefs.minBikingChecked = vm.minBikingChecked;
         prefs.minHikingChecked = vm.minHikingChecked;
         RouteService.routePrefs = prefs;
+        RouteService.resampledRoutes = {};
 
-      RouteService.data = {};
-      RouteService.data.minElevPath = [[1,3],
-                                       [2,6],
-                                       [3,2],
-                                       [4,7],
-                                       [5,5]];
+        RouteService.postRouteRequest(start, end, prefs)
+          .then(function successCb(res) {
+            res.start = start;
+            res.end = end;
+            RouteService.routeData = res;
+       // $scope.$watch(function() {return RouteService.routeData}, function(newData, oldData) {
 
-      RouteService.data.shortestPath = {};
-      RouteService.data.shortestPath.distance = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-      RouteService.data.shortestPath.elevation = [1, 3, 2, 7, 5, 6, 2, 3, 8, 9];  
+       //    if (newData !== oldData) {
+            // console.log('newData',newData,'oldData',oldData);
+            RouteService.cleanMap(polyline !== "undefined", RouteService.map);
+            RouteService.addStartEndMarkers(start, end);
+            // turfLines store the returned routes and are added to featureLayer
+            var turfLines = {};
+            turfLines.type = 'FeatureCollection';
+            turfLines.features = [];
+            for (var pathType in RouteService.routeData.data) {
+              var coords = RouteService.routeData.data[pathType][0];
+              var elevation = RouteService.routeData.data[pathType][1];
+              plotRoute(coords, elevation, pathType, turfLines);
+            }
+            // add turfLines to featureLayer and fit map to the bounds
+            RouteService.featureLayer = L.mapbox.featureLayer(turfLines);
+            RouteService.map.fitBounds(RouteService.featureLayer.getBounds());
+            RouteService.addLegend(RouteService.routePrefs);        
+        //   }
 
+        // });
 
-       //  RouteService.postRouteRequest(start, end, prefs)
-       //    .then(function successCb(res) {
-       //      res.start = start;
-       //      res.end = end;
-       //      RouteService.routeData = res;
-
-       // // $scope.$watch(function() {return RouteService.routeData}, function(newData, oldData) {
-
-       // //    if (newData !== oldData) {
-       //      // console.log('newData',newData,'oldData',oldData);
-       //      RouteService.cleanMap(polyline !== "undefined", RouteService.map);
-       //      RouteService.addStartEndMarkers(start, end);
-       //      // turfLines store the returned routes and are added to featureLayer
-       //      var turfLines = {};
-       //      turfLines.type = 'FeatureCollection';
-       //      turfLines.features = [];
-       //      for (var pathType in RouteService.routeData.data) {
-       //        var coords = RouteService.routeData.data[pathType][0];
-       //        var elevation = RouteService.routeData.data[pathType][1];
-       //        plotRoute(coords, elevation, pathType, turfLines);
-       //      }
-       //      // add turfLines to featureLayer and fit map to the bounds
-       //      RouteService.featureLayer = L.mapbox.featureLayer(turfLines);
-       //      RouteService.map.fitBounds(RouteService.featureLayer.getBounds());
-       //      RouteService.addLegend(RouteService.routePrefs);        
-       //  //   }
-
-       //  // });
-
-       //    }, function errorCb(res) {
-       //      console.log("error posting route request", res.status);
-       //    });
+          }, function errorCb(res) {
+            console.log("error posting route request", res.status);
+          });
       };
 
       // plot 2D routes and 3D markers on the map
@@ -159,7 +147,7 @@
 
         // resample turfline for 3d point display
         var resampledPath = RouteService.getResampledPath(RouteService.turfLine, elevationCollection);
-        RouteService[pathType] = {
+        RouteService.resampledRoutes[pathType] = {
           'turfLine': RouteService.turfLine,
           'resampledPath': resampledPath
         };
