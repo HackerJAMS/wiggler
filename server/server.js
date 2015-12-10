@@ -7,6 +7,7 @@ require('dotenv').config({path: __dirname + '/../.env'});
 var express = require('express');
 var bodyParser = require('body-parser');
 var route = require('./route/route.js');
+var loop = require('./route/loopRoute.js')
 var db = require('./db/db.js');
 var db_seq = require('./db/db_sequelize');
 
@@ -52,6 +53,10 @@ app.post('/elevationquery', function(req,res){
   // console.log('in the server-------->', req.body.coordinates);
   resample(req, res);
 })
+
+app.post('/loop', function (req, res){
+  loop(req, res);
+});
 
 var port = process.env.PORT || 3000;
 app.listen(port);

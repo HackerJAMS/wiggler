@@ -1,5 +1,4 @@
 <div id="route-sidebar" ng-controller="RouteInputController as routeCtrl">
-
   <div id="route-input-container" layout="row" layout-wrap>
     <div id="form-container" flex="100">
       <div class="layout-row flex">
@@ -33,11 +32,32 @@
             <ng-md-icon class="switch-icon-mobile" icon="directions_walk" size="56"></ng-md-icon>
           </md-switch>
         </div>
-        <div id="route-submit">
-          <md-button id="submit-btn" class="md-raised md-primary" aria-label="get route" ng-click="routeCtrl.submitRoute(); routeCtrl.closeSideNavPanel()">Get Route</md-button>
+        <div class="layout-row flex">
+          <div id="route-submit">
+            <md-button id="submit-btn" class="md-raised md-primary" aria-label="get route" ng-click="routeCtrl.submitRoute(); routeCtrl.closeSideNavPanel()">Get Route</md-button>
+          </div>
+        </div>
+        <md-divider></md-divider>
+        <div class="loop-route-container" flex="100">
+          <md-tab-body>
+            <md-tabs>
+              <md-tab ui-sref="main.route-input" label="Running Loop"></md-tab>
+            </md-tabs>
+          </md-tab-body>
+          <md-autocomplete id="loop-form-start" class="auto-complete" flex="90" md-floating-label="Start" md-selected-item="routeCtrl.loopStart" md-search-text="routeCtrl.loopSearchStart" md-items="item in routeCtrl.autocompleteQuery(routeCtrl.loopSearchStart)" md-item-text="item.place_name" placeholder="Start">
+            <span md-highlight-text="routeCtrl.loopSearchStart">{{item.place_name}}</span>
+          </md-autocomplete>
+          <md-input-container>
+            <label>Distance (miles)</label>
+            <input name="loopDistance" ng-model="routeCtrl.loopDistance">
+          </md-input-container>
+          <div class="layout-row flex">
+            <div id="route-submit">
+              <md-button id="submit-btn" class="md-raised md-primary" aria-label="get loop route" ng-click="routeCtrl.submitLoopRoute(); routeCtrl.closeSideNavPanel()">Get Loop</md-button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
-
 </div>

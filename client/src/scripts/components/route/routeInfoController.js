@@ -7,20 +7,16 @@
 
 
       // check if route has been submitted before calculating distance
-      if (RouteService.turfLine) {
+      if (RouteService.turfLine && RouteService.selectedStart) {
         // vm.shortestDistance = turf.lineDistance(RouteService.resampledRoutes.shortestPath.turfLine).toFixed(2);
         // vm.minElevationDistance = turf.lineDistance(RouteService.resampledRoutes.minElevPath.turfLine).toFixed(2);
+        
         vm.placeNameStart = RouteService.selectedStart.place_name;
         vm.placeNameEnd = RouteService.selectedEnd.place_name;
       }
 
-      // RouteService.resampleRoutes.minElevPath.resampledPath.features = [{properties: {distance: dist, elevation: elev}, {}, ...]
-
       $scope.data = RouteService.resampledRoutes;
           
-      // if (RouteService['minElevPath'].resampledPath) {
-      //   $scope.$broadcast('init2DGraph', RouteService['minElevPath'].resampledPath);
-      // }
 
       vm.displayDirections = function(pathType) {
         RouteService.getDirections(RouteService.getResampledPath(RouteService.turfLine, [], 50).features.map(function(point) {
@@ -40,7 +36,7 @@
 
       }
 
-      vm.displayDirections("minElevPath");
+      vm.displayDirections("loop_path");
 
       vm.createUrl = function() {
         var start = RouteService.selectedStart.center;

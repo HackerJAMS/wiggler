@@ -13,6 +13,7 @@ $fastest_walking: #D9A800;
 @import 'markers3d';
 @import 'mapControlsLegend';
 @import 'graph2d';
+
 body {
   background-color: white;
   width: 100%;
@@ -56,11 +57,7 @@ md-tabs md-tabs-wrapper {
   width: 3.5rem;
   height: 2rem;
 }
-#submit-btn {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-}
+
 .switch-icon {
   display: block;
 }
