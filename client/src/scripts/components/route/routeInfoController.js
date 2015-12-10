@@ -2,17 +2,25 @@
 (function() {
   'use strict';
   angular.module('app.routeInfo', [])
-    .controller('RouteInfoController', ['RouteService', function(RouteService) {
+    .controller('RouteInfoController', ['$scope','$location','RouteService', function($scope, $location, RouteService) {
       var vm = this;
 
 
       // check if route has been submitted before calculating distance
       if (RouteService.turfLine) {
-        vm.shortestDistance = turf.lineDistance(RouteService.shortestPath.turfLine).toFixed(2);
-        vm.minElevationDistance = turf.lineDistance(RouteService.minElevPath.turfLine).toFixed(2);
-        vm.placeNameStart = RouteService.placeNameStart;
-        vm.placeNameEnd = RouteService.placeNameEnd;
+        // vm.shortestDistance = turf.lineDistance(RouteService.resampledRoutes.shortestPath.turfLine).toFixed(2);
+        // vm.minElevationDistance = turf.lineDistance(RouteService.resampledRoutes.minElevPath.turfLine).toFixed(2);
+        vm.placeNameStart = RouteService.selectedStart.place_name;
+        vm.placeNameEnd = RouteService.selectedEnd.place_name;
       }
+
+      // RouteService.resampleRoutes.minElevPath.resampledPath.features = [{properties: {distance: dist, elevation: elev}, {}, ...]
+
+      $scope.data = RouteService.resampledRoutes;
+          
+      // if (RouteService['minElevPath'].resampledPath) {
+      //   $scope.$broadcast('init2DGraph', RouteService['minElevPath'].resampledPath);
+      // }
 
       vm.displayDirections = function(pathType) {
         RouteService.getDirections(RouteService.getResampledPath(RouteService.turfLine, [], 50).features.map(function(point) {
@@ -33,6 +41,20 @@
       }
 
       vm.displayDirections("minElevPath");
+
+      vm.createUrl = function() {
+        var start = RouteService.selectedStart.center;
+        var end = RouteService.selectedEnd.center;
+        var prefs = RouteService.routePrefs;
+
+        var link = "?slon=" + start[0] + "&slat=" + start[1] + "&elon=" + end[0] + "&elat=" + end[1];
+        for (var pathType in prefs) {
+          link += "&" + pathType + "=" + prefs[pathType];
+        }
+        link = $location.host() + ":" + $location.port() + '/#home/new' + link;
+        vm.url = link;
+        console.log('link', link);
+      }
 
     }])
 })();

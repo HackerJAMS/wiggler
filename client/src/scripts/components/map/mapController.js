@@ -2,9 +2,10 @@
 (function() {
   'use strict';
   angular.module('app.map', [])
-    .controller('MapController', ['$location', 'RouteService', function($location, RouteService, usSpinnerService) {
+    .controller('MapController', ['$location', 'RouteService', 'usSpinnerService', '$mdSidenav', function($location, RouteService, usSpinnerService, $mdSidenav) {
+
       var vm = this;
-      
+
       // functions for 3d map rotation
       vm.angle = 0;
       vm.xdrag = 0;
@@ -63,13 +64,13 @@
         mapEl.attr('style', 'transition:all 0.25s');
         elevMarker.attr('style', '');
         // path.css('stroke-dashoffset', 0)
-
         vm.tiltCheck = false;
         mapRot.removeClass("tilted");
         RouteService.map.dragging.enable();
         vm.angle = 0;
-        RouteService.map.fitBounds(RouteService.featureLayer.getBounds());
-
+        if (RouteService.featureLayer !== undefined) {
+          RouteService.map.fitBounds(RouteService.featureLayer.getBounds());
+        }
       };
     }])
 })();

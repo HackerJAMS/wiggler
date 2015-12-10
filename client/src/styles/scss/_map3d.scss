@@ -2,7 +2,7 @@
   margin: 0;
   padding: 0;
   position: relative;
-  height: 600px;
+  height: 700px;
   -moz-perspective: 1200px;
   -moz-transform: translate3d(0, 0, 0);
   -webkit-perspective: 1200px;
@@ -61,5 +61,11 @@
 .leaflet-popup-pane {
   -moz-transform: translateZ(10px);
   -webkit-transform: translateZ(10px);
+}
+
+@media only screen and (max-device-width: 480px){
+  .map-container {
+    height: 1600px;
+  }
 }
 

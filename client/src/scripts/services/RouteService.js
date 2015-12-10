@@ -10,10 +10,13 @@
       route.turfLine;
       route.legendData;
       route.routeData = []; // raw route data from server
+      route.resampledRoutes = {}; // processed resampled routes
+      route.selectedStart;
+      route.selectedEnd;
       route.currentPosition;
       route.routePrefs;
       route.featureLayer;
-
+      var accessToken = 'pk.eyJ1IjoiMTI3NnN0ZWxsYSIsImEiOiJjaWg4ZGEwZmEwdGNkdjBraXl1czIzNnFjIn0.RXXfMNV-gtrQyrRzrP2yvQ';
       //************* Map Services *************      
       route.initMap = function(map) {
         new L.Control.Zoom({
@@ -38,6 +41,8 @@
         // clear legend
         route.map.legendControl.removeLegend(route.legendData);
         route.legendData = "";
+        // clear user-placed start, end markers data
+        route.markers =[];
       };
 
       //************* Route Services *************   
@@ -51,8 +56,8 @@
 
         //solarized colors
         var routeColors = {
-          "Minimum elevation change": '#2176C7',
-          "Shortest": '#C61C6F',
+          "Shortest": '#2176C7',
+          "Minimum elevation change": '#C61C6F',
           "Fastest biking": '#BD3613',
           "Fastest walking": '#D9A800'
         };
@@ -99,12 +104,18 @@
       }
 
       // convert user-entered addresses to coordinates through mapbox query
-      route.geocoding = function(address) {
-        var accessToken = 'pk.eyJ1IjoiMTI3NnN0ZWxsYSIsImEiOiJjaWg4ZGEwZmEwdGNkdjBraXl1czIzNnFjIn0.RXXfMNV-gtrQyrRzrP2yvQ';
+      route.reverseGeocoding = function(address) {
         var query = address.replace(/\s+/g, '+');
         return $http({
           method: 'GET',
-          url: 'https://api.mapbox.com/geocoding/v5/mapbox.places/' + query + '.json?proximity=-122.446,37.773&access_token=' + accessToken
+          url: 'https://api.mapbox.com/geocoding/v5/mapbox.places/' + query + '.json?access_token=' + accessToken
+        })
+      }
+
+      route.geocoding = function(lon, lat) {
+        return $http({
+          method: 'GET',
+          url: 'https://api.mapbox.com/geocoding/v5/mapbox.places/' + lon + "," + lat + '.json?proximity=-122.446,37.773&access_token=' + accessToken
         })
       }
 
@@ -125,8 +136,8 @@
           method: 'POST',
           url: '/loop',
           data : {
-            // start: start,
-            // distance: distance
+            start: start,
+            distance: distance
           }
         })
       };
@@ -172,14 +183,12 @@
           if (elevationCollection.features !== undefined) {
             var nearest = turf.nearest(point, elevationCollection);
             collection[i].properties.elevation = nearest.properties.elevation;
+            collection[i].properties.distance = distance;
           }
-          // dist_jia.push(distance);
-          // elev_jia.push(nearest.properties.elevation);
           // update distance
           distance = distance + interval;
         }
-        // console.log('dist_jia',dist_jia);
-        // console.log('elev_jia',elev_jia);
+
         return turf.featurecollection(collection);
       }
 
@@ -195,15 +204,6 @@
         return turf.featurecollection(collection);
       }
 
-      // route.drawRoute = function(path) {
-      //   var polyline = L.polyline(path, {
-      //     color: "red",
-      //     className: "path_2d"
-      //   }).addTo(route.map);
-      //   // console.log("polyline bounds", polyline.getBounds());
-      //   route.map.fitBounds(polyline.getBounds());
-      //   // console.log("map bounds after fit", route.map.getBounds())
-      // }
 
 
       route.getDirections = function(coords) {
@@ -248,6 +248,7 @@
           console.log("error getting directions", res)
         })
       }
+
       route.addStartEndMarkers = function(start, end) {
         var locationsGeojson = [];
         [start, end].forEach(function(point, i) {

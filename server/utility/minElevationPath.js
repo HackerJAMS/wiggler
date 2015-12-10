@@ -19,7 +19,7 @@ module.exports = function(start, end, callback) {
 
   db.query(queryString, function(err, result) {
     if(err) {
-      console.log("err when query table ways...", err);
+      console.log("err when query table ways for the flattest route...", err);
     }
     var coordinates = process(result);
     var path_data;

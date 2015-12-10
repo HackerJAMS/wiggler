@@ -5,8 +5,9 @@ var db = require('../db/db.js');
 var elev = require('../utility/elevationData');
 
 module.exports = function(req, res) {
-  var start = [-122.460222, 37.771393 ] || req.body.start;
-  var distance = 4 || req.body.distance;
+  console.log("req.body passed to loop route", req.body);
+  var start = req.body.start.center || [-122.460222, 37.771393 ];
+  var distance = req.body.distance || 4;
   if (start && distance) {
     findOutNodes(start, distance)
       .then(function(outNodes) {
@@ -39,7 +40,7 @@ var backPath = function(out_path) {
   // console.log("out path info passed to back path", out_path.path_info);
   // var query = "select seq, id1 as node,id2 as edge, cost, b.source, b.target, st_astext(b.the_geom) from pgr_dijkstra('SELECT gid AS id, a.source, target, eleCost * (1/(dist.distance+.000001)) AS cost, dist.* FROM ways AS a, (select source, ST_Distance(the_geom, ST_GeomFromText(''" + out_path.geom + "'', 4326)) as distance from ways) AS dist WHERE dist.source = a.source'," + out_path.path_info.path_info.target + "," + out_path.path_info.path_info.source + ", false, false) a LEFT JOIN ways b ON (a.id2 = b.gid) ORDER BY seq;"
 
-  var query = "select seq, id1 as node,id2 as edge, cost, b.source, b.target, st_astext(b.the_geom) from pgr_dijkstra('SELECT gid AS id, a.source, target, bike_cost * (1/(dist.distance+.0001)) AS cost, r_bike_cost * (1/(dist.distance+.0001)) as reverse_cost,dist.* FROM ways AS a, (select source, ST_Distance(the_geom, ST_GeomFromText(''" + out_path.geom + "'', 4326)) as distance from ways) AS dist WHERE dist.source = a.source'," + out_path.path_info.path_info.target + "," + out_path.path_info.path_info.source + ", true, true) a LEFT JOIN ways b ON (a.id2 = b.gid) ORDER BY seq;"
+  var query = "select seq, id1 as node,id2 as edge, cost, b.source, b.target, st_astext(b.the_geom) from pgr_dijkstra('SELECT gid AS id, a.source, target, bike_cost * (1/(dist.distance+.01)) AS cost, r_bike_cost * (1/(dist.distance+.01)) as reverse_cost,dist.* FROM ways AS a, (select source, ST_Distance(the_geom, ST_GeomFromText(''" + out_path.geom + "'', 4326)) as distance from ways) AS dist WHERE dist.source = a.source'," + out_path.path_info.path_info.target + "," + out_path.path_info.path_info.source + ", true, true) a LEFT JOIN ways b ON (a.id2 = b.gid) ORDER BY seq;"
   db.query(query, function(err, result) {
     if (err) {
       console.log("error getting back path", err);
