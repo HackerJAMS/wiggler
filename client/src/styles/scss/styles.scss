@@ -297,7 +297,7 @@ md-tabs md-tabs-wrapper {
 //   font-size: 48px;
 // }
 
-// // #route-sidebar {
+// #route-sidebar {
 //   md-divider {
 //     margin: 10px 0px;
 //   }
@@ -306,3 +306,82 @@ md-tabs md-tabs-wrapper {
 //     margin-top: 20px;
 //   }
 // }
+
+// about us page
+.header .about {
+  position: absolute;
+  top: 25px;
+  right: 30px;
+  font-size: 20px;
+}
+.photos {
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+
+  img {
+    width: 200px;
+    height: 200px;
+    display: block;
+    margin-top: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 50%;
+    -webkit-animation: bounce 800ms ease-out;
+    animation: bounce 800ms ease-out;  
+  }
+  p.name {
+    font-weight: bold;
+  }
+  p {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    text-align: center;
+  }
+
+}
+
+.info {
+  margin-top: 150px;
+  p {
+    bottom: 10%;
+    margin-top: 0px;
+    margin-bottom: 0px; 
+    font-size: 16px;
+    text-align: center;
+  }  
+}
+@-webkit-keyframes bounce {
+  0% {
+  -webkit-transform:translateY(-100%);
+    opacity: 0;
+  }
+  40% {
+    -webkit-transform:translateY(0%);
+  }
+  60% {
+    -webkit-transform:translateY(-30%);
+  }
+  100% {
+    -webkit-transform:translateY(0);
+    opacity: 1;
+  }
+}
+
+/* W3, Opera 12+, Firefox 16+ */
+@keyframes bounce {
+  0% {
+  -webkit-transform:translateY(-100%);
+    opacity: 0;
+  }
+  40% {
+    -webkit-transform:translateY(0%);
+  }
+  60% {
+    -webkit-transform:translateY(-30%);
+  }
+  100% {
+    -webkit-transform:translateY(0);
+    opacity: 1;
+  }
+}
