@@ -2,7 +2,7 @@
 (function() {
   'use strict';
   angular.module('app.map', [])
-    .controller('MapController', ['$location', 'RouteService', 'usSpinnerService', '$mdSidenav', function($location, RouteService, usSpinnerService, $mdSidenav) {
+    .controller('MapController', ['$location', 'RouteService', 'usSpinnerService','$mdSidenav', '$swipe', function($location, RouteService, usSpinnerService, $mdSidenav, $swipe) {
 
       var vm = this;
 
@@ -18,7 +18,27 @@
 
       var mapRot = angular.element(document.querySelector('#maprotor'));
       var mapEl = angular.element(document.querySelector('#map'));
+      var elevMarker = angular.element(document.querySelectorAll('.elevmarker'));
+      
+      vm.tiltCheck = false;
 
+      //map rotation touch gesture
+      $swipe.bind(mapRot, {
+        start: function(e){
+          vm.xpos = e.x;
+
+        },
+        move: function(e){
+          vm.xdrag = ((vm.xpos - e.x)/4 ) % 360;
+          mapEl.attr('style', '-webkit-transform:rotateZ(' + (vm.angle + vm.xdrag) % 360 + 'deg)');
+          elevMarker.attr('style', '-webkit-transform:rotateX(90deg) rotateY(' + (vm.angle + vm.xdrag) * (-1) % 360 + 'deg)');
+        },
+        end: function(e){
+        },
+        cancel: function(){
+        }
+      });
+   
 
       vm.mouseDown = function(e) {
         if (RouteService.tiltCheck) {
@@ -30,7 +50,7 @@
       vm.mouseMove = function(e) {
         if (RouteService.tiltCheck) {
           if (vm.isDown) {
-            var elevMarker = angular.element(document.querySelectorAll('.elevmarker'));
+            elevMarker = angular.element(document.querySelectorAll('.elevmarker'));
 
             vm.xdrag = (vm.xpos - e.pageX) / 4;
             mapEl.attr('style', '-webkit-transform:rotateZ(' + (vm.angle + vm.xdrag) % 360 + 'deg)');
