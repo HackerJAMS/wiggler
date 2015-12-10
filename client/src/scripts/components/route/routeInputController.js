@@ -10,17 +10,31 @@
       var polyline;   
 
       $rootScope.$on("markerUpdate", function(event, args) {
-        vm.selectedStart = {};
-        vm.selectedEnd = {};
-
         var tempCoords = args[0].getLatLng();
-        vm.selectedStart.center = [tempCoords.lng, tempCoords.lat];
-        vm.selectedStart.place_name = 'Marker Start Position';
-        
-        if (args[1]) {
+
+        if (args.length === 1) {
+          RouteService.geocoding(tempCoords.lng, tempCoords.lat)  
+            .then(function successCb(res) {
+              vm.selectedStart = {};
+              vm.selectedStart.center = [tempCoords.lng, tempCoords.lat];
+              vm.selectedStart = res.data.features[0];
+              RouteService.selectedStart = vm.selectedStart;
+            }, function errorCb(res) {
+              console.error("failed to rectrieve address from mapbox...", res);
+            });
+        }
+
+        if (args.length === 2) {
           tempCoords = args[1].getLatLng();
-          vm.selectedEnd.center = [tempCoords.lng, tempCoords.lat];
-          vm.selectedEnd.place_name = 'Marker End Position';
+          RouteService.geocoding(tempCoords.lng, tempCoords.lat)  
+            .then(function successCb(res) {
+              vm.selectedEnd = {};
+              vm.selectedEnd.center = [tempCoords.lng, tempCoords.lat];
+              vm.selectedEnd = res.data.features[0];
+              RouteService.selectedEnd = vm.selectedEnd;
+            }, function errorCb(res) {
+              console.error("failed to rectrieve address from mapbox...", res);
+            });
         }
       })
 
