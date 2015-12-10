@@ -2,7 +2,7 @@
 (function() {
   'use strict';
   angular.module('app.routeInfo', [])
-    .controller('RouteInfoController', ['$scope','$location','RouteService', function($scope, $location, RouteService) {
+    .controller('RouteInfoController', ['$scope', '$location', 'RouteService', function($scope, $location, RouteService) {
       var vm = this;
 
 
@@ -10,16 +10,32 @@
       if (RouteService.turfLine && RouteService.selectedStart) {
         // vm.shortestDistance = turf.lineDistance(RouteService.resampledRoutes.shortestPath.turfLine).toFixed(2);
         // vm.minElevationDistance = turf.lineDistance(RouteService.resampledRoutes.minElevPath.turfLine).toFixed(2);
-        
+
         vm.placeNameStart = RouteService.selectedStart.place_name;
         vm.placeNameEnd = RouteService.selectedEnd.place_name;
       }
 
       $scope.data = RouteService.resampledRoutes;
-          
+      var pathTypesRaw = Object.keys(RouteService.resampledRoutes);
+      var path_strings = {
+        "shortestPath": "Shortest path",
+        "minElevPath": "Flattest path",
+        "minBiking": "Fastest biking path",
+        "minHiking": "Fastest walking path",
+        "loop_path": "Running Loop"
+      };
 
-      vm.displayDirections = function(pathType) {
-        RouteService.getDirections(RouteService.getResampledPath(RouteService.turfLine, [], 50).features.map(function(point) {
+      vm.pathTypes = []
+      pathTypesRaw.forEach(function(path) {
+        vm.pathTypes.push({
+          "string": path_strings[path],
+          "pathname": path
+        });
+      })
+
+      vm.displayDirections = function() {
+        var path = JSON.parse(vm.directions_path);
+        RouteService.getDirections(RouteService.getResampledPath(RouteService.resampledRoutes[path.pathname].turfLine, [], 50).features.map(function(point) {
             return point.geometry.coordinates
           }))
           .then(function(directions) {
@@ -29,14 +45,16 @@
             steps.push("You have arrived at your destination.");
 
             vm.directions = []
-            steps.forEach(function (step, i){
-              vm.directions[i] = {"num":(i+1)+".","step": step}
+            steps.forEach(function(step, i) {
+              vm.directions[i] = {
+                "num": (i + 1) + ".",
+                "step": step
+              }
             })
           })
 
       }
 
-      vm.displayDirections("loop_path");
 
       vm.createUrl = function() {
         var start = RouteService.selectedStart.center;
@@ -54,4 +72,3 @@
 
     }])
 })();
-
