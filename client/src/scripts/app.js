@@ -16,10 +16,13 @@
     'app.routeInfo',
     'app.elevationGraph',
     'app.main',
+
+    'ngTouch',
     'angularSpinner',
     'ngLoadingSpinner',
     'ngMdIcons',
     'd3'
+
   ]);
 
 
