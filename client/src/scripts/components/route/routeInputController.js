@@ -148,11 +148,7 @@
       distance = vm.loopDistance || 3;
       RouteService.postLoopRequest(start, distance)
         .then(function successCb(res) {
-          if (RouteService.routeData.data !== undefined){
-            RouteService.routeData.data["loop_path"] = res.data["loop_path"];
-          } else {
-            RouteService.routeData = res;
-          }
+          RouteService.routeData = res;
           RouteService.cleanMap(polyline !== "undefined", RouteService.map);
           var turfLines = {};
           turfLines.type = 'FeatureCollection';
