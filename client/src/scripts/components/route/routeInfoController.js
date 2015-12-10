@@ -2,41 +2,64 @@
 (function() {
   'use strict';
   angular.module('app.routeInfo', [])
-    .controller('RouteInfoController', ['$scope','$location','RouteService', function($scope, $location, RouteService) {
+    .controller('RouteInfoController', ['$scope', '$location', 'RouteService', function($scope, $location, RouteService) {
       var vm = this;
 
 
       // check if route has been submitted before calculating distance
       if (RouteService.turfLine && RouteService.selectedStart) {
-        // vm.shortestDistance = turf.lineDistance(RouteService.resampledRoutes.shortestPath.turfLine).toFixed(2);
-        // vm.minElevationDistance = turf.lineDistance(RouteService.resampledRoutes.minElevPath.turfLine).toFixed(2);
-        
+
         vm.placeNameStart = RouteService.selectedStart.place_name;
         vm.placeNameEnd = RouteService.selectedEnd.place_name;
       }
 
+      if (RouteService.resampledRoutes["loop_path"]){
+        vm.loopStart = RouteService.loopStart.place_name;
+        vm.loopDistance = Math.round(RouteService.loopDistance *100)/100 + " miles";
+      }
       $scope.data = RouteService.resampledRoutes;
-          
 
-      vm.displayDirections = function(pathType) {
-        RouteService.getDirections(RouteService.getResampledPath(RouteService.turfLine, [], 50).features.map(function(point) {
+      var pathTypesRaw = Object.keys(RouteService.resampledRoutes);
+      var path_strings = {
+        "shortestPath": "Shortest path",
+        "minElevPath": "Flattest path",
+        "minBiking": "Fastest biking path",
+        "minHiking": "Fastest walking path",
+        "loop_path": "Running Loop"
+      };
+
+      vm.pathTypes = []
+      pathTypesRaw.forEach(function(path) {
+        vm.pathTypes.push({
+          "string": path_strings[path],
+          "pathname": path
+        });
+      })
+
+      vm.displayDirections = function() {
+        var path = JSON.parse(vm.directions_path);
+        RouteService.getDirections(RouteService.getResampledPath(RouteService.resampledRoutes[path.pathname].turfLine, [], 50).features.map(function(point) {
             return point.geometry.coordinates
           }))
           .then(function(directions) {
             var steps = directions.filter(function(step) {
-              return step.search("Reach waypoint") === -1 && step.search("You have arrived at your destination") === -1;
+              return step.maneuver.search("Reach waypoint") === -1 && step.maneuver.search("You have arrived at your destination") === -1;
             });
-            steps.push("You have arrived at your destination.");
-
+            steps.push({maneuver: "You have arrived at your destination.", distance:5});
             vm.directions = []
-            steps.forEach(function (step, i){
-              vm.directions[i] = {"num":(i+1)+".","step": step}
+            steps.forEach(function(step, i) {
+              if (step.maneuver) {
+                vm.directions[i] = {
+                  "num": (i + 1) + ".",
+                  "step": step.maneuver,
+                  "distance": Math.round(step.distance * 3.28084) + "ft"
+                }
+              }
             })
           })
 
       }
 
-      vm.displayDirections("loop_path");
 
       vm.createUrl = function() {
         var start = RouteService.selectedStart.center;
@@ -54,4 +77,3 @@
 
     }])
 })();
-

@@ -144,15 +144,13 @@
         place_name: '215 Church St, San Francisco, California 94114, United States',
         center: [-122.428561, 37.767191]
       };
+      RouteService.resampledRoutes = {};
+      RouteService.loopStart = vm.loopStart;
       // approx loop distance in miles
       distance = vm.loopDistance || 3;
       RouteService.postLoopRequest(start, distance)
         .then(function successCb(res) {
-          if (RouteService.routeData.data !== undefined){
-            RouteService.routeData.data["loop_path"] = res.data["loop_path"];
-          } else {
-            RouteService.routeData = res;
-          }
+          RouteService.routeData = res;
           RouteService.cleanMap(polyline !== "undefined", RouteService.map);
           var turfLines = {};
           turfLines.type = 'FeatureCollection';
@@ -161,7 +159,7 @@
           var elevation = res.data["loop_path"][1];
           plotRoute(coords, elevation, "loop_path", turfLines);
           RouteService.featureLayer = L.mapbox.featureLayer(turfLines);
-          console.log("loop distance", turf.lineDistance(RouteService.turfLine));
+          RouteService.loopDistance = turf.lineDistance(RouteService.turfLine, 'miles');
           RouteService.map.fitBounds(RouteService.featureLayer.getBounds());
         }, function errorCb(res) {
           console.log("error", res)
@@ -200,7 +198,8 @@
 
       L.geoJson(resampledPath, {
         pointToLayer: function(feature, latlng) {
-          var roundedElev = feature.properties.elevation.toFixed(2);
+          //convert to feet
+          var roundedElev = feature.properties.elevation.toFixed(2)*3.28084;
           var cssHeight = roundedElev;
           var myIcon = L.divIcon({
             className: 'elevations',

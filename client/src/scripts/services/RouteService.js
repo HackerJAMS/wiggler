@@ -8,7 +8,7 @@
       // data shared by controllers
       // route.map;
       // route.turfLine;
-      route.legendData;
+      // route.legendData;
       route.routeData = []; // raw route data from server
       route.resampledRoutes = {}; // processed resampled routes
       route.tiltCheck = false; // initialize the map in 2d
@@ -233,11 +233,11 @@
             }
           }).then(function successCb(res2) {
             var directions = res.data.routes[0].steps.map(function(step) {
-              return step.maneuver.instruction;
+              return {maneuver: step.maneuver.instruction, distance: step.distance};
             });
 
             res2.data.routes[0].steps.forEach(function(step) {
-              directions.push(step.maneuver.instruction)
+              directions.push({maneuver: step.maneuver.instruction, distance: step.distance})
             })
 
             return directions;
