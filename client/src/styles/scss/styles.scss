@@ -212,19 +212,12 @@ md-tabs md-tabs-wrapper {
    .md-item-text {
     // font-size: 36px
    }
-   // .get-directions-btn {
-   //  display: block;
-   //  margin-left: 60px;
-   //  // right: 0;
-   //  // bottom: 0;
-   // }
+ 
    #vertical-container {
     height: 900px;
     width: 100%;
    }
-   // md-content {
-   //  font-size: 18px;
-   // }
+   
    .repeated-item {
     height: 90px;
     font-size: 48px;
@@ -241,7 +234,17 @@ md-tabs md-tabs-wrapper {
    md-input-container.ng-scope.flex{
     font-size: 48px;
    }
+   // #route-info {
+   //  font-size: 18px;
+   // }
+   .route-detail{
+    font-size: 20px;
+   }
+   div#place-names {
+    margin-bottom: 50px;
+   }
    
+  
 }
 
 .md-virtual-repeat-container {
