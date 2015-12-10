@@ -60,7 +60,7 @@
         var routeColors = {
           "Shortest": '#2176C7',
           "Minimum elevation change": '#C61C6F',
-          "Fastest biking": '#BD3613',
+          "Fastest biking": '#2AA198',
           "Fastest walking": '#D9A800'
         };
 

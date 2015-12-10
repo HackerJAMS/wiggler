@@ -20,17 +20,20 @@
            </div>
         </md-toolbar> 
         <md-content layout-padding="">
-           <div layout-margin flex="33">
-             <md-whiteframe class="md-whiteframe-1dp" layout layout-align="top center">
-               <div class="layout-column flex">
-                 <div flex="20">
-                 <md-tab-body>
+           <div id="mobile-route-pnl" layout-margin flex="33">
+             <md-whiteframe id="mobile-whiteframe" class="md-whiteframe-1dp" layout layout-align="top center">
+               <div class="layout-col flex">
+                 <div flex="100">
+                   
                   <md-tabs>
-                   <md-tab ui-sref="main.route-input" label="New Route"></md-tab>
-                   <md-tab md-active="false" ui-sref="main.route-info" label="Route Info"></md-tab>
-                 </md-tabs>
-                 </md-tab-body>
-                 
+                    <md-tab-body>
+                     <md-tab ui-sref="main.route-input" label="New Route"></md-tab>
+                    </md-tab-body>
+                    <md-tab-body>
+                     <md-tab ui-sref="main.route-info" label="Route Info"></md-tab>
+                    </md-tab-body>
+                  </md-tabs>
+                  
                  </div>
                  <div ui-view></div>
                </div>
@@ -38,20 +41,21 @@
            </div>
         </md-content> 
     </md-sidenav>
+
 <!--     desktop version of the panel is hidden on smaller screens -->
     <div id="desktop-route-pnl" layout-margin flex="33">
-             <md-whiteframe class="md-whiteframe-1dp" layout layout-align="top center">
-               <div class="layout-column flex">
-                 <div flex="20">
-                 <md-tabs>
-                   <md-tab ui-sref="main.route-input" label="New Route"></md-tab>
-                   <md-tab ui-sref="main.route-info" label="Route Info"></md-tab>
-                 </md-tabs>
-                 </div>
-                 <div ui-view></div>
-               </div>
-             </md-whiteframe>
+         <md-whiteframe class="md-whiteframe-1dp" layout layout-align="top center">
+           <div class="layout-column flex">
+             <div flex="20">
+             <md-tabs>
+               <md-tab ui-sref="main.route-input" label="New Route"></md-tab>
+               <md-tab ui-sref="main.route-info" label="Route Info"></md-tab>
+             </md-tabs>
+             </div>
+             <div ui-view></div>
            </div>
-
+         </md-whiteframe>
+       </div>
+      
 </md-content>
 </div>
