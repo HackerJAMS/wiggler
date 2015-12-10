@@ -196,20 +196,53 @@
         path.css('stroke-dashoffset', 0)
       }, 10);
 
-      L.geoJson(resampledPath, {
-        pointToLayer: function(feature, latlng) {
-          //convert to feet
-          var roundedElev = feature.properties.elevation.toFixed(2)*3.28084;
-          var cssHeight = roundedElev;
-          var myIcon = L.divIcon({
-            className: 'elevations',
-            html: '<div class="elevmarker"><div class="markercircle bottomcap marker-' + pathType + '"></div><div class="markerline marker-' + pathType + '" style="height:' + cssHeight + 'px">' + '</div><div class="markercircle marker-' + pathType + '"></div><div class="elevfigure">' + roundedElev + ' ft.</div></div>'
+      
+      var newPoints = resampledPath.features.slice();
+      var newPointCoordinates = newPoints.map(function(n, i) {
+             return n.geometry.coordinates;
           });
-          return L.marker(latlng, {
-            icon: myIcon
-          });
-        }
-      }).addTo(RouteService.map);
+
+      RouteService.postElevationRequest(newPointCoordinates)
+      .then(function successCb(res){
+         var resampledPoints = RouteService.getElevationPath(res.data);
+         RouteService.resampledRoutes[pathType].resampledPath = resampledPoints;
+         var uniqueArr = resampledPoints.features;
+         var nonUniqueArr = resampledPath.features;
+
+           L.geoJson(resampledPoints, {
+           pointToLayer: function(feature, latlng) {
+             var roundedElev = (feature.properties.elevation*3.28084).toFixed(2);
+             var cssHeight = roundedElev/3.28084;
+             var myIcon = L.divIcon({
+               className: 'elevations',
+               html: '<div class="elevmarker"><div class="markercircle bottomcap marker-' + pathType + '"></div><div class="markerline marker-' + pathType + '" style="height:' + cssHeight + 'px">' + '</div><div class="markercircle marker-' + pathType + '"></div><div class="elevfigure">' + roundedElev + ' ft.</div></div>'
+             });
+             return L.marker(latlng, {
+               icon: myIcon
+             });
+           }
+         }).addTo(RouteService.map);
+      }, function errorCb(res){
+         console.log('error in elevation request', res.status);
+         // if there's an error with the google request, just use our original elevation values
+         L.geoJson(resampledPath, {
+           pointToLayer: function(feature, latlng) {
+             //convert to feet
+             var roundedElev = feature.properties.elevation.toFixed(2)*3.28084;
+             var cssHeight = roundedElev;
+             var myIcon = L.divIcon({
+               className: 'elevations',
+               html: '<div class="elevmarker"><div class="markercircle bottomcap marker-' + pathType + '"></div><div class="markerline marker-' + pathType + '" style="height:' + cssHeight + 'px">' + '</div><div class="markercircle marker-' + pathType + '"></div><div class="elevfigure">' + roundedElev + ' ft.</div></div>'
+             });
+             return L.marker(latlng, {
+               icon: myIcon
+             });
+           }
+         }).addTo(RouteService.map);
+      });
+
+
+
 
       //clear out currentPosition
       RouteService.currentPosition = null;

@@ -19,6 +19,7 @@
       }
       $scope.data = RouteService.resampledRoutes;
 
+
       var pathTypesRaw = Object.keys(RouteService.resampledRoutes);
       var path_strings = {
         "shortestPath": "Shortest path",

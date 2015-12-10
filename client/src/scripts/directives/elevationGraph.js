@@ -55,7 +55,6 @@
             for (var pathType in scope.data) {
               paths = paths.concat(scope.data[pathType].resampledPath.features);
             } 
-
             // //////////////////////////
             x.domain(d3.extent(paths, function(d){return d.properties.distance;}));
             y.domain([0,d3.max(paths, function(d){return d.properties.elevation;})]);
