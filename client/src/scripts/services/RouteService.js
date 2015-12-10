@@ -2,20 +2,22 @@
 (function() {
   'use strict';
   angular.module('app.routeService', [])
-    .factory('RouteService', ['$rootScope','$http', function($rootScope, $http) {
+    .factory('RouteService', ['$rootScope', '$http', function($rootScope, $http) {
       var route = {};
 
       // data shared by controllers
-      route.map;
-      route.turfLine;
+      // route.map;
+      // route.turfLine;
       route.legendData;
       route.routeData = []; // raw route data from server
       route.resampledRoutes = {}; // processed resampled routes
-      route.selectedStart;
-      route.selectedEnd;
-      route.currentPosition;
-      route.routePrefs;
-      route.featureLayer;
+      route.tiltCheck = false; // initialize the map in 2d
+      // route.selectedStart;
+      // route.selectedEnd;
+      // route.currentPosition;
+      // route.routePrefs;
+      // route.featureLayer;
+
       var accessToken = 'pk.eyJ1IjoiMTI3NnN0ZWxsYSIsImEiOiJjaWg4ZGEwZmEwdGNkdjBraXl1czIzNnFjIn0.RXXfMNV-gtrQyrRzrP2yvQ';
       //************* Map Services *************      
       route.initMap = function(map) {
@@ -42,7 +44,7 @@
         route.map.legendControl.removeLegend(route.legendData);
         route.legendData = "";
         // clear user-placed start, end markers data
-        route.markers =[];
+        route.markers = [];
       };
 
       //************* Route Services *************   
@@ -131,11 +133,11 @@
         })
       };
 
-      route.postLoopRequest= function(start, distance) {
+      route.postLoopRequest = function(start, distance) {
         return $http({
           method: 'POST',
           url: '/loop',
-          data : {
+          data: {
             start: start,
             distance: distance
           }
@@ -269,23 +271,25 @@
 
       route.markers = [];
       route.clickMarker = function(e) {
-        if (route.markers.length < 2) {
-          var latlngArr = [e.latlng["lat"].toFixed(4), e.latlng["lng"].toFixed(4)];
-          var marker = L.marker(new L.LatLng(latlngArr[0], latlngArr[1]), {
-            icon: L.mapbox.marker.icon({
-              "marker-color": "ff8888",
-              "marker-size": "small",
-              "marker-symbol": route.markers.length === 0 ? "pitch" : "embassy"
-            }),
-            draggable: true
-          });
-          marker.on("dragend", function (){
+        if (!route.tiltCheck) {
+          if (route.markers.length < 2) {
+            var latlngArr = [e.latlng["lat"].toFixed(4), e.latlng["lng"].toFixed(4)];
+            var marker = L.marker(new L.LatLng(latlngArr[0], latlngArr[1]), {
+              icon: L.mapbox.marker.icon({
+                "marker-color": "ff8888",
+                "marker-size": "small",
+                "marker-symbol": route.markers.length === 0 ? "pitch" : "embassy"
+              }),
+              draggable: true
+            });
+            marker.on("dragend", function() {
+              $rootScope.$emit("markerUpdate", route.markers);
+            })
+            marker.addTo(route.map);
+            route.markers.push(marker);
             $rootScope.$emit("markerUpdate", route.markers);
-          })
-          marker.addTo(route.map);
-          route.markers.push(marker);
-          $rootScope.$emit("markerUpdate", route.markers);
 
+          }
         }
       }
       return route;
