@@ -3,7 +3,7 @@
 
 $shortest_path: #2176C7;
 $min_elevation_path: #C61C6F;
-$fastest_biking: #BD3613;
+$fastest_biking: #2AA198;
 $fastest_walking: #D9A800;
 
 
@@ -86,6 +86,9 @@ md-tabs md-tabs-wrapper {
 #sidebar-btn { 
   display: none;
 }
+#mobile-route-pnl {
+  display: none;
+}
 
 .md-button.md-icon-button {
   margin: 10px 0 0 0;
@@ -156,20 +159,30 @@ md-tabs md-tabs-wrapper {
    #desktop-route-pnl {
      display: none;
    }
+   #mobile-route-pnl {
+    display: block;
+   }
+   #mobile-whiteframe {
+    width: 100%;
+    height: 100%;
+  }
    #toolbar {
      // font-size: 64px;
      min-height: 128px;
+     width: 100%;
 
    }
    #sidebar-icon {
      height: 64px;
      width: 64px;
      font-size: 64px;
+     margin-right: 24px;
      display: block;
    }
    #sidebar-btn { 
      display: block;
    }
+
    md-tabs-canvas {
     height: 128px;
    }
@@ -227,7 +240,7 @@ md-tabs md-tabs-wrapper {
     font-size: 48px;
    }
    #directions-title {
-    font-size: 38px;
+    font-size: 28px;
    }
    md-pagination-wrapper{
     height: 96px;
@@ -242,29 +255,53 @@ md-tabs md-tabs-wrapper {
    //  font-size: 18px;
    // }
    .route-detail{
-    font-size: 20px;
+    font-size: 18px;
    }
    div#place-names {
     margin-bottom: 50px;
    }
-   
+   .md-virtual-repeat-container {
+     margin-top: 10px;
+   }
+
+   #route-sidebar {
+     font-size: 25px;
+   }
+   #distance-placeholder {
+     font-size: 48px;
+   }
+
+   // #route-sidebar {
+     md-divider {
+       margin: 10px 0px;
+     }
+     .md-raised {
+       font-size: 12px;
+       margin-top: 20px;
+     }
+   .repeated-item {
+    font-size: 32px;
+   }
   
 }
 
-.md-virtual-repeat-container {
-  margin-top: 10px;
-}
+// .md-virtual-repeat-container {
+//   margin-top: 10px;
+// }
 
-#route-sidebar {
-  font-size: 14px;
-}
+// #route-sidebar {
+//   font-size: 25px;
+// }
+// #distance-placeholder {
+//   font-size: 48px;
+// }
 
-#route-sidebar {
-  md-divider {
-    margin: 10px 0px;
-  }
-  .md-raised {
-    font-size: 12px;
-    margin-top: 20px;
-  }
-}
+// // #route-sidebar {
+//   md-divider {
+//     margin: 10px 0px;
+//   }
+//   .md-raised {
+//     font-size: 12px;
+//     margin-top: 20px;
+//   }
+// }
