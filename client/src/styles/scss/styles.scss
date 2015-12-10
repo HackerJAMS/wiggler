@@ -115,6 +115,10 @@ md-tabs md-tabs-wrapper {
   padding-top: 10px;
 }
 
+.distance-text {
+  float: right;
+  padding-right: 10px;
+}
 //mobile responsive styling
 @media only screen and (max-device-width: 768px) {
    #app-name {

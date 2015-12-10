@@ -58,7 +58,7 @@
 
             // //////////////////////////
             x.domain(d3.extent(paths, function(d){return d.properties.distance;}));
-            y.domain(d3.extent(paths, function(d){return d.properties.elevation;}));
+            y.domain([0,d3.max(paths, function(d){return d.properties.elevation;})]);
 
             svg.append("g")
               .attr("class", "x axis")
