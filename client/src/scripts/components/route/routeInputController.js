@@ -138,6 +138,7 @@
           console.log("error posting route request", res.status);
         });
     };
+
     vm.submitLoopRoute = function(start, distance) {
       start = vm.loopStart || {
         place_name: '215 Church St, San Francisco, California 94114, United States',
@@ -147,6 +148,11 @@
       distance = vm.loopDistance || 3;
       RouteService.postLoopRequest(start, distance)
         .then(function successCb(res) {
+          if (RouteService.routeData.data !== undefined){
+            RouteService.routeData.data["loop_path"] = res.data["loop_path"];
+          } else {
+            RouteService.routeData = res;
+          }
           RouteService.cleanMap(polyline !== "undefined", RouteService.map);
           var turfLines = {};
           turfLines.type = 'FeatureCollection';
@@ -155,6 +161,7 @@
           var elevation = res.data["loop_path"][1];
           plotRoute(coords, elevation, "loop_path", turfLines);
           RouteService.featureLayer = L.mapbox.featureLayer(turfLines);
+          console.log("loop distance", turf.lineDistance(RouteService.turfLine));
           RouteService.map.fitBounds(RouteService.featureLayer.getBounds());
         }, function errorCb(res) {
           console.log("error", res)

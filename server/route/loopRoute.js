@@ -6,8 +6,8 @@ var elev = require('../utility/elevationData');
 
 module.exports = function(req, res) {
   console.log("req.body passed to loop route", req.body);
-  var start = req.body.start.center || [-122.460222, 37.771393 ];
-  var distance = req.body.distance || 4;
+  var start = req.body.start.center; //|| [-122.460222, 37.771393 ];
+  var distance = req.body.distance; //|| 4;
   if (start && distance) {
     findOutNodes(start, distance)
       .then(function(outNodes) {
@@ -153,7 +153,7 @@ var getStartNode = function(startCoord, endCoord) {
 var findOutNodes = function(start, distance) {
   var defer = Q.defer();
   var distance_in_meters = distance * 1609;
-  var queryStr = "SELECT distinct id FROM (SELECT id, class_id, st_distance(a.the_geom, poi) AS distance FROM ways_vertices_pgr a, (SELECT st_makepoint(" + start[0] + "," + start[1] + ")::geography AS poi) AS poi, ways AS b WHERE (id=b.source or id=b.target) AND class_id NOT IN (101,102,103,104,105,122)) AS d_table WHERE distance BETWEEN " + (distance_in_meters / 3) + " AND " + (distance_in_meters / 2) + "ORDER BY id";
+  var queryStr = "SELECT distinct id FROM (SELECT id, class_id, st_distance(a.the_geom, poi) AS distance FROM ways_vertices_pgr a, (SELECT st_makepoint(" + start[0] + "," + start[1] + ")::geography AS poi) AS poi, ways AS b WHERE (id=b.source or id=b.target) AND class_id NOT IN (101,102,103,104,105,122)) AS d_table WHERE distance BETWEEN " + (distance_in_meters / 4) + " AND " + (distance_in_meters / 3) + "ORDER BY id";
   db.query(queryStr, function(err, out_result) {
     if (err) console.log(err);
     var ids = []

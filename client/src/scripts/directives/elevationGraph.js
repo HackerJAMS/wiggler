@@ -10,7 +10,6 @@
         },
         link: function(scope, element, attr) {
           d3Service.d3().then(function(d3) {
-
             var margin = {
                 top: 20,
                 right: 20,
@@ -110,7 +109,14 @@
                       .attr("class", "line fastest_biking")
                       .attr("d", line); 
               drawPath(path);               
-            }   
+            }  
+            if (scope.data.loop_path) {
+              path = svg.append("path")
+                      .datum(scope.data.loop_path.resampledPath.features)
+                      .attr("class", "line loop_path")
+                      .attr("d", line); 
+              drawPath(path);               
+            } 
 
             // draw path animation
             function drawPath(path) {
