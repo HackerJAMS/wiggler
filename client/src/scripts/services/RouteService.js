@@ -53,15 +53,17 @@
           shortestPathChecked: "Shortest",
           minElevPathChecked: "Minimum elevation change",
           minBikingChecked: "Fastest biking",
-          minHikingChecked: "Fastest walking"
+          minHikingChecked: "Fastest walking",
+          loop_path: "Running loop"
         };
 
         //solarized colors
         var routeColors = {
           "Shortest": '#2176C7',
           "Minimum elevation change": '#C61C6F',
-          "Fastest biking": '#2AA198',
-          "Fastest walking": '#D9A800'
+          "Fastest biking": '#2aa198',
+          "Fastest walking": '#D9A800',
+          "Running loop": "#30a07A"
         };
 
         var routeTypes = {};
@@ -78,7 +80,7 @@
             labels.push(
               '<li><span class="swatch" style="background:' + routeTypes[r] + '"></span> ' + r + '</li>');
           }
-          return '<span>Route Types</span><ul>' + labels.join('') + '</ul>';
+          return '<span><strong>Route Types</strong></span><ul>' + labels.join('') + '</ul>';
         }
         route.legendData = getLegendHTML()
         route.map.legendControl.addLegend(route.legendData);
@@ -174,10 +176,10 @@
         // var elev_jia = [];
         var collection = [];
         var distance = 0;
-        var resamplePoints = numPoints || 100;
-        var turfDistance = turf.lineDistance(line, 'miles');
-        var interval = turfDistance / resamplePoints;
 
+        var turfDistance = turf.lineDistance(line, 'miles');
+        var resamplePoints = numPoints || Math.max((turfDistance/.015), 150);
+        var interval = turfDistance / resamplePoints;
         for (var i = 0; i < resamplePoints; i++) {
           var point = turf.along(line, distance, 'miles');
           collection.push(point);
@@ -197,11 +199,14 @@
       // format elevation and path data to use as turf collection
       route.getElevationPath = function(elevation) {
         var collection = [];
+        var distance = 0;
         elevation.forEach(function(n, i) {
           var coordArr = [n.location.lng, n.location.lat];
           var elevation = n.elevation;
           collection.push(turf.point(coordArr));
           collection[i].properties.elevation = elevation;
+          distance += collection[i-1] ? turf.distance(collection[i], collection[i-1], "miles") : 0;
+          collection[i].properties.distance = distance;
         });
         return turf.featurecollection(collection);
       }

@@ -19,7 +19,14 @@ path.leaflet-clickable {
   &.route-minHiking {
     stroke: $fastest_walking;
   }
+  &.route-loop_path {
+    stroke: $loop_path;
+  }
 
+}
+
+.swatch {
+  border: 2px solid white;
 }
 
 .tilted path.leaflet-clickable,

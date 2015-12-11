@@ -22,7 +22,8 @@
             // tileSize: 5120,
             zoomControl: false,
             maxZoom: 19,
-            minZoom: 11
+            minZoom: 11,
+            legendControl: { position: 'topright'}
           });
           var getPxBounds = map.getPixelBounds;
 
