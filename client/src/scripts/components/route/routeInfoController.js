@@ -12,7 +12,8 @@
         vm.placeNameStart = RouteService.selectedStart.place_name;
         vm.placeNameEnd = RouteService.selectedEnd.place_name;
       }
-
+      
+      console.log(RouteService.loopStart);
       if (RouteService.resampledRoutes["loop_path"]){
         vm.loopStart = RouteService.loopStart.place_name;
         vm.loopDistance = Math.round(RouteService.loopDistance *100)/100 + " miles";
