@@ -176,7 +176,7 @@
         var distance = 0;
 
         var turfDistance = turf.lineDistance(line, 'miles');
-        var resamplePoints = numPoints || Math.max((turfDistance/.015), 150);
+        var resamplePoints = numPoints || Math.max((turfDistance / .015), 150);
         var interval = turfDistance / resamplePoints;
         for (var i = 0; i < resamplePoints; i++) {
           var point = turf.along(line, distance, 'miles');
@@ -203,7 +203,7 @@
           var elevation = n.elevation;
           collection.push(turf.point(coordArr));
           collection[i].properties.elevation = elevation;
-          distance += collection[i-1] ? turf.distance(collection[i], collection[i-1], "miles") : 0;
+          distance += collection[i - 1] ? turf.distance(collection[i], collection[i - 1], "miles") : 0;
           collection[i].properties.distance = distance;
         });
         return turf.featurecollection(collection);
@@ -236,11 +236,17 @@
             }
           }).then(function successCb(res2) {
             var directions = res.data.routes[0].steps.map(function(step) {
-              return {maneuver: step.maneuver.instruction, distance: step.distance};
+              return {
+                maneuver: step.maneuver.instruction,
+                distance: step.distance
+              };
             });
 
             res2.data.routes[0].steps.forEach(function(step) {
-              directions.push({maneuver: step.maneuver.instruction, distance: step.distance})
+              directions.push({
+                maneuver: step.maneuver.instruction,
+                distance: step.distance
+              })
             })
 
             return directions;
@@ -254,21 +260,24 @@
         })
       }
 
-      route.addStartEndMarkers = function(start, end) {
+      route.addStartEndMarkers = function() {
         var locationsGeojson = [];
-        [start, end].forEach(function(point, i) {
-          locationsGeojson.push({
-            "type": "Feature",
-            "geometry": {
-              "type": "Point",
-              "coordinates": point
-            },
-            "properties": {
-              "marker-size": "small",
-              "marker-symbol": i === 0 ? "pitch" : "embassy"
-            }
-          });
-        })
+        var args = Array.prototype.slice.call(arguments)
+        args.forEach(function(point, i) {
+          if (point !== undefined) {
+            locationsGeojson.push({
+              "type": "Feature",
+              "geometry": {
+                "type": "Point",
+                "coordinates": point
+              },
+              "properties": {
+                "marker-size": "medium",
+                "marker-symbol": i === 0 ? "pitch" : "embassy"
+              }
+            });
+          }
+        });
         L.mapbox.featureLayer(locationsGeojson).addTo(route.map);
       }
 

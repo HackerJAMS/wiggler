@@ -152,6 +152,7 @@
         .then(function successCb(res) {
           RouteService.routeData = res;
           RouteService.cleanMap(polyline !== "undefined", RouteService.map);
+          RouteService.addStartEndMarkers(start.center);
           var turfLines = {};
           turfLines.type = 'FeatureCollection';
           turfLines.features = [];
