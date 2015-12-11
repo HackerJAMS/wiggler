@@ -37,7 +37,9 @@
 .tilted #map {
   cursor: col-resize;
 }
-
+.tilted .leaflet-marker-pane img {
+  visibility: hidden;
+}
 #map,
 #maprotor,
 .leaflet-map-pane,

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="app" >
+<html lang="en" ng-app="app">
 
 <head>
   <meta charset="UTF-8">
@@ -17,7 +17,31 @@
 
 <body>
 
-    <div ui-view="main" class="app-container">
+    <md-content md-scroll-y class="flex">
+      <div layout="row">
+        <div flex class="header">
+            <div ng-controller="HeaderController as ctrl">
+              <div layout="column" layout-fill>
+                <md-toolbar class="md-primary">
+                  <div class="md-toolbar-tools" id="toolbar">
+                    <div layout="row" layout-align="center end">
+                      <a ui-sref="main.route-input"><span id="app-name">wiggler</span></a>
+                      <a ui-sref="about" class='about'>About</a>   
+                    </div>   
+                    <!-- fill up the space between left and right area -->
+                    <span flex></span>
+                    <md-button id="sidebar-btn" ng-click="ctrl.openSidebar()" ng-hide="ctrl.isOpen()">
+                      <md-icon id="sidebar-icon" class="md-default-theme" class="material-icons">&#xE5D2;</md-icon>
+                    </md-button>
+                  </div>
+                </md-toolbar>
+              </div>
+            </div>            
+        </div>
+      </div>
+    </md-content>
+      
+    <div ui-view class="app-container" >
     </div>
 
     <!-- Angular Material Dependencies -->

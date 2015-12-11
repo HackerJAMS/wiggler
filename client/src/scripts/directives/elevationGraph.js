@@ -37,7 +37,7 @@
             var line = d3.svg.line()
               .interpolate("monotone")
               .x(function(d) {return x(d.properties.distance)})
-              .y(function(d) {return y(d.properties.elevation)});
+              .y(function(d) {return y(d.properties.elevation*3.28084)}); // convert meters to feet
 
             var svg = d3.select(element[0]).append('svg')
               .attr("width", width + margin.left + margin.right)
@@ -57,7 +57,7 @@
             } 
             // //////////////////////////
             x.domain(d3.extent(paths, function(d){return d.properties.distance;}));
-            y.domain([0,d3.max(paths, function(d){return d.properties.elevation;})]);
+            y.domain([0,d3.max(paths, function(d){return d.properties.elevation*3.28084;})]);
 
             svg.append("g")
               .attr("class", "x axis")
@@ -78,7 +78,7 @@
               .attr("y", 6)
               .attr("dy", ".71em")
               .style("text-anchor", "end")
-              .text("Elevation / meters");
+              .text("Elevation / ft");
 
             var path;
             if (scope.data.minElevPath) {

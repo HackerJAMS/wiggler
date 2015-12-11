@@ -1,9 +1,5 @@
-
 <div ng-controller="MainController as ctrl">
 <md-content md-scroll-y class="flex">
-  <div layout="row">
-    <div ui-view="header" flex class="header"></div>
-  </div>
   <div id="main-content" class="layout-row flex" layout-margin>
     <div flex="100" ui-view="map" class="map-container"></div>
     <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left">
@@ -56,6 +52,5 @@
            </div>
          </md-whiteframe>
        </div>
-      
 </md-content>
 </div>

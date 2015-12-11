@@ -8,7 +8,6 @@
 
       // check if route has been submitted before calculating distance
       if (RouteService.turfLine && RouteService.selectedStart) {
-
         vm.placeNameStart = RouteService.selectedStart.place_name;
         vm.placeNameEnd = RouteService.selectedEnd.place_name;
       }

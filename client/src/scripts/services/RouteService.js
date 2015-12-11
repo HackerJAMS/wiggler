@@ -172,8 +172,6 @@
       // resample route with more points for 3d elevation display
 
       route.getResampledPath = function(line, elevationCollection, numPoints) {
-        // var dist_jia = [];
-        // var elev_jia = [];
         var collection = [];
         var distance = 0;
 
@@ -186,13 +184,13 @@
           // use elevation data from nearest point in elevationCollection
           if (elevationCollection.features !== undefined) {
             var nearest = turf.nearest(point, elevationCollection);
-            collection[i].properties.elevation = nearest.properties.elevation;
+            // convert the elevation from meters to feet!!!
+            collection[i].properties.elevation = nearest.properties.elevation * 3.28084;
             collection[i].properties.distance = distance;
           }
           // update distance
           distance = distance + interval;
         }
-
         return turf.featurecollection(collection);
       }
 

@@ -32,23 +32,19 @@
         .primaryPalette('blue-grey')
         .accentPalette('pink');  
 
-    
-
-    $urlRouterProvider.otherwise('/home/new');
+    $urlRouterProvider
+      .otherwise('/home/new');
 
     $stateProvider
       .state('main', {
         url: '/home',
         views: {
-          "main": {
+          '': {
             templateUrl: "src/scripts/components/main/main.html"
           },
           "map@main":{
             templateUrl: "src/scripts/components/map/map.html",
             controller: "MapController"
-          },
-          "header@main": {
-            templateUrl: "src/scripts/components/header/header.html",
           }
         }
       })
@@ -59,6 +55,10 @@
       .state('main.route-info', {
         url: '/info',
         templateUrl: "src/scripts/components/route/route_info.html"
+      })
+      .state('about', {
+        url: '/about',
+        templateUrl: 'src/scripts/components/about/about.html'
       })
   }])
 
