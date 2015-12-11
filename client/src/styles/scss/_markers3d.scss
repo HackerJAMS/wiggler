@@ -52,7 +52,8 @@
 }
 
 .elevfigure {
-  background: purple;
+  background: #404241;
+  font-size: 14px;
   border-radius: 3px;
   color: white;
   display: none;
@@ -60,7 +61,7 @@
   padding: 0px 4px;
   text-align: center;
   transform: rotateX(180deg);
-  width: 100px;
+  width: 80px;
   -webkit-transform: rotateX(180deg) translateX(-50%);
 }
 

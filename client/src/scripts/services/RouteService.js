@@ -61,7 +61,7 @@
         var routeColors = {
           "Shortest": '#2176C7',
           "Minimum elevation change": '#C61C6F',
-          "Fastest biking": '#BD3613',
+          "Fastest biking": '#2aa198',
           "Fastest walking": '#D9A800',
           "Running loop": "#30a07A"
         };
@@ -80,7 +80,7 @@
             labels.push(
               '<li><span class="swatch" style="background:' + routeTypes[r] + '"></span> ' + r + '</li>');
           }
-          return '<span>Route Types</span><ul>' + labels.join('') + '</ul>';
+          return '<span><strong>Route Types</strong></span><ul>' + labels.join('') + '</ul>';
         }
         route.legendData = getLegendHTML()
         route.map.legendControl.addLegend(route.legendData);
