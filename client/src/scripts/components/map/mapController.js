@@ -14,8 +14,6 @@
 
       vm.tiltCheck = RouteService.tiltCheck;
 
-      
-
       var mapRot = angular.element(document.querySelector('#maprotor'));
       var mapEl = angular.element(document.querySelector('#map'));
       var elevMarker = angular.element(document.querySelectorAll('.elevmarker'));
@@ -79,6 +77,10 @@
         vm.tiltCheck = true;
         RouteService.map.dragging.disable();
         mapRot.addClass("tilted");
+      };
+      
+      vm.cleanMap = function(){
+        RouteService.cleanMap();
       };
 
       vm.restoreMap = function() {
