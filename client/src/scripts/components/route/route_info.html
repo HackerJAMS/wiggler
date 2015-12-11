@@ -3,10 +3,11 @@
   <div id="route-info" ng-show="!routeCtrl.placeNameStart">No route selected</div>
   <md-content>
     <!-- if the loop route is selected -->
-    <div id="route-info" ng-show="!routeCtrl.placeNameStart">
+    <div id="route-info" ng-show="routeCtrl.loopDistance">
       <div><span class="route-detail"><strong>Start</strong></span>: {{routeCtrl.loopStart}}</div>
       <div><span class="route-detail"><strong>Loop Distance</strong></span>: {{routeCtrl.loopDistance}}</div>
     </div>
+    <div ng-show="!routeCtrl.placeNameStart && !routeCtrl.loopDistance">No Route Selected</div>
     <div id="place-names" ng-show="routeCtrl.placeNameStart">
       <div><span class="route-detail"><strong>Start</strong>: {{routeCtrl.placeNameStart}}</span></div>
       <div><span class="route-detail"><strong>End</strong>: {{routeCtrl.placeNameEnd}}</span></div>
