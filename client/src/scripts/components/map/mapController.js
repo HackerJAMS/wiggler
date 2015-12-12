@@ -11,7 +11,7 @@
       vm.xdrag = 0;
       vm.isDown = false;
       vm.xpos = 0;
-
+      
       vm.tiltCheck = RouteService.tiltCheck;
 
       var mapRot = angular.element(document.querySelector('#maprotor'));
@@ -24,14 +24,15 @@
       $swipe.bind(mapRot, {
         start: function(e){
           vm.xpos = e.x;
-
         },
         move: function(e){
-          vm.xdrag = ((vm.xpos - e.x)/4 ) % 360;
+          vm.xdrag = ((vm.xpos - e.x)/4) % 360;
           mapEl.attr('style', '-webkit-transform:rotateZ(' + (vm.angle + vm.xdrag) % 360 + 'deg)');
           elevMarker.attr('style', '-webkit-transform:rotateX(90deg) rotateY(' + (vm.angle + vm.xdrag) * (-1) % 360 + 'deg)');
+          
         },
         end: function(e){
+          vm.angle = vm.angle + vm.xdrag;
         },
         cancel: function(){
         }
