@@ -38,7 +38,7 @@ app.use(bodyParser.urlencoded({
 
 app.use(express.static(__dirname + '/../client/'));
 
-module.exports = app;
+
 
 // http routes 
 app.post('/route', function(req, res) {
@@ -54,6 +54,8 @@ app.post('/loop', function (req, res){
 });
 
 // 
-var port = process.env.PORT || 3000;
+var port = process.env.PORT || 3030;
 app.listen(port);
 console.log('Server now listening on port ' + port);
+
+module.exports = app;

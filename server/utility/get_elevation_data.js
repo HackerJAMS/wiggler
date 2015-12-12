@@ -3,7 +3,6 @@ var polyUtil = require('polyline-encoded');
 
 
 module.exports = function getPathElev(pathArray, callback) {
-  console.log("in elevation data");
   var numsArray = flatten(pathArray).map(function (d) {
     var arr = [];
     d.forEach(function (e){
@@ -52,6 +51,5 @@ function flatten(array) {
       output.push(array[i][j]);
     }
   }
-  console.log("did flatten work?", output.length)
   return output;
 }

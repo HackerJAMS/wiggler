@@ -157,6 +157,7 @@
           turfLines.type = 'FeatureCollection';
           turfLines.features = [];
           var coords = res.data["loop_path"][0];
+          console.log("coords", coords);
           var elevation = res.data["loop_path"][1];
           plotRoute(coords, elevation, "loop_path", turfLines);
           RouteService.featureLayer = L.mapbox.featureLayer(turfLines);

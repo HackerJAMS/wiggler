@@ -51,7 +51,7 @@ module.exports = function(req, res) {
                 results[results_key] = result;
                 counter++;
                 if (counter === totalSelections) {
-                  res.send(results);
+                  res.status(200).send(results);
                 }
               }
             })
@@ -65,7 +65,7 @@ module.exports = function(req, res) {
                 results[results_key] = result;
                 counter++;
                 if (counter === totalSelections) {
-                  res.send(results);
+                  res.status(200).send(results);
                 }
               }
             });

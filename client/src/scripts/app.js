@@ -8,6 +8,13 @@
     'ngAria',
     // router
     'ui.router',
+    // additional add-ons
+    'ngTouch',
+    'angularSpinner',
+    'ngLoadingSpinner',
+    'ngMdIcons',
+    'd3',
+
     //app modules
     'app.header',
     'app.routeService',
@@ -15,14 +22,7 @@
     'app.routeInput',
     'app.routeInfo',
     'app.elevationGraph',
-    'app.main',
-
-    'ngTouch',
-    'angularSpinner',
-    'ngLoadingSpinner',
-    'ngMdIcons',
-    'd3'
-
+    'app.main'
   ]);
 
 
