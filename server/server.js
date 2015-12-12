@@ -54,7 +54,7 @@ app.post('/loop', function (req, res){
 });
 
 // 
-var port = process.env.PORT || 3030;
+var port = process.env.PORT || 3000;
 app.listen(port);
 console.log('Server now listening on port ' + port);
 
