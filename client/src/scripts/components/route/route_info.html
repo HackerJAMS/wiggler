@@ -7,7 +7,7 @@
         <div><span class="route-detail"><strong>Loop Distance</strong></span>: {{routeCtrl.loopDistance}}</div>
       </div>
       <div ng-show="!routeCtrl.placeNameStart && !routeCtrl.loopStart">No Route Selected</div>
-      <div id="place-names" ng-show="routeCtrl.placeNameStart">
+      <div id="place-names" ng-show="routeCtrl.placeNameStart && !routeCtrl.loopStart">
         <div><span class="route-detail"><strong>Start</strong>: {{routeCtrl.placeNameStart}}</span></div>
         <div><span class="route-detail"><strong>End</strong>: {{routeCtrl.placeNameEnd}}</span></div>
       </div>

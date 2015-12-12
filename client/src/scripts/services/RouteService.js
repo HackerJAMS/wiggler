@@ -4,19 +4,9 @@
   angular.module('app.routeService', [])
     .factory('RouteService', ['$rootScope', '$http', function($rootScope, $http) {
       var route = {};
-
-      // data shared by controllers
-      // route.map;
-      // route.turfLine;
-      // route.legendData;
       route.routeData = []; // raw route data from server
       route.resampledRoutes = {}; // processed resampled routes
       route.tiltCheck = false; // initialize the map in 2d
-      // route.selectedStart;
-      // route.selectedEnd;
-      // route.currentPosition;
-      // route.routePrefs;
-      // route.featureLayer;
 
       var accessToken = 'pk.eyJ1IjoiMTI3NnN0ZWxsYSIsImEiOiJjaWg4ZGEwZmEwdGNkdjBraXl1czIzNnFjIn0.RXXfMNV-gtrQyrRzrP2yvQ';
       //************* Map Services *************      
@@ -289,7 +279,7 @@
             var marker = L.marker(new L.LatLng(latlngArr[0], latlngArr[1]), {
               icon: L.mapbox.marker.icon({
                 "marker-color": "ff8888",
-                "marker-size": "small",
+                "marker-size": "medium",
                 "marker-symbol": route.markers.length === 0 ? "pitch" : "embassy"
               }),
               draggable: true

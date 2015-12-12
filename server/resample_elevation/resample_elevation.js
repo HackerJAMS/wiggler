@@ -1,3 +1,9 @@
+// Request to google elevation API
+// Usage: when plotting our cusom paths on the front-end map and data visualizations
+// we resample the path so that the datapoints are evenly distributed along the path
+// and we have more detailed elevation data
+
+
 var polyUtil = require('polyline-encoded');
 var https = require('https');
 module.exports = function(req, response) {

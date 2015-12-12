@@ -1,3 +1,7 @@
+// ORM implementation that is used when populating the database 
+// with elevation data at each node in the graph
+// the only file that uses this is "./db/createElevationDb"
+
 var Sequelize = require('sequelize');
 var sequelize = new Sequelize(process.env.DB_URL_STR,{
   pool: {
@@ -6,42 +10,6 @@ var sequelize = new Sequelize(process.env.DB_URL_STR,{
     idle: 10000
   }
 });
-
-// var Node = {config: {
-//   id: {
-//     type: Sequelize.INTEGER,
-//     primaryKey: true,
-//     field: "id"
-//   },
-//   round_lon: {
-//     type: Sequelize.FLOAT(11,5),
-//     field: "round_lon"
-//   },
-//   round_lat: {
-//     type: Sequelize.FLOAT(11,5),
-//     field: "round_lat"
-//   },
-//   elevation: {
-//     type: Sequelize.FLOAT(11,8),
-//     field: "elevation"
-//   },
-//   lat: {
-//     type: Sequelize.FLOAT(11,8),
-//     field: "lat"
-//   },
-//   lon: {
-//     type: Sequelize.FLOAT(11,8),
-//     field: "lon"
-//   },
-//   counter: {
-//     type: sequelize.BIGINT,
-//     autoIncrement: true
-//   }
-// }, options: 
-// {
-//   tableName: 'round_nodes',
-//   timestamps: false
-// }};
 
 var Elevation = {config:{
   id: {

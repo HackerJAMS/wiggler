@@ -5,10 +5,10 @@
 
 ***/
 var Q = require('q');
-var shortestPath = require('../utility/shortestPath.js');
-var minElevationPath = require('../utility/minElevationPath.js');
-var closestNode = require('../utility/closestNode.js');
-var minHikeBike = require('../utility/minHikeBike.js');
+var shortestPath = require('../utility/shortest_path.js');
+var minElevationPath = require('../utility/minimum_elevation_path.js');
+var closestNode = require('../utility/closest_node.js');
+var minHikeBike = require('../utility/minimum_hike_bike_path.js');
 module.exports = function(req, res) {
   var results = {};
 
@@ -51,7 +51,7 @@ module.exports = function(req, res) {
                 results[results_key] = result;
                 counter++;
                 if (counter === totalSelections) {
-                  res.send(results);
+                  res.status(200).send(results);
                 }
               }
             })
@@ -65,7 +65,7 @@ module.exports = function(req, res) {
                 results[results_key] = result;
                 counter++;
                 if (counter === totalSelections) {
-                  res.send(results);
+                  res.status(200).send(results);
                 }
               }
             });

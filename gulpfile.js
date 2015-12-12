@@ -94,7 +94,7 @@ gulp.task('browser-sync', ['nodemon'], function() {
 
 gulp.task('test', function(){
   //when npm test is called, this task is triggered
-  return gulp.src('test/spec.js', {read : false})
+  return gulp.src('test/server-spec.js', {read : false})
   .pipe(mocha({reporter : 'nyan'}))
 });
 

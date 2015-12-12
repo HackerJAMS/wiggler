@@ -1,13 +1,23 @@
+// Path-finding with the same start and ending points
+// We use a combination of the cost models we developed for this application of Dijkstra's algorithm
+// There are many ansyncronous requests in this model, so we use a chain of promises to execute it.
+// Model progression:
+// - Find all the nodes (referred to as "out nodes") within 1/3 to 1/2 of the requested total route distance
+// - Find closest node to the requested start location
+// - Run the k-paths version of Dijkstras to determine which out node has the lowest total cost from the start node-- this becomes the out-path for the loop
+// - Get the geometry for the best out path
+// - Find a **new** path from the end node of the out path -- force Dijkstra's to take a new path by multiplying the cost by the inverse distance from the original route
+
+
 var Q = require('q');
-var process = require('../utility/processRes.js');
-var closestNode = require('../utility/closestNode.js');
+var process = require('../utility/process_result.js');
+var closestNode = require('../utility/closest_node.js');
 var db = require('../db/db.js');
-var elev = require('../utility/elevationData');
+var elev = require('../utility/get_elevation_data');
 
 module.exports = function(req, res) {
-  console.log("req.body passed to loop route", req.body);
-  var start = req.body.start.center; //|| [-122.460222, 37.771393 ];
-  var distance = req.body.distance; //|| 4;
+  var start = req.body.start.center; 
+  var distance = req.body.distance;
   if (start && distance) {
     findOutNodes(start, distance)
       .then(function(outNodes) {
@@ -18,12 +28,9 @@ module.exports = function(req, res) {
               .then(outPathGeom)
               .then(backPath)
               .then(function(loop) {
-                console.log("last step!")
                 var coordinates = process(loop);
-                console.log("path coords length", coordinates.length);
                 elev(coordinates, function(elevation) {
                   path_data = [coordinates, elevation.results];
-                  // console.log(path_data);
                   res.send({
                     loop_path: path_data
                   });
@@ -45,13 +52,12 @@ var backPath = function(out_path) {
     if (err) {
       console.log("error getting back path", err);
     }
-    // console.log("back path",result.rows)
 
     var full_path_result = out_path.path_info.out_path;
     result.rows.forEach(function(step) {
       full_path_result.push(step);
     })
-    console.log("there and back full path", full_path_result.length);
+
     defer.resolve({
       rows: full_path_result
     });
@@ -83,10 +89,14 @@ var getBestOutPath = function(path_info) {
   var query = "select seq, id1 as node,id2 as edge, cost, b.source, b.target, st_astext(b.the_geom) from pgr_dijkstra('SELECT gid AS id, source, target, eleCost AS cost FROM ways'," + path_info.startNode + "," + path_info.path.target + ", false, false) a LEFT JOIN ways b ON (a.id2 = b.gid) ORDER BY seq;"
   // var query = "select seq, id1 as node,id2 as edge, cost, b.source, b.target, st_astext(b.the_geom) from pgr_dijkstra('SELECT gid AS id, source, target, bike_cost AS cost, r_bike_cost as reverse_cost FROM ways'," + path_info.startNode + "," + path_info.path.target + ", true, true) a LEFT JOIN ways b ON (a.id2 = b.gid) ORDER BY seq;"
   db.query(query, function(err, out_path) {
-    defer.resolve({
-      path_info: path_info.path,
-      out_path: out_path.rows
-    });
+    if (err) {
+      console.log("there was an error getting the best outward path for the loop");
+    } else {
+      defer.resolve({
+        path_info: path_info.path,
+        out_path: out_path.rows
+      });
+    }
   })
   return defer.promise;
 }
