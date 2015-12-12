@@ -148,11 +148,14 @@
       RouteService.loopStart = vm.loopStart;
       // approx loop distance in miles
       distance = vm.loopDistance || 3;
+      RouteService.inputLoopDistance = vm.loopDistance;    
+      console.log('loopDistance', vm.loopDistance)  
       RouteService.postLoopRequest(start, distance)
         .then(function successCb(res) {
           RouteService.routeData = res;
-          RouteService.cleanMap(polyline !== "undefined", RouteService.map);
+          RouteService.cleanMap();
           RouteService.addStartEndMarkers(start.center);
+
           var turfLines = {};
           turfLines.type = 'FeatureCollection';
           turfLines.features = [];
@@ -186,7 +189,6 @@
       };
 
       // draw route on the map and fit the bounds of the map viewport to the route
-
       var polyline = L.geoJson(RouteService.turfLine, {
         className: 'route-' + pathType
       }).addTo(RouteService.map);
@@ -196,7 +198,6 @@
       setTimeout(function() {
         path.css('stroke-dashoffset', 0)
       }, 10);
-
       
       var newPoints = resampledPath.features.slice();
       var newPointCoordinates = newPoints.map(function(n, i) {
@@ -242,9 +243,6 @@
          }).addTo(RouteService.map);
       });
 
-
-
-
       //clear out currentPosition
       RouteService.currentPosition = null;
     }
@@ -253,6 +251,11 @@
     if (RouteService.selectedStart && RouteService.selectedEnd) {
       vm.selectedStart = RouteService.selectedStart;
       vm.selectedEnd = RouteService.selectedEnd;
+    }
+
+    if (RouteService.loopStart && RouteService.loopDistance) {
+      vm.loopStart = RouteService.loopStart;
+      vm.loopDistance = RouteService.inputLoopDistance;
     }
 
     if ($stateParams.slat && $stateParams.slon && $stateParams.elat && $stateParams.elon) {
