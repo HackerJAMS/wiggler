@@ -1,0 +1,43 @@
+//mobile responsive styling
+#sidebar-icon {
+  display: none;
+}
+
+#sidebar-btn {
+  display: none;
+}
+
+#mobile-route-pnl {
+  display: none;
+}
+
+
+/* mobile styles */
+
+@media only screen and (max-device-width: 768px) {
+  md-sidenav {
+    min-width: 200px !important;
+    width: 100vw !important;
+    max-width: none !important;
+  }
+  #desktop-route-pnl {
+    display: none;
+  }
+  #sidebar-btn {
+    display: block;
+  }
+  #sidebar-icon {
+    font-size: 2em;
+    display: block;
+  }
+  #desktop-route-pnl {
+    display: none;
+  }
+  #mobile-route-pnl {
+    display: block;
+  }
+  #mobile-whiteframe {
+    width: auto;
+    height: 100%;
+   } 
+}

@@ -1,41 +1,42 @@
 <div id="route-sidebar" ng-controller="RouteInfoController as routeCtrl">
-  <md-content>
-    <!-- if the loop route is selected -->
-    <div id="route-info" ng-show="!routeCtrl.placeNameStart">
-      <div><span class="route-detail"><strong>Start</strong></span>: {{routeCtrl.loopStart}}</div>
-      <div><span class="route-detail"><strong>Loop Distance</strong></span>: {{routeCtrl.loopDistance}}</div>
-    </div>
-    <div id="place-names" ng-show="routeCtrl.placeNameStart">
-      <div><span class="route-detail"><strong>Start</strong>: {{routeCtrl.placeNameStart}}</span></div>
-      <div><span class="route-detail"><strong>End</strong>: {{routeCtrl.placeNameEnd}}</span></div>
-<!--       <div>Shortest Distance: {{routeCtrl.shortestDistance}} miles</div>
-      <div>Minimum Elevation Distance: {{routeCtrl.minElevationDistance}} miles</div> -->
-    </div>
-    <md-divider></md-divider>
-    <div><span><strong>Elevation Profile</strong></span></div>
-    <!-- d3 elevation graph -->
-    <elevation-graph data="data"></elevation-graph>
-    <md-divider></md-divider>
-    <div><span><strong id="directions-title">Directions</strong></span></div>
-    <md-input-container class="md-block" flex-gt-sm>
-      <label>Path Type</label>
-      <md-select ng-change="routeCtrl.displayDirections()" ng-model="routeCtrl.directions_path">
-        <md-option ng-repeat="path in routeCtrl.pathTypes" value="{{path}}">
-          {{path.string}}
-        </md-option>
-      </md-select>
-    </md-input-container>
-    <md-virtual-repeat-container id="vertical-container">
-      <div md-virtual-repeat="step in routeCtrl.directions" class="repeated-item" flex>
-        <span><strong>{{step.num}}</strong></span> {{step.step}} <span class="distance-text">{{step.distance}}</span>
+  <div id="route-info">
+    <md-content>
+      <!-- if the loop route is selected -->
+      <div id="loop-info" ng-show="routeCtrl.loopStart">
+        <div><span class="route-detail"><strong>Start</strong></span>: {{routeCtrl.loopStart}}</div>
+        <div><span class="route-detail"><strong>Loop Distance</strong></span>: {{routeCtrl.loopDistance}}</div>
       </div>
-    </md-virtual-repeat-container>
-  </md-content>
-  <md-divider></md-divider>
-  <div>
-    <md-button class="md-raised md-primary" aria-lable="create url" ng-click="routeCtrl.createUrl()">Create Url</md-button>
+      <div ng-show="!routeCtrl.placeNameStart && !routeCtrl.loopStart">No Route Selected</div>
+      <div id="place-names" ng-show="routeCtrl.placeNameStart">
+        <div><span class="route-detail"><strong>Start</strong>: {{routeCtrl.placeNameStart}}</span></div>
+        <div><span class="route-detail"><strong>End</strong>: {{routeCtrl.placeNameEnd}}</span></div>
+      </div>
+      <md-divider></md-divider>
+      <div><span><strong>Elevation Profile</strong></span></div>
+      <!-- d3 elevation graph -->
+      <elevation-graph data="data"></elevation-graph>
+      <md-divider></md-divider>
+      <div><span><strong id="directions-title">Directions</strong></span></div>
+      <md-input-container class="md-block" flex-gt-sm>
+        <label>Path Type</label>
+        <md-select ng-change="routeCtrl.displayDirections()" ng-model="routeCtrl.directions_path">
+          <md-option ng-repeat="path in routeCtrl.pathTypes" value="{{path}}">
+            {{path.string}}
+          </md-option>
+        </md-select>
+      </md-input-container>
+      <md-virtual-repeat-container id="vertical-container">
+        <div md-virtual-repeat="step in routeCtrl.directions" class="repeated-item" flex>
+          <span><strong>{{step.num}}</strong></span> {{step.step}} <span class="distance-text">{{step.distance}}</span>
+        </div>
+      </md-virtual-repeat-container>
+    </md-content>
+    <md-divider></md-divider>
+    <div>
+      <md-button class="md-raised md-primary" aria-lable="create url" ng-click="routeCtrl.createUrl()">Create Url</md-button>
+    </div>
+    <md-input-container>
+      <input ng-model="routeCtrl.url" aria-label="routeCtrl.url" type="text">
+    </md-input-container>
   </div>
-  <md-input-container>
-    <input ng-model="routeCtrl.url" aria-label="routeCtrl.url" type="text">
-  </md-input-container>
 </div>

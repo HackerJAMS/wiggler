@@ -8,11 +8,11 @@
 
       // check if route has been submitted before calculating distance
       if (RouteService.turfLine && RouteService.selectedStart) {
-
         vm.placeNameStart = RouteService.selectedStart.place_name;
         vm.placeNameEnd = RouteService.selectedEnd.place_name;
       }
-
+      
+      console.log(RouteService.loopStart);
       if (RouteService.resampledRoutes["loop_path"]){
         vm.loopStart = RouteService.loopStart.place_name;
         vm.loopDistance = Math.round(RouteService.loopDistance *100)/100 + " miles";

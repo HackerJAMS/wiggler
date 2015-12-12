@@ -172,13 +172,11 @@
       // resample route with more points for 3d elevation display
 
       route.getResampledPath = function(line, elevationCollection, numPoints) {
-        // var dist_jia = [];
-        // var elev_jia = [];
         var collection = [];
         var distance = 0;
 
         var turfDistance = turf.lineDistance(line, 'miles');
-        var resamplePoints = numPoints || Math.max((turfDistance/.015), 150);
+        var resamplePoints = numPoints || Math.max((turfDistance / .015), 150);
         var interval = turfDistance / resamplePoints;
         for (var i = 0; i < resamplePoints; i++) {
           var point = turf.along(line, distance, 'miles');
@@ -186,13 +184,13 @@
           // use elevation data from nearest point in elevationCollection
           if (elevationCollection.features !== undefined) {
             var nearest = turf.nearest(point, elevationCollection);
-            collection[i].properties.elevation = nearest.properties.elevation;
+            // convert the elevation from meters to feet!!!
+            collection[i].properties.elevation = nearest.properties.elevation * 3.28084;
             collection[i].properties.distance = distance;
           }
           // update distance
           distance = distance + interval;
         }
-
         return turf.featurecollection(collection);
       }
 
@@ -205,7 +203,7 @@
           var elevation = n.elevation;
           collection.push(turf.point(coordArr));
           collection[i].properties.elevation = elevation;
-          distance += collection[i-1] ? turf.distance(collection[i], collection[i-1], "miles") : 0;
+          distance += collection[i - 1] ? turf.distance(collection[i], collection[i - 1], "miles") : 0;
           collection[i].properties.distance = distance;
         });
         return turf.featurecollection(collection);
@@ -238,11 +236,17 @@
             }
           }).then(function successCb(res2) {
             var directions = res.data.routes[0].steps.map(function(step) {
-              return {maneuver: step.maneuver.instruction, distance: step.distance};
+              return {
+                maneuver: step.maneuver.instruction,
+                distance: step.distance
+              };
             });
 
             res2.data.routes[0].steps.forEach(function(step) {
-              directions.push({maneuver: step.maneuver.instruction, distance: step.distance})
+              directions.push({
+                maneuver: step.maneuver.instruction,
+                distance: step.distance
+              })
             })
 
             return directions;
@@ -256,21 +260,24 @@
         })
       }
 
-      route.addStartEndMarkers = function(start, end) {
+      route.addStartEndMarkers = function() {
         var locationsGeojson = [];
-        [start, end].forEach(function(point, i) {
-          locationsGeojson.push({
-            "type": "Feature",
-            "geometry": {
-              "type": "Point",
-              "coordinates": point
-            },
-            "properties": {
-              "marker-size": "small",
-              "marker-symbol": i === 0 ? "pitch" : "embassy"
-            }
-          });
-        })
+        var args = Array.prototype.slice.call(arguments)
+        args.forEach(function(point, i) {
+          if (point !== undefined) {
+            locationsGeojson.push({
+              "type": "Feature",
+              "geometry": {
+                "type": "Point",
+                "coordinates": point
+              },
+              "properties": {
+                "marker-size": "medium",
+                "marker-symbol": i === 0 ? "pitch" : "embassy"
+              }
+            });
+          }
+        });
         L.mapbox.featureLayer(locationsGeojson).addTo(route.map);
       }
 

@@ -14,6 +14,7 @@ $loop_path: #30A07A;
 @import 'markers3d';
 @import 'mapControlsLegend';
 @import 'graph2d';
+@import 'mobile';
 
 body {
   background-color: white;
@@ -21,6 +22,9 @@ body {
   height: 100%;
   margin: 0 auto;
   font-family: 'Open Sans', sans-serif;
+}
+h2{
+  text-align: center;
 }
 
 #main-content md-tabs md-tab-item {
@@ -80,20 +84,7 @@ md-tabs md-tabs-wrapper {
   margin-top: -3px;
 }
 
-#sidebar-icon {
-  display: none;
-}
-#sidebar-btn { 
-  display: none;
-}
-#mobile-route-pnl {
-  display: none;
-}
-
 .md-button.md-icon-button {
-  margin: 10px 0 0 0;
-  height: 25px;
-  width: 25px;
   i {
     font-size: 18px;
   }
@@ -123,22 +114,113 @@ md-tabs md-tabs-wrapper {
   padding-right: 10px;
 }
 
-/* mobile styles */
-
-@media only screen and (max-device-width: 768px) {
-   #sidebar-btn {
-     display: block;
-   }
-
-   #sidebar-icon {
-     font-size: 2em;
-     display: block;
-   }
-
-   #desktop-route-pnl {
-     display: none;
-   }
-   #mobile-route-pnl {
-    display: block;
-   }
+.map-container, .map-legend.wax-legend {
+  box-shadow: 0 1px 3px 0 rgba(0,0,0,.2),0 1px 1px 0 rgba(0,0,0,.14),0 2px 1px -1px rgba(0,0,0,.12);
 }
+
+#desktop-route-pnl {
+  margin-top: 0px;
+}
+
+footer {
+  // background-color: #607D8B;
+  height: 30px;
+  font-size: 0.75em;
+  margin-left: 25px;
+} 
+
+// about us page
+.header .about {
+  position: absolute;
+  top: 25px;
+  right: 30px;
+  font-size: 20px;
+}
+.photos {
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+
+  img {
+    width: 200px;
+    height: 200px;
+    display: block;
+    margin-top: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 50%;
+    // -webkit-animation: anim 600ms ease-out;
+    // animation: anim 600ms ease-out;    
+    -webkit-animation: bounce 800ms ease-out;
+    animation: bounce 800ms ease-out;  
+  }
+  p.name {
+    font-weight: bold;
+  }
+  p {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    text-align: center;
+  }
+  
+
+}
+
+// @-webkit-keyframes anim {
+//     from {-webkit-transform: rotateY(0deg);}
+//     to {-webkit-transform: rotateY(1080deg);}
+// }
+
+// @keyframes anim {
+//     from {transform: rotateY(0deg);}
+//     to {transform: rotateY(1080deg);}
+// }
+.info {
+  margin-top: 100px;
+  margin-bottom: 50px;
+  p {
+    bottom: 10%;
+    margin-top: 0px;
+    margin-bottom: 0px; 
+    font-size: 16px;
+    text-align: center;
+  }  
+}
+#github-link{
+  font-size: 14px;
+}
+@-webkit-keyframes bounce {
+  0% {
+  -webkit-transform:translateY(-100%);
+    opacity: 0;
+  }
+  40% {
+    -webkit-transform:translateY(0%);
+  }
+  60% {
+    -webkit-transform:translateY(-30%);
+  }
+  100% {
+    -webkit-transform:translateY(0);
+    opacity: 1;
+  }
+}
+
+/* W3, Opera 12+, Firefox 16+ */
+@keyframes bounce {
+  0% {
+  -webkit-transform:translateY(-100%);
+    opacity: 0;
+  }
+  40% {
+    -webkit-transform:translateY(0%);
+  }
+  60% {
+    -webkit-transform:translateY(-30%);
+  }
+  100% {
+    -webkit-transform:translateY(0);
+    opacity: 1;
+  }
+}
+
