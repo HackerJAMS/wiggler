@@ -1,12 +1,17 @@
 <div ng-controller="MainController as ctrl">
 <md-content md-scroll-y class="flex">
+<div layout="row">
+    <div ui-view="header" flex class="header"></div>
+</div>
   <div id="main-content" class="layout-row flex" layout-margin>
+
     <div flex="100" ui-view="map" class="map-container"></div>
+    
     <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left">
 <!--         <md-toolbar layout="row">
          <div class="md-toolbar-tools">
             <h2>
-              <span>Wiggler</span>
+              <span id="app-name">wiggler</span>
             </h2>
             <span flex></span>
             <md-button class="md-icon-button" id="sidebar-toggle" aria-label="Close Side Panel" ng-click="ctrl.closeLeftSideNavPanel()"> -->

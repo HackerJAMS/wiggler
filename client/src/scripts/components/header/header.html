@@ -1,0 +1,14 @@
+<div ng-controller="HeaderController as ctrl">
+  <div layout="column" layout-fill>
+    <md-toolbar class="md-primary">
+      <div class="md-toolbar-tools" id="toolbar">
+        <span id="app-name">wiggler</span>
+        <!-- fill up the space between left and right area -->
+        <span flex></span>
+        <md-button id="sidebar-btn" ng-click="ctrl.openSidebar()" ng-hide="ctrl.isOpen()">
+          <md-icon id="sidebar-icon" class="md-default-theme" class="material-icons">&#xE5D2;</md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+  </div>
+</div>

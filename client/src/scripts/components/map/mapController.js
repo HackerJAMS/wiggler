@@ -68,8 +68,8 @@
       vm.tiltMap = function() {
         if (RouteService.turfLine) {
           RouteService.map.fitBounds(RouteService.map.featureLayer.setGeoJSON(RouteService.turfLine).getBounds(), {
-            paddingTopLeft: [150, 50],
-            paddingBottomRight: [150, 50]
+            paddingTopLeft: [0, 0],
+            paddingBottomRight: [0, 0]
           });
         }
         

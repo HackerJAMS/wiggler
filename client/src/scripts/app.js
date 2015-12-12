@@ -45,6 +45,9 @@
           "map@main":{
             templateUrl: "src/scripts/components/map/map.html",
             controller: "MapController"
+          }, 
+          "header@main": {
+            templateUrl: "src/scripts/components/header/header.html",
           }
         }
       })
