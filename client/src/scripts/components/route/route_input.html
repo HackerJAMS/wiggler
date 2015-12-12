@@ -19,15 +19,15 @@
       </div>
       <div id="path-selection" flex="100" ng-init="routeCtrl.initPathSelection()">
         <div class="layout-row flex">
-          <md-switch class="md-hue-4" id="min-elevation-switch" ng-init="routeCtrl.minElevPathChecked = true" ng-click="routeCtrl.minElevPathChecked = !routeCtrl.minElevPathChecked" ng-checked="routeCtrl.minElevPathChecked"><span class="route-type-label">Flattest Route</span></md-switch>
-          <md-switch class="md-hue-4" ng-init="routeCtrl.shortestPathChecked = true" ng-click="routeCtrl.shortestPathChecked = !routeCtrl.shortestPathChecked" ng-checked="routeCtrl.shortestPathChecked"><span class="route-type-label">Shortest Route</span></md-switch>
+          <md-switch class="md-hue-4" id="min-elevation-switch" ng-click="routeCtrl.minElevPathChecked = !routeCtrl.minElevPathChecked" ng-checked="routeCtrl.minElevPathChecked"><span class="route-type-label">Flattest Route</span></md-switch>
+          <md-switch class="md-hue-4" ng-click="routeCtrl.shortestPathChecked = !routeCtrl.shortestPathChecked" ng-checked="routeCtrl.shortestPathChecked"><span class="route-type-label">Shortest Route</span></md-switch>
         </div>
         <div class="layout-row flex">
-          <md-switch class="md-hue-4" aria-label="Biking directions" ng-init="routeCtrl.minBikingChecked = false" ng-click="routeCtrl.minBikingChecked = !routeCtrl.minBikingChecked" ng-checked="routeCtrl.minBikingChecked">
+          <md-switch class="md-hue-4" aria-label="Biking directions" ng-click="routeCtrl.minBikingChecked = !routeCtrl.minBikingChecked" ng-checked="routeCtrl.minBikingChecked">
             <ng-md-icon class="switch-icon" icon="directions_bike" size="25"></ng-md-icon>
             <ng-md-icon class="switch-icon-mobile" icon="directions_bike" size="56"></ng-md-icon>
           </md-switch>
-          <md-switch class="md-hue-4" aria-label="walking directions" ng-init="routeCtrl.minHikingChecked = false" ng-click="routeCtrl.minHikingChecked = !routeCtrl.minHikingChecked" ng-checked="routeCtrl.minHikingChecked">
+          <md-switch class="md-hue-4" aria-label="walking directions" ng-click="routeCtrl.minHikingChecked = !routeCtrl.minHikingChecked" ng-checked="routeCtrl.minHikingChecked">
             <ng-md-icon class="switch-icon" icon="directions_walk" size="25"></ng-md-icon>
             <ng-md-icon class="switch-icon-mobile" icon="directions_walk" size="56"></ng-md-icon>
           </md-switch>

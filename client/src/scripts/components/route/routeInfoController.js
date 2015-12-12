@@ -63,13 +63,21 @@
 
 
       vm.createUrl = function() {
-        var start = RouteService.selectedStart.center;
-        var end = RouteService.selectedEnd.center;
+        var start;
+        var end;
         var prefs = RouteService.routePrefs;
-
-        var link = "?slon=" + start[0] + "&slat=" + start[1] + "&elon=" + end[0] + "&elat=" + end[1];
-        for (var pathType in prefs) {
-          link += "&" + pathType + "=" + prefs[pathType];
+        var link;
+        console.log('loopSelected', RouteService.routePrefs.loopSelected)
+        if (prefs.loopSelected) {
+          start = RouteService.loopStart.center;
+          link = "?slon=" + start[0] + "&slat=" + start[1] + "&loopSelected=true" + "&loopDistance=" + RouteService.inputLoopDistance;
+        } else {
+          start = RouteService.selectedStart.center;
+          end = RouteService.selectedEnd.center;
+          link = "?slon=" + start[0] + "&slat=" + start[1] + "&elon=" + end[0] + "&elat=" + end[1];
+          for (var pathType in prefs) {
+            link += "&" + pathType + "=" + prefs[pathType];
+          }
         }
         link = $location.host() + ":" + $location.port() + '/#home/new' + link;
         vm.url = link;
