@@ -166,7 +166,9 @@
         var distance = 0;
 
         var turfDistance = turf.lineDistance(line, 'miles');
-        var resamplePoints = numPoints || Math.max((turfDistance / .015), 150);
+        // make sure number of points is between 150 and 511 to make sure we don't go over google's
+        // points per request limit of 512
+        var resamplePoints = numPoints || Math.min(Math.max((turfDistance / .015), 150), 511);
         var interval = turfDistance / resamplePoints;
         for (var i = 0; i < resamplePoints; i++) {
           var point = turf.along(line, distance, 'miles');
