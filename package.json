@@ -4,7 +4,7 @@
   "description": "",
   "main": "server/server.js",
   "scripts": {
-    "test": "gulp test"
+    "test": "mocha"    
   },
   "author": "",
   "license": "ISC",
