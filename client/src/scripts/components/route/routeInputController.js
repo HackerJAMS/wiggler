@@ -161,7 +161,6 @@
           turfLines.type = 'FeatureCollection';
           turfLines.features = [];
           var coords = res.data["loop_path"][0];
-          console.log("coords", coords);
           var elevation = res.data["loop_path"][1];
           plotRoute(coords, elevation, "loop_path", turfLines);
           RouteService.featureLayer = L.mapbox.featureLayer(turfLines);
@@ -260,7 +259,6 @@
       vm.loopDistance = RouteService.inputLoopDistance;
     }
 
-    console.log('$stateParams.loopSelected',$stateParams.loopSelected)
     if ($stateParams.loopSelected) {
       RouteService.geocoding($stateParams.slon, $stateParams.slat)
         .then(function successCb(res) {
@@ -279,10 +277,6 @@
       vm.minElevPathChecked = JSON.parse($stateParams.minElevPathChecked);
       vm.minBikingChecked = JSON.parse($stateParams.minBikingChecked);
       vm.minHikingChecked = JSON.parse($stateParams.minHikingChecked);
-      // console.log('vm.shortestPathChecked', vm.shortestPathChecked)
-      // console.log('vm.minElevPathChecked', vm.minElevPathChecked)
-      // console.log('vm.minBikingChecked', vm.minBikingChecked)
-      // console.log('vm.minHikingChecked', vm.minHikingChecked)
       var quriesdone = 0;
       RouteService.geocoding($stateParams.slon, $stateParams.slat)
         .then(function successCb(res) {
