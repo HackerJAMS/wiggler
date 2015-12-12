@@ -387,6 +387,42 @@ md-tabs md-tabs-wrapper {
   }
 }
 
+/* Mozilla Firebox 15 below */
+@-moz-keyframes bounce {
+  0% {
+  -webkit-transform:translateY(-100%);
+    opacity: 0;
+  }
+  40% {
+    -webkit-transform:translateY(0%);
+  }
+  60% {
+    -webkit-transform:translateY(-30%);
+  }
+  100% {
+    -webkit-transform:translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Opera 12.0 */
+@-o-keyframes bounce {
+  0% {
+  -webkit-transform:translateY(-100%);
+    opacity: 0;
+  }
+  40% {
+    -webkit-transform:translateY(0%);
+  }
+  60% {
+    -webkit-transform:translateY(-30%);
+  }
+  100% {
+    -webkit-transform:translateY(0);
+    opacity: 1;
+  }
+}
+
 /* W3, Opera 12+, Firefox 16+ */
 @keyframes bounce {
   0% {
