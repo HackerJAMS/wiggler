@@ -15,6 +15,8 @@ $loop_path: #30A07A;
 @import 'mapControlsLegend';
 @import 'graph2d';
 @import 'mobile';
+@import 'sidePanel';
+@import 'about';
 
 body {
   background-color: white;
@@ -23,60 +25,9 @@ body {
   margin: 0 auto;
   font-family: 'Open Sans', sans-serif;
 }
-h2{
-  text-align: center;
-}
 
-#main-content md-tabs md-tab-item {
-  color: black;
-}
-
-#locator {
-  fill: currentColor; 
-  vertical-align: middle;
-  display: inline-block;
-  line-height: 1;
-}
-
-#toolbar {
-  font-size: 2em;
-  // margin-bottom: 8px;
-}
-
-md-whiteframe {
-  background: #fff;
-  margin: 5px;
-  padding: 5px;
-  width: 400px;
-  position: relative;
-}
-md-tabs.md-default-theme,
-md-tabs md-tabs-wrapper {
-  border-width: 0 0 1px;
-  border-style: solid;
-}
-
-.md-button.md-fab.md-mini {
-  line-height: 4rem;
-  width: 3.5rem;
-  height: 2rem;
-}
-
-.switch-icon {
-  display: block;
-}
-.switch-icon-mobile {
+.ng-cloak{
   display: none;
-}
-
-#arrows-container {
-  width:30px;
-  height: 45px;
-}
-  
-#reverse-btn {
-  min-width: 45px;
-  max-height: 35px
 }
 
 #app-name {
@@ -84,179 +35,12 @@ md-tabs md-tabs-wrapper {
   margin-top: -3px;
 }
 
-.md-button.md-icon-button {
-  i {
-    font-size: 18px;
-  }
-}
-.get-directions-btn {
-  display: none;
-}
-
-.md-input {
-  line-height: 100px;
-}
-
-#vertical-container {
-  height: 200px;
-  width: 400px;
-}
-
-.repeated-item {
-  border-bottom: 1px solid #ddd;
-  box-sizing: border-box;
-  height: 40px;
-  padding-top: 10px;
-}
-
-.distance-text {
-  float: right;
-  padding-right: 10px;
-}
-
 .map-container, .map-legend.wax-legend {
   box-shadow: 0 1px 3px 0 rgba(0,0,0,.2),0 1px 1px 0 rgba(0,0,0,.14),0 2px 1px -1px rgba(0,0,0,.12);
 }
 
-#desktop-route-pnl {
-  margin-top: 0px;
-}
-
 footer {
-  // background-color: #607D8B;
   height: 30px;
   font-size: 0.75em;
   margin-left: 25px;
-} 
-
-// about us page
-.header .about {
-  position: absolute;
-  top: 25px;
-  right: 30px;
-  font-size: 20px;
 }
-.photos {
-  width: 80%;
-  margin-left: auto;
-  margin-right: auto;
-
-  img {
-    width: 200px;
-    height: 200px;
-    display: block;
-    margin-top: 50px;
-    margin-left: auto;
-    margin-right: auto;
-    border-radius: 50%;
-    // -webkit-animation: anim 600ms ease-out;
-    // animation: anim 600ms ease-out;    
-    -webkit-animation: bounce 800ms ease-out;
-    animation: bounce 800ms ease-out;  
-  }
-  p.name {
-    font-weight: bold;
-  }
-  p {
-    margin-top: 0px;
-    margin-bottom: 0px;
-    text-align: center;
-  }
-  
-
-}
-
-// @-webkit-keyframes anim {
-//     from {-webkit-transform: rotateY(0deg);}
-//     to {-webkit-transform: rotateY(1080deg);}
-// }
-
-// @keyframes anim {
-//     from {transform: rotateY(0deg);}
-//     to {transform: rotateY(1080deg);}
-// }
-.info {
-  margin-top: 100px;
-  margin-bottom: 50px;
-  p {
-    bottom: 10%;
-    margin-top: 0px;
-    margin-bottom: 0px; 
-    font-size: 16px;
-    text-align: center;
-  }  
-}
-#github-link{
-  font-size: 14px;
-}
-@-webkit-keyframes bounce {
-  0% {
-  -webkit-transform:translateY(-100%);
-    opacity: 0;
-  }
-  40% {
-    -webkit-transform:translateY(0%);
-  }
-  60% {
-    -webkit-transform:translateY(-30%);
-  }
-  100% {
-    -webkit-transform:translateY(0);
-    opacity: 1;
-  }
-}
-
-/* Mozilla Firebox 15 below */
-@-moz-keyframes bounce {
-  0% {
-  -webkit-transform:translateY(-100%);
-    opacity: 0;
-  }
-  40% {
-    -webkit-transform:translateY(0%);
-  }
-  60% {
-    -webkit-transform:translateY(-30%);
-  }
-  100% {
-    -webkit-transform:translateY(0);
-    opacity: 1;
-  }
-}
-
-/* Opera 12.0 */
-@-o-keyframes bounce {
-  0% {
-  -webkit-transform:translateY(-100%);
-    opacity: 0;
-  }
-  40% {
-    -webkit-transform:translateY(0%);
-  }
-  60% {
-    -webkit-transform:translateY(-30%);
-  }
-  100% {
-    -webkit-transform:translateY(0);
-    opacity: 1;
-  }
-}
-
-/* W3, Opera 12+, Firefox 16+ */
-@keyframes bounce {
-  0% {
-  -webkit-transform:translateY(-100%);
-    opacity: 0;
-  }
-  40% {
-    -webkit-transform:translateY(0%);
-  }
-  60% {
-    -webkit-transform:translateY(-30%);
-  }
-  100% {
-    -webkit-transform:translateY(0);
-    opacity: 1;
-  }
-}
-
