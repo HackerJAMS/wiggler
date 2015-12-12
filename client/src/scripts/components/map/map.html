@@ -5,6 +5,8 @@
       <md-button ng-if="!ctrl.tiltCheck" ng-click="ctrl.tiltMap()">3D View</md-button>
 
       <md-button ng-if="ctrl.tiltCheck" ng-click="ctrl.restoreMap()">Flat</md-button>
+      
+      <md-button ng-click="ctrl.cleanMap()">Clear</md-button>
 
       <div id="maprotor" ng-click="ctrl.addMarker" ng-mousedown="ctrl.mouseDown($event)" ng-mousemove="ctrl.mouseMove($event)" ng-mouseup="ctrl.mouseUp($event)">
         <mapbox></mapbox>

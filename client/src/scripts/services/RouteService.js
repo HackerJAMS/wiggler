@@ -30,11 +30,11 @@
       };
 
       // this function removes any existing polylines from the map before adding a new one 
-      route.cleanMap = function(polyline, map) {
+      route.cleanMap = function() {
         // clear 2d lines
-        map.eachLayer(function(layer) {
+        route.map.eachLayer(function(layer) {
             if (layer instanceof L.Polyline || layer instanceof L.Marker) {
-              map.removeLayer(layer);
+              route.map.removeLayer(layer);
             }
           })
           // clear 3d markers
