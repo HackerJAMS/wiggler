@@ -258,6 +258,16 @@
       vm.loopStart = RouteService.loopStart;
       vm.loopDistance = RouteService.inputLoopDistance;
     }
+<<<<<<< c8e61dc5c203516339c21d47d8ec6dcaff15b25c
+=======
+
+    if ($stateParams.slat && $stateParams.slon && $stateParams.elat && $stateParams.elon) {
+      vm.selectedStart = {};
+      vm.selectedEnd = {};
+
+      vm.selectedStart.center = [$stateParams.slon, $stateParams.slat];
+      vm.selectedEnd.center = [$stateParams.elon, $stateParams.elat];
+>>>>>>> (fix) keep the input fields unchanged for regular and loop routes
 
     if ($stateParams.loopSelected) {
       RouteService.geocoding($stateParams.slon, $stateParams.slat)
