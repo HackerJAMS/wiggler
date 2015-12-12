@@ -49,7 +49,7 @@
         }
       })
       .state('main.route-input',{
-        url: '/new?slon&:slat&elon&elat&shortestPathChecked&minElevPathChecked&minBikingChecked&minHikingChecked',
+        url: '/new?slon&:slat&elon&elat&shortestPathChecked&minElevPathChecked&minBikingChecked&minHikingChecked&&loopSelected&&loopDistance',
         templateUrl: "src/scripts/components/route/route_input.html"
       })
       .state('main.route-info', {
