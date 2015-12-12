@@ -108,7 +108,7 @@
       prefs.minHikingChecked = vm.minHikingChecked;
       RouteService.routePrefs = prefs;
       RouteService.resampledRoutes = {};
-
+    
       RouteService.postRouteRequest(start, end, prefs)
         .then(function successCb(res) {
           res.start = start;
@@ -146,13 +146,17 @@
       };
       RouteService.resampledRoutes = {};
       RouteService.loopStart = vm.loopStart;
+      RouteService.routePrefs = {};
+      RouteService.routePrefs.loopSelected = true;
       // approx loop distance in miles
       distance = vm.loopDistance || 3;
+      RouteService.inputLoopDistance = vm.loopDistance;    
       RouteService.postLoopRequest(start, distance)
         .then(function successCb(res) {
           RouteService.routeData = res;
-          RouteService.cleanMap(polyline !== "undefined", RouteService.map);
+          RouteService.cleanMap();
           RouteService.addStartEndMarkers(start.center);
+
           var turfLines = {};
           turfLines.type = 'FeatureCollection';
           turfLines.features = [];
@@ -187,7 +191,6 @@
       };
 
       // draw route on the map and fit the bounds of the map viewport to the route
-
       var polyline = L.geoJson(RouteService.turfLine, {
         className: 'route-' + pathType
       }).addTo(RouteService.map);
@@ -197,7 +200,6 @@
       setTimeout(function() {
         path.css('stroke-dashoffset', 0)
       }, 10);
-
       
       var newPoints = resampledPath.features.slice();
       var newPointCoordinates = newPoints.map(function(n, i) {
@@ -243,9 +245,6 @@
          }).addTo(RouteService.map);
       });
 
-
-
-
       //clear out currentPosition
       RouteService.currentPosition = null;
     }
@@ -256,18 +255,44 @@
       vm.selectedEnd = RouteService.selectedEnd;
     }
 
-    if ($stateParams.slat && $stateParams.slon && $stateParams.elat && $stateParams.elon) {
-      vm.selectedStart = {};
-      vm.selectedEnd = {};
+    if (RouteService.loopStart && RouteService.loopDistance) {
+      vm.loopStart = RouteService.loopStart;
+      vm.loopDistance = RouteService.inputLoopDistance;
+    }
 
-      vm.selectedStart.center = [$stateParams.slon, $stateParams.slat];
-      vm.selectedEnd.center = [$stateParams.elon, $stateParams.elat];
-
+    console.log('$stateParams.loopSelected',$stateParams.loopSelected)
+    if ($stateParams.loopSelected) {
+      RouteService.geocoding($stateParams.slon, $stateParams.slat)
+        .then(function successCb(res) {
+          // limit results to only places within san francisco
+          vm.loopStart = res.data.features[0];
+          vm.loopDistance = $stateParams.loopDistance;
+          vm.submitLoopRoute();
+          // console.log('res', res.data.features[0].place_name);
+        }, function errorCb(res) {
+          console.error("failed to rectrieve address from mapbox...", res);
+        });
+    }
+    if ($stateParams.shortestPathChecked || $stateParams.minElevPathChecked || $stateParams.minBikingChecked || $stateParams.minHikingChecked) {
+      // when use shared url, path selections are initialized below
+      vm.shortestPathChecked = JSON.parse($stateParams.shortestPathChecked);
+      vm.minElevPathChecked = JSON.parse($stateParams.minElevPathChecked);
+      vm.minBikingChecked = JSON.parse($stateParams.minBikingChecked);
+      vm.minHikingChecked = JSON.parse($stateParams.minHikingChecked);
+      // console.log('vm.shortestPathChecked', vm.shortestPathChecked)
+      // console.log('vm.minElevPathChecked', vm.minElevPathChecked)
+      // console.log('vm.minBikingChecked', vm.minBikingChecked)
+      // console.log('vm.minHikingChecked', vm.minHikingChecked)
+      var quriesdone = 0;
       RouteService.geocoding($stateParams.slon, $stateParams.slat)
         .then(function successCb(res) {
           // limit results to only places within san francisco
           vm.selectedStart = res.data.features[0];
           RouteService.selectedStart = vm.selectedStart;
+          quriesdone++;
+          if (quriesdone == 2) {
+            vm.submitRoute();
+          }
           // console.log('res', res.data.features[0].place_name);
         }, function errorCb(res) {
           console.error("failed to rectrieve address from mapbox...", res);
@@ -278,18 +303,15 @@
           // limit results to only places within san francisco
           vm.selectedEnd = res.data.features[0];
           RouteService.selectedEnd = vm.selectedEnd;
+          quriesdone++;
+          if (quriesdone == 2) {
+            vm.submitRoute();
+          }          
           // console.log('res', res.data.features[0].place_name);
         }, function errorCb(res) {
           console.error("failed to rectrieve address from mapbox...", res);
         });
 
-      // when use shared url, path selections are initialized
-      vm.shortestPathChecked = JSON.parse($stateParams.shortestPathChecked);
-      vm.minElevPathChecked = JSON.parse($stateParams.minElevPathChecked);
-      vm.minBikingChecked = JSON.parse($stateParams.minBikingChecked);
-      vm.minHikingChecked = JSON.parse($stateParams.minHikingChecked);
-
-      vm.submitRoute();
     };
 
     // initialize the path selectionsf
@@ -308,8 +330,7 @@
         vm.minElevPathChecked = true;
         vm.minBikingChecked = false;
         vm.minHikingChecked = false;
-      }
+      }    
     }
-
   }])
 })();
