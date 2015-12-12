@@ -1,8 +1,7 @@
-/***
+//
+// Database Configuration File
+//
 
-  Database Configuration File
-
-***/
 var pg = require('pg');
 
 // Connect to AWS database

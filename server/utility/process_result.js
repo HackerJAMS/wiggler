@@ -35,17 +35,6 @@ module.exports = function(result) {
         }
       }
       coordinates.push(segmentTuple);
-      // for reverse points in segment
-      //   if(result.rows[i].node === result.rows[i].target) {
-      //   // reverse the segmentCoordArr
-      //     var segmentCoordArrReverse = [];
-      //     for (var j = segmentCoordArr.length - 1; j >= 0; j--) {
-      //       segmentCoordArrReverse.push(segmentCoordArr[j]);
-      //     }
-      //     coordinates.push(segmentCoordArrReverse);
-      //   } else {
-      //     coordinates.push(segmentCoordArr);
-      //   }
     }
   }
   return coordinates;

@@ -1,16 +1,12 @@
 /***
 
-  Utility Function File:
-  Add elevation cost to table "ways" based on elevation in table "nodes".
-  elevation cost is for each line segment, which is defined as:
-  sum of elevation differences between every two neighbor points on one segment 
-  normalized by their distance
+
 
 ***/
 
 var db = require('./db.js');
 var Q = require('q');
-var velocity = require('./calcVelocity');
+var velocity = require('./physical_velocity_models');
 var start;
 var transport_method;
 module.exports = function(hikeOrBike) {

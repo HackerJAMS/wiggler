@@ -11,13 +11,13 @@ module.exports = function getPathElev(pathArray, callback) {
     })
     return arr;
   })
-  // this is a temporary fix -- I don't actually think we need to be getting the elevation from the original path
-  // and the resampled path generally doesn't have that many nodes. but we will need to figure out a solution to this
-  // with the google maps api
-  // this just ignores all nodes above 512 (the google limit)
-  console.log("numsArray length", numsArray.length);
+
+
+  // we don't actually plot the data from this API call... we should refactor it out. 
+
   if (numsArray.length > 512) {
     numsArray = numsArray.slice(0,511);
+    console.log("not returning all elevation points because the number exceeded google's request limit")
   }
 
 
@@ -27,8 +27,7 @@ module.exports = function getPathElev(pathArray, callback) {
     path: '/maps/api/elevation/json?locations=enc:' + pathStr,
     auth: process.env.ELEVATION_API_KEY
   };
-  // console.log(flatten(pathArray));
-  // console.log(options.path);
+
   https.get(options, function (res) {
     var output = "";
     res.on('data', function (d){
