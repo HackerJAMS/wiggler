@@ -2,7 +2,7 @@
 (function() {
   'use strict';
   angular.module('app.map', [])
-    .controller('MapController', ['$location', 'RouteService', 'usSpinnerService', '$mdSidenav', '$swipe', function($location, RouteService, usSpinnerService, $mdSidenav, $swipe) {
+    .controller('MapController', ['$location', '$window', 'RouteService', 'usSpinnerService', '$mdSidenav', '$swipe', function($location, $window, RouteService, usSpinnerService, $mdSidenav, $swipe) {
 
       var vm = this;
 
@@ -18,24 +18,28 @@
 
       vm.tiltCheck = false;
 
-      //map rotation touch gesture
-      $swipe.bind(mapRot, {
-        start: function(e) {
-          vm.xpos = e.x;
-        },
-        move: function(e) {
-          var elevMarker = angular.element(document.querySelectorAll('.elevmarker'));
-          vm.xdrag = ((vm.xpos - e.x) / 4) % 360;
-          mapEl.attr('style', '-webkit-transform:rotateZ(' + (vm.angle + vm.xdrag) % 360 + 'deg)');
-          elevMarker.attr('style', '-webkit-transform:rotateX(90deg) rotateY(' + (vm.angle + vm.xdrag) * (-1) % 360 + 'deg)');
+      vm.isMobileWidth = $window.innerWidth <= 768;
 
-        },
-        end: function(e) {
-          vm.angle = vm.angle + vm.xdrag;
-        },
-        cancel: function() {}
-      });
+      //map rotation touch gesture for mobile
+      // causes desktop version to jump around, so we only activate it for mobile width screens
+      if (vm.isMobileWidth) {
+        $swipe.bind(mapRot, {
+          start: function(e) {
+            vm.xpos = e.x;
+          },
+          move: function(e) {
+            var elevMarker = angular.element(document.querySelectorAll('.elevmarker'));
+            vm.xdrag = ((vm.xpos - e.x) / 4) % 360;
+            mapEl.attr('style', '-webkit-transform:rotateZ(' + (vm.angle + vm.xdrag) % 360 + 'deg)');
+            elevMarker.attr('style', '-webkit-transform:rotateX(90deg) rotateY(' + (vm.angle + vm.xdrag) * (-1) % 360 + 'deg)');
 
+          },
+          end: function(e) {
+            vm.angle = vm.angle + vm.xdrag;
+          },
+          cancel: function() {}
+        });
+      }
 
       vm.mouseDown = function(e) {
         if (RouteService.tiltCheck) {
