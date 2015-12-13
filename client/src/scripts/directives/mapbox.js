@@ -3,7 +3,7 @@
   'use strict';
 
   angular.module('app')
-    .directive('mapbox', ['RouteService', '$timeout', function(RouteService, $timeout) {
+    .directive('mapbox', ['RouteService','$window','$timeout', function(RouteService, $window, $timeout) {
       return {
         // restrict this directive to an html element ('E':element, 'A': attribute, 'C': component)
         restrict: 'E',
@@ -18,13 +18,17 @@
         link: function(scope, element, attributes) {
           // molly's public token
           L.mapbox.accessToken = 'pk.eyJ1IjoibWxsb3lkIiwiYSI6Im9nMDN3aW8ifQ.mwiVAv4E-1OeaoR25QZAvw';
+          var legend_position = $window.innerWidth <= 768 ? 'bottomright' : 'topright';
+          var zoom_control = $window.innerWidth <= 768 ? false : true;
           var map = L.mapbox.map(element[0], 'mapbox.run-bike-hike', {
             // tileSize: 5120,
-            zoomControl: false,
+            zoomControl: zoom_control,
             maxZoom: 19,
             minZoom: 11,
-            legendControl: { position: 'topright'}
+            legendControl: { position: legend_position}
           });
+
+        
           var getPxBounds = map.getPixelBounds;
 
           map.getPixelBounds = function() {
