@@ -12,7 +12,6 @@
 }
 
 
-
 /* mobile styles */
 
 @media only screen and (max-device-width: 768px) {
@@ -20,6 +19,15 @@
     min-width: 200px !important;
     width: 100vw !important;
     max-width: none !important;
+  }
+  .map-container {
+    position: relative;
+    height: 550px;
+  }
+  .map-controls button {
+    &:first-of-type {
+      margin-left: 5px;
+    }
   }
   #desktop-route-pnl {
     display: none;
@@ -40,6 +48,5 @@
   #mobile-whiteframe {
     width: auto;
     height: 100%;
-   } 
-   
+  }
 }

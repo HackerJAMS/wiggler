@@ -2,7 +2,7 @@
 (function() {
   'use strict';
   angular.module('app.routeService', [])
-    .factory('RouteService', ['$rootScope', '$http', function($rootScope, $http) {
+    .factory('RouteService', ['$rootScope', '$window','$http', function($rootScope,$window, $http) {
       var route = {};
       route.routeData = []; // raw route data from server
       route.resampledRoutes = {}; // processed resampled routes
@@ -10,11 +10,10 @@
 
       var accessToken = 'pk.eyJ1IjoiMTI3NnN0ZWxsYSIsImEiOiJjaWg4ZGEwZmEwdGNkdjBraXl1czIzNnFjIn0.RXXfMNV-gtrQyrRzrP2yvQ';
       //************* Map Services *************      
+      var isMobileWidth = $window.innerWidth <= 768;
+      var mapView = isMobileWidth ? [[37.747982,-122.440173],12] : [[37.774, -122.446], 13]
       route.initMap = function(map) {
-        new L.Control.Zoom({
-          position: 'topleft'
-        }).addTo(map);
-        map.setView([37.774, -122.446], 13);
+        map.setView(mapView[0], mapView[1]);
         map.scrollWheelZoom.disable();
         route.map = map;
       };
