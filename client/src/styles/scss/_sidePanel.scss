@@ -11,6 +11,7 @@ md-whiteframe {
   height: 700px;
   position: relative;
 }
+
 md-tabs.md-default-theme,
 md-tabs md-tabs-wrapper {
   border-width: 0 0 1px;
@@ -23,15 +24,8 @@ md-tabs md-tabs-wrapper {
   height: 2rem;
 }
 
-.switch-icon {
-  display: block;
-}
-.switch-icon-mobile {
-  display: none;
-}
-
 #arrows-container {
-  width:30px;
+  width: 30px;
   height: 45px;
 }
 
@@ -56,8 +50,49 @@ md-tabs md-tabs-wrapper {
   margin-top: 0px;
 }
 
-.md-button.md-icon-button {
-  i {
-    font-size: 18px;
-  }
+
+/* route type switches */
+
+md-switch {
+  margin: 2px;
+}
+
+md-switch.md-checked.flattest .md-thumb {
+  background-color: $min_elevation_path;
+}
+
+md-switch.md-checked.flattest .md-bar {
+  background-color: lighten($min_elevation_path, 40%);
+}
+
+md-switch.md-checked.shortest .md-thumb {
+  background-color: $shortest_path;
+}
+
+md-switch.md-checked.shortest .md-bar {
+  background-color: lighten($shortest_path, 40%);
+}
+
+md-switch.md-checked.biking .md-thumb {
+  background-color: $fastest_biking;
+}
+
+md-switch.md-checked.biking .md-bar {
+  background-color: lighten($fastest_biking, 40%);
+}
+
+md-switch.md-checked.walking .md-thumb {
+  background-color: $fastest_walking;
+}
+
+md-switch.md-checked.walking .md-bar {
+  background-color: lighten($fastest_walking, 40%);
+}
+
+.md-button.md-icon-button i {
+  font-size: 18px;
+}
+
+.route-type-label {
+  font-size: 0.8em;
 }

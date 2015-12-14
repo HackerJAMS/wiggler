@@ -17,21 +17,54 @@
           <span md-highlight-text="routeCtrl.searchEnd">{{item.place_name}}</span>
         </md-autocomplete>
       </div>
+      <!-- route options -->
       <div id="path-selection" flex="100" ng-init="routeCtrl.initPathSelection()">
-        <div class="layout-row flex">
-          <md-switch class="md-hue-4" id="min-elevation-switch" ng-click="routeCtrl.minElevPathChecked = !routeCtrl.minElevPathChecked" ng-checked="routeCtrl.minElevPathChecked"><span class="route-type-label">Flattest Route</span></md-switch>
-          <md-switch class="md-hue-4" ng-click="routeCtrl.shortestPathChecked = !routeCtrl.shortestPathChecked" ng-checked="routeCtrl.shortestPathChecked"><span class="route-type-label">Shortest Route</span></md-switch>
-        </div>
-        <div class="layout-row flex">
-          <md-switch class="md-hue-4" aria-label="Biking directions" ng-click="routeCtrl.minBikingChecked = !routeCtrl.minBikingChecked" ng-checked="routeCtrl.minBikingChecked">
-            <ng-md-icon class="switch-icon" icon="directions_bike" size="25"></ng-md-icon>
-            <ng-md-icon class="switch-icon-mobile" icon="directions_bike" size="56"></ng-md-icon>
-          </md-switch>
-          <md-switch class="md-hue-4" aria-label="walking directions" ng-click="routeCtrl.minHikingChecked = !routeCtrl.minHikingChecked" ng-checked="routeCtrl.minHikingChecked">
-            <ng-md-icon class="switch-icon" icon="directions_walk" size="25"></ng-md-icon>
-            <ng-md-icon class="switch-icon-mobile" icon="directions_walk" size="56"></ng-md-icon>
-          </md-switch>
-        </div>
+        <ul>
+          <li>
+            <!-- flattest -->
+            <md-switch class="flattest" id="min-elevation-switch" ng-click="routeCtrl.minElevPathChecked = !routeCtrl.minElevPathChecked" ng-checked="routeCtrl.minElevPathChecked">
+              <span class="route-type-label">
+              <md-icon md-svg-src="assets/flattest-route.svg" alt="flattest " class="ng-scope">
+                <object class="md-icon"></object>
+              </md-icon>
+              Flattest Route
+            </span>
+            </md-switch>
+          </li>
+          <li>
+            <!-- shortest -->
+            <md-switch class="shortest" ng-click="routeCtrl.shortestPathChecked = !routeCtrl.shortestPathChecked" ng-checked="routeCtrl.shortestPathChecked">
+              <span class="route-type-label">
+              <md-icon md-svg-src="assets/shortest-route.svg" alt="shortest " class="ng-scope">
+                <object class="md-icon"></object>
+              </md-icon>
+              Shortest Route
+            </span>
+            </md-switch>
+          </li>
+          <li>
+            <!-- biking -->
+            <md-switch class="biking" aria-label="Biking directions" ng-click="routeCtrl.minBikingChecked = !routeCtrl.minBikingChecked" ng-checked="routeCtrl.minBikingChecked">
+              <span class="route-type-label">
+              <md-icon md-svg-src="assets/cycling.svg" alt="biking " class="ng-scope">
+                <object class="md-icon"></object>
+              </md-icon>
+              Fastest Biking
+            </span>
+            </md-switch>
+          </li>
+          <li>
+            <!-- walking -->
+            <md-switch class="walking" aria-label="walking directions" ng-click="routeCtrl.minHikingChecked = !routeCtrl.minHikingChecked" ng-checked="routeCtrl.minHikingChecked">
+              <span class="route-type-label">
+              <md-icon md-svg-src="assets/walking.svg" alt="walking " class="ng-scope">
+                <object class="md-icon"></object>
+              </md-icon>
+              Fastest Walking
+            </span>
+            </md-switch>
+          </li>
+        </ul>
         <div class="layout-row flex">
           <div id="route-submit">
             <md-button id="submit-btn" class="md-raised md-primary" aria-label="get route" ng-click="routeCtrl.submitRoute(); routeCtrl.closeSideNavPanel()">Get Route</md-button>
