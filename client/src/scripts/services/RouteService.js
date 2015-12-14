@@ -39,8 +39,8 @@
       //************* Route Services *************   
       route.addLegend = function(prefs) {
         var checkBoxes = {
-          shortestPathChecked: "Shortest",
-          minElevPathChecked: "Minimum elevation change",
+          shortestPathChecked: "Shortest Route",
+          minElevPathChecked: "Flattest Route",
           minBikingChecked: "Fastest biking",
           minHikingChecked: "Fastest walking",
           loop_path: "Running loop"
@@ -48,8 +48,8 @@
 
         //solarized colors
         var routeColors = {
-          "Shortest": '#2176C7',
-          "Minimum elevation change": '#C61C6F',
+          "Shortest Route": '#2176C7',
+          "Flattest Route": '#C61C6F',
           "Fastest biking": '#2aa198',
           "Fastest walking": '#D9A800',
           "Running loop": "#30a07A"

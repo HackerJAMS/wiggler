@@ -24,6 +24,10 @@ md-tabs md-tabs-wrapper {
   height: 2rem;
 }
 
+.md-button.md-icon-button {
+  height: 80px;
+}
+
 #arrows-container {
   width: 30px;
   height: 45px;
@@ -87,12 +91,4 @@ md-switch.md-checked.walking .md-thumb {
 
 md-switch.md-checked.walking .md-bar {
   background-color: lighten($fastest_walking, 40%);
-}
-
-.md-button.md-icon-button i {
-  font-size: 18px;
-}
-
-.route-type-label {
-  font-size: 0.8em;
 }
