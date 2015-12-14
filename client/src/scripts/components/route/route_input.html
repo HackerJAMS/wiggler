@@ -21,17 +21,6 @@
       <div id="path-selection" flex="100" ng-init="routeCtrl.initPathSelection()">
         <ul>
           <li>
-            <!-- flattest -->
-            <md-switch class="flattest" id="min-elevation-switch" ng-click="routeCtrl.minElevPathChecked = !routeCtrl.minElevPathChecked" ng-checked="routeCtrl.minElevPathChecked">
-              <span class="route-type-label">
-              <md-icon md-svg-src="assets/flattest-route.svg" alt="flattest " class="ng-scope">
-                <object class="md-icon"></object>
-              </md-icon>
-              Flattest Route
-            </span>
-            </md-switch>
-          </li>
-          <li>
             <!-- shortest -->
             <md-switch class="shortest" ng-click="routeCtrl.shortestPathChecked = !routeCtrl.shortestPathChecked" ng-checked="routeCtrl.shortestPathChecked">
               <span class="route-type-label">
@@ -39,6 +28,17 @@
                 <object class="md-icon"></object>
               </md-icon>
               Shortest Route
+            </span>
+            </md-switch>
+          </li>
+          <li>
+            <!-- flattest -->
+            <md-switch class="flattest" id="min-elevation-switch" ng-click="routeCtrl.minElevPathChecked = !routeCtrl.minElevPathChecked" ng-checked="routeCtrl.minElevPathChecked">
+              <span class="route-type-label">
+              <md-icon md-svg-src="assets/flattest-route.svg" alt="flattest " class="ng-scope">
+                <object class="md-icon"></object>
+              </md-icon>
+              Flattest Route
             </span>
             </md-switch>
           </li>
