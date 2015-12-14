@@ -28,6 +28,15 @@ db.connect(function(err) {
   }
 });
 
+// var minHikeBike = require('./utility/minimum_hike_bike_path.js');
+// minHikeBike(23055, 6346, "hike", function(err, result){
+//   if(err) {
+//     console.error('could not obtain the minimum elevation path: ', err);
+//   } else {
+//     console.log('result when querying the minimum elevation path: ', result[0]);
+//   }
+// }); 
+
 var app = express();
 
 // include middleware
