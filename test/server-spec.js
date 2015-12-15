@@ -1,31 +1,3 @@
-// var request = require('supertest');
-// var express = require('express');
-// var expect = require('chai').expect;
-// var app = require('../server/server.js');
-
-
-// describe('Route Types', function() {
-//   it('returns the shortest path between two points on request', function(done) {
-//     request(app)
-//       .post('/route')
-//       .send({
-//         start: [-122.428561, 37.767191],
-//         end:  [-122.437364, 37.774222],
-//         prefs: {
-//           shortestPathChecked: true,
-//           minElevPathChecked: false,
-//           minBikingChecked: false,
-//           minHikingChecked: false
-//         }
-//       })
-//       .expect(200)
-//       .expect(function (res){
-//         console.log(res);
-//         expect(true).to.be.true
-//       })
-//       .end(done);
-//   })
-// })
 
 var expect = require('chai').expect;
 // connect to postgresql server
@@ -83,7 +55,7 @@ var minHikeBike = function(start, end, hikeOrBike,callback) {
 
 var start = 23055;
 var end = 6346;
-var conString = 'postgres://postgres:@ec2-52-34-24-220.us-west-2.compute.amazonaws.com:5432/sf_routing';
+var conString = 'postgres://postgres:jams@104.154.80.252:5432/sf_routing';
 var db;
 
 describe('Path query should return results', function(){
