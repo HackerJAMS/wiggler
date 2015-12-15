@@ -93,6 +93,10 @@ host all all 173.247.204.106/24 trust
 host all all 0.0.0.0/24 trust
 ## :wq to save your changes
 
+### in postgresql.conf:
+listen_addresses = '*'
+:wq
+$ sudo service postgresql restart
 ## download map data
 cd
 mkdir data
@@ -124,6 +128,10 @@ select sum(oldCount-1) from (select count(*) as oldCount from elevation_test gro
 #to test the connection from your local computer:
 psql --host=ec2-52-34-24-220.us-west-2.compute.amazonaws.com --port=5432 --dbname=sf_routing --username=postgres
 
+psql --host=104.154.80.252 --port=5432 --username=postgres
 ## to  restart
 sudo service postgresql restart
 ```
+
+https://cloud.google.com/solutions/setup-postgres
+
