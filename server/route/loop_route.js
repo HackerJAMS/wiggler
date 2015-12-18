@@ -51,6 +51,8 @@ var backPath = function(out_path) {
   db.query(query, function(err, result) {
     if (err) {
       console.log("error getting back path", err);
+      res.status(400).send("error getting back path");
+      return;
     }
 
     var full_path_result = out_path.path_info.out_path;
@@ -74,7 +76,11 @@ var outPathGeom = function(out_path_deets) {
   var query = "select st_astext(st_union(the_geom)) as out_path from (select * from ways where gid in (" + visitedEdges.join(",") + ")) as ways";
 
   db.query(query, function(err, result) {
-    if (err) console.log("error getting out path geometry", err);
+    if (err) {
+      console.log("error getting out path geometry", err);
+      res.status(400).send("error getting out path geometry");
+      return;
+    }
     defer.resolve({
       geom: result.rows[0].out_path,
       path_info: out_path_deets
@@ -91,6 +97,7 @@ var getBestOutPath = function(path_info) {
   db.query(query, function(err, out_path) {
     if (err) {
       console.log("there was an error getting the best outward path for the loop");
+      return;
     } else {
       defer.resolve({
         path_info: path_info.path,
@@ -108,19 +115,23 @@ var getBestOutNode = function(param, outNodes) {
   var query = "select seq, id1 as source,id2 as target, cost from pgr_kdijkstraCost('SELECT gid AS id, source::integer, target::integer, eleCost::double precision AS cost FROM ways'," + param.startNode + ", array[" + outNodes.out_nodes.join(",") + "], false, false);"
     // var query = "select seq, id1 as source,id2 as target, cost from pgr_kdijkstraCost('SELECT gid AS id, source::integer, target::integer, bike_cost::double precision AS cost, r_bike_cost::double precision as reverse_cost FROM ways'," + param.startNode + ", array[" + outNodes.out_nodes.join(",") + "], true, true);"
   db.query(query, function(err, result) {
-    var minCost = Infinity;
-    var bestPath;
-    for (var i = 0; i < result.rows.length; i++) {
-
-      if (result.rows[i].cost > 0 && result.rows[i].cost < minCost) {
-        minCost = result.rows[i].cost
-        bestPath = result.rows[i];
+    if (err) {
+      res.status(400).send("unable to find best path out for loop");
+      return;
+    } else {
+      var minCost = Infinity;
+      var bestPath;
+      for (var i = 0; i < result.rows.length; i++) {
+        if (result.rows[i].cost > 0 && result.rows[i].cost < minCost) {
+          minCost = result.rows[i].cost
+          bestPath = result.rows[i];
+        }
       }
+      defer.resolve({
+        startNode: param.startNode,
+        path: bestPath
+      });
     }
-    defer.resolve({
-      startNode: param.startNode,
-      path: bestPath
-    });
 
   })
   return defer.promise;
@@ -166,7 +177,8 @@ var findOutNodes = function(start, distance) {
   var queryStr = "SELECT distinct id FROM (SELECT id, class_id, st_distance(a.the_geom, poi) AS distance FROM ways_vertices_pgr a, (SELECT st_makepoint(" + start[0] + "," + start[1] + ")::geography AS poi) AS poi, ways AS b WHERE (id=b.source or id=b.target) AND class_id NOT IN (101,102,103,104,105,122)) AS d_table WHERE distance BETWEEN " + (distance_in_meters / 3) + " AND " + (distance_in_meters / 2) + "ORDER BY id";
   db.query(queryStr, function(err, out_result) {
     if (err) {
-      console.log(err)
+      console.log("error getting out nodes", err)
+      res.status(400).send("error getting out nodes");
     } else {
       var ids = []
       for (var i = 0; i < out_result.rows.length; i++) {
