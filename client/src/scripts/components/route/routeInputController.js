@@ -113,6 +113,7 @@
         .then(function successCb(res) {
           res.start = start;
           res.end = end;
+
           RouteService.routeData = res;
 
           RouteService.cleanMap(polyline !== "undefined", RouteService.map);
@@ -122,6 +123,10 @@
           turfLines.type = 'FeatureCollection';
           turfLines.features = [];
           for (var pathType in RouteService.routeData.data) {
+            if (res.data[pathType][1].length ===0){
+              alert("Sorry! We've gone over our google API request limit for the day... Come back tomorrow!")
+              return;
+            }
             var coords = RouteService.routeData.data[pathType][0];
             var elevation = RouteService.routeData.data[pathType][1];
             plotRoute(coords, elevation, pathType, turfLines);
@@ -153,6 +158,10 @@
       RouteService.inputLoopDistance = vm.loopDistance;    
       RouteService.postLoopRequest(start, distance)
         .then(function successCb(res) {
+          if (res.data["loop_path"][1].length ===0 ){
+            alert("Sorry! We've gone over our google API request limit for the day... Come back tomorrow!")
+            return;
+          }
           RouteService.routeData = res;
           RouteService.cleanMap();
           RouteService.addStartEndMarkers(start.center);
