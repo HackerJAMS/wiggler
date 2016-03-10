@@ -12,7 +12,15 @@ Create Key Pair (save .pem file to local machine)
 ### Working with EC2 Server
 **ssh into server** using path to local .pem file (an alias is convenient for this)
 
-`ssh -i ~/MyKeyPair.pem ec2-user@ec2-52-25-30-229.us-west-2.compute.amazonaws.com`
+`ssh -i ~/wiggler.pem ec2-user@ec2-52-35-116-115.us-west-2.compute.amazonaws.com`
+
+### How to Restart the Server
+`cd wiggler`
+`screen -r` 
+
+The 'screen -r' command will either load the previous screen or show a list of currently available screens. If you see a list, add the id of the most recent screen, for example `screen -r 20103`
+
+Once the screen is loaded you generally need kill whatever process is hanging (hit ctl-c twice), and then restart node `nodemon server/server.js` (or just hit the up arrow since it should be the last command that was entered).
 
 ### Set-up Server for Node Applications
 Once logged-in to the server, you can install any dependencies needed to run the app.
