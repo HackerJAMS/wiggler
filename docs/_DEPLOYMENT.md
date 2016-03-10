@@ -16,6 +16,7 @@ Create Key Pair (save .pem file to local machine)
 
 ### How to Restart the Server
 `cd wiggler`
+
 `screen -r` 
 
 The 'screen -r' command will either load the previous screen or show a list of currently available screens. If you see a list, add the id of the most recent screen, for example `screen -r 20103`
